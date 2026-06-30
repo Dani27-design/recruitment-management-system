@@ -17,6 +17,20 @@ enum VacancyStatus {
   INACTIVE
 }
 
+enum RecruitmentStageName {
+  APPLIED
+  SCREENING
+  TECHNICAL_TEST
+  INTERVIEW
+  ACCEPTANCE
+}
+
+enum RecruitmentStageStatus {
+  PENDING
+  PASSED
+  REJECTED
+}
+
 model User {
   id            String   @id @default(uuid())
   email         String   @unique
@@ -24,6 +38,8 @@ model User {
   role          Role
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
+  recruitments  Recruitment[] @relation("RecruitmentCreator")
+  assigned_stages RecruitmentStage[] @relation("StageAssignee")
 
   @@map("users")
 }
@@ -35,6 +51,7 @@ model Candidate {
   phone_number String
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
+  recruitments Recruitment[]
 
   @@map("candidates")
 }
@@ -47,6 +64,39 @@ model Vacancy {
   status        VacancyStatus
   created_at    DateTime      @default(now())
   updated_at    DateTime      @updatedAt
+  recruitments  Recruitment[]
 
   @@map("vacancies")
+}
+
+model Recruitment {
+  id           String             @id @default(uuid())
+  candidate_id String
+  vacancy_id   String
+  created_by   String
+  created_at   DateTime           @default(now())
+  updated_at   DateTime           @updatedAt
+  candidate    Candidate          @relation(fields: [candidate_id], references: [id])
+  vacancy      Vacancy            @relation(fields: [vacancy_id], references: [id])
+  creator      User               @relation("RecruitmentCreator", fields: [created_by], references: [id])
+  stages       RecruitmentStage[]
+
+  @@map("recruitments")
+}
+
+model RecruitmentStage {
+  id               String                 @id @default(uuid())
+  recruitment_id   String
+  stage            RecruitmentStageName
+  status           RecruitmentStageStatus
+  assigned_user_id String?
+  scheduled_at     DateTime?
+  completed_at     DateTime?
+  notes            String?
+  created_at       DateTime               @default(now())
+  updated_at       DateTime               @updatedAt
+  recruitment      Recruitment            @relation(fields: [recruitment_id], references: [id])
+  assigned_user    User?                  @relation("StageAssignee", fields: [assigned_user_id], references: [id])
+
+  @@map("recruitment_stages")
 }

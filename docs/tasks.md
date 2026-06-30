@@ -285,57 +285,57 @@ These are implementation standards, not standalone tasks. Apply them across ever
 
 ## Phase 4 - Recruitment Core
 
-- [ ] 1. Implement Recruitment database model.
-  - [ ] 1.1. Add `id`.
-  - [ ] 1.2. Add `candidate_id`.
-  - [ ] 1.3. Add `vacancy_id`.
-  - [ ] 1.4. Add `created_by`.
-  - [ ] 1.5. Add `created_at`.
-  - [ ] 1.6. Add `updated_at`.
-  - [ ] 1.7. Model Recruitment belongs to Candidate.
-  - [ ] 1.8. Model Recruitment belongs to Vacancy.
-  - [ ] 1.9. Model Recruitment created by User.
-  - [ ] 1.10. Model Recruitment owns many Recruitment Stages.
-  - [ ] 1.11. Model Recruitment owns many Recruitment Documents.
-  - [ ] 1.12. Generate Recruitment migration.
-- [ ] 2. Implement recruitment repository.
-  - [ ] 2.1. Implement create recruitment.
-  - [ ] 2.2. Implement get recruitment.
-  - [ ] 2.3. Implement list recruitments.
-- [ ] 3. Implement recruitment service.
-  - [ ] 3.1. Validate candidate exists before creating recruitment.
-  - [ ] 3.2. Validate vacancy exists before creating recruitment.
-  - [ ] 3.3. Validate vacancy status is `ACTIVE` before creating recruitment.
-  - [ ] 3.4. Create recruitment as the aggregate root.
-  - [ ] 3.5. Automatically create the first recruitment stage as `APPLIED`.
-  - [ ] 3.6. Set the first recruitment stage status to `PENDING`.
-  - [ ] 3.7. Keep recruitment creation and first-stage creation consistent.
-- [ ] 4. Implement recruitment validation.
-  - [ ] 4.1. Create recruitment create schema.
-  - [ ] 4.2. Validate recruitment creation input.
-- [ ] 5. Implement recruitment controllers and routes.
-  - [ ] 5.1. Implement `GET /recruitments`.
-  - [ ] 5.2. Implement `GET /recruitments/{id}`.
-  - [ ] 5.3. Implement `POST /recruitments`.
-- [ ] 6. Implement recruitment frontend pages.
-  - [ ] 6.1. Create Recruitment List page.
-  - [ ] 6.2. Create Recruitment Detail page.
-  - [ ] 6.3. Create Create Recruitment page.
-- [ ] 7. Implement recruitment frontend components.
-  - [ ] 7.1. Create Candidate Selector.
-  - [ ] 7.2. Create Vacancy Selector.
-- [ ] 8. Integrate recruitment frontend with backend APIs.
-  - [ ] 8.1. Fetch recruitment list.
-  - [ ] 8.2. Fetch recruitment detail.
-  - [ ] 8.3. Fetch candidates for recruitment creation.
-  - [ ] 8.4. Fetch active vacancies for recruitment creation.
-  - [ ] 8.5. Submit recruitment creation form.
-  - [ ] 8.6. Surface validation and API errors.
-- [ ] 9. Complete Phase 4 implementation readiness.
-  - [ ] 9.1. Ensure recruitment creation is implemented end to end.
-  - [ ] 9.2. Ensure recruitment creation validates candidate and vacancy requirements.
-  - [ ] 9.3. Ensure initial `APPLIED` and `PENDING` stage creation is implemented.
-  - [ ] 9.4. Commit Phase 4 as `phase-4-recruitment-core`.
+- [x] 1. Implement Recruitment database model.
+  - [x] 1.1. Add `id`.
+  - [x] 1.2. Add `candidate_id`.
+  - [x] 1.3. Add `vacancy_id`.
+  - [x] 1.4. Add `created_by`.
+  - [x] 1.5. Add `created_at`.
+  - [x] 1.6. Add `updated_at`.
+  - [x] 1.7. Model Recruitment belongs to Candidate.
+  - [x] 1.8. Model Recruitment belongs to Vacancy.
+  - [x] 1.9. Model Recruitment created by User.
+  - [x] 1.10. Model Recruitment owns many Recruitment Stages.
+  - [x] 1.11. Defer the Recruitment relationship to Recruitment Documents until the RecruitmentDocument model is introduced in Phase 7.
+  - [x] 1.12. Generate Recruitment migration.
+- [x] 2. Implement recruitment repository.
+  - [x] 2.1. Implement create recruitment.
+  - [x] 2.2. Implement get recruitment.
+  - [x] 2.3. Implement list recruitments.
+- [x] 3. Implement recruitment service.
+  - [x] 3.1. Validate candidate exists before creating recruitment.
+  - [x] 3.2. Validate vacancy exists before creating recruitment.
+  - [x] 3.3. Validate vacancy status is `ACTIVE` before creating recruitment.
+  - [x] 3.4. Create recruitment as the aggregate root.
+  - [x] 3.5. Automatically create the first recruitment stage as `APPLIED`.
+  - [x] 3.6. Set the first recruitment stage status to `PENDING`.
+  - [x] 3.7. Keep recruitment creation and first-stage creation consistent.
+- [x] 4. Implement recruitment validation.
+  - [x] 4.1. Create recruitment create schema.
+  - [x] 4.2. Validate recruitment creation input.
+- [x] 5. Implement recruitment controllers and routes.
+  - [x] 5.1. Implement `GET /recruitments`.
+  - [x] 5.2. Implement `GET /recruitments/{id}`.
+  - [x] 5.3. Implement `POST /recruitments`.
+- [x] 6. Implement recruitment frontend pages.
+  - [x] 6.1. Create Recruitment List page.
+  - [x] 6.2. Create Recruitment Detail page.
+  - [x] 6.3. Create Create Recruitment page.
+- [x] 7. Implement recruitment frontend components.
+  - [x] 7.1. Create Candidate Selector.
+  - [x] 7.2. Create Vacancy Selector.
+- [x] 8. Integrate recruitment frontend with backend APIs.
+  - [x] 8.1. Fetch recruitment list.
+  - [x] 8.2. Fetch recruitment detail.
+  - [x] 8.3. Fetch candidates for recruitment creation.
+  - [x] 8.4. Fetch active vacancies for recruitment creation.
+  - [x] 8.5. Submit recruitment creation form.
+  - [x] 8.6. Surface validation and API errors.
+- [x] 9. Complete Phase 4 implementation readiness.
+  - [x] 9.1. Ensure recruitment creation is implemented end to end.
+  - [x] 9.2. Ensure recruitment creation validates candidate and vacancy requirements.
+  - [x] 9.3. Ensure initial `APPLIED` and `PENDING` stage creation is implemented.
+  - [x] 9.4. Commit Phase 4 as `feat: phase 4 recruitment core`.
 
 ## Phase 5 - Recruitment Workflow Engine
 

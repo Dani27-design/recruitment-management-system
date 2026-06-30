@@ -9,6 +9,9 @@ import { CreateVacancyPage } from './pages/CreateVacancyPage';
 import { EditVacancyPage } from './pages/EditVacancyPage';
 import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
+import { CreateRecruitmentPage } from './pages/CreateRecruitmentPage';
+import { RecruitmentDetailPage } from './pages/RecruitmentDetailPage';
+import { RecruitmentListPage } from './pages/RecruitmentListPage';
 import { VacancyListPage } from './pages/VacancyListPage';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 
@@ -30,6 +33,9 @@ export function App() {
               <Route path="/vacancies" element={<VacancyListPage />} />
               <Route path="/vacancies/new" element={<CreateVacancyPage />} />
               <Route path="/vacancies/:id/edit" element={<EditVacancyPage />} />
+              <Route path="/recruitments" element={<RecruitmentListPage />} />
+              <Route path="/recruitments/new" element={<CreateRecruitmentPage />} />
+              <Route path="/recruitments/:id" element={<RecruitmentDetailPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

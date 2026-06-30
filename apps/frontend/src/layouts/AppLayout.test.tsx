@@ -23,6 +23,7 @@ describe('AppLayout', () => {
     expect(screen.getByText('Recruitment Management System')).toBeInTheDocument();
     expect(screen.getByText('Candidates')).toBeInTheDocument();
     expect(screen.getByText('Vacancies')).toBeInTheDocument();
+    expect(screen.getByText('Recruitments')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Logout' })).toBeInTheDocument();
     expect(screen.getByText('Protected content')).toBeInTheDocument();
   });
