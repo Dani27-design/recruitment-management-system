@@ -232,56 +232,56 @@ These are implementation standards, not standalone tasks. Apply them across ever
 
 ## Phase 3 - Vacancy Management
 
-- [ ] 1. Implement Vacancy database model.
-  - [ ] 1.1. Add `id`.
-  - [ ] 1.2. Add `position_name`.
-  - [ ] 1.3. Add `department`.
-  - [ ] 1.4. Add `hiring_needed`.
-  - [ ] 1.5. Add `status`.
-  - [ ] 1.6. Add `created_at`.
-  - [ ] 1.7. Add `updated_at`.
-  - [ ] 1.8. Model one Vacancy to many Recruitments.
-  - [ ] 1.9. Generate Vacancy migration.
-- [ ] 2. Implement vacancy repository.
-  - [ ] 2.1. Implement create vacancy.
-  - [ ] 2.2. Implement update vacancy.
-  - [ ] 2.3. Implement delete vacancy.
-  - [ ] 2.4. Implement get vacancy.
-  - [ ] 2.5. Implement list vacancies.
-- [ ] 3. Implement vacancy service.
-  - [ ] 3.1. Enforce hiring needed validation.
-  - [ ] 3.2. Enforce `ACTIVE` and `INACTIVE` status validation.
-  - [ ] 3.3. Keep vacancy business rules in the service layer.
-- [ ] 4. Implement vacancy validation.
-  - [ ] 4.1. Create vacancy create schema.
-  - [ ] 4.2. Create vacancy update schema.
-  - [ ] 4.3. Validate vacancy create requests.
-  - [ ] 4.4. Validate vacancy update requests.
-- [ ] 5. Implement vacancy controllers and routes.
-  - [ ] 5.1. Implement `GET /vacancies`.
-  - [ ] 5.2. Implement `GET /vacancies/{id}`.
-  - [ ] 5.3. Implement `POST /vacancies`.
-  - [ ] 5.4. Implement `PUT /vacancies/{id}`.
-  - [ ] 5.5. Implement `DELETE /vacancies/{id}`.
-- [ ] 6. Implement vacancy frontend pages.
-  - [ ] 6.1. Create Vacancy List page.
-  - [ ] 6.2. Create Create Vacancy page.
-  - [ ] 6.3. Create Edit Vacancy page.
-- [ ] 7. Implement vacancy frontend components.
-  - [ ] 7.1. Create Vacancy Table.
-  - [ ] 7.2. Create Vacancy Form.
-- [ ] 8. Integrate vacancy frontend with backend APIs.
-  - [ ] 8.1. Fetch vacancy list.
-  - [ ] 8.2. Fetch vacancy detail for editing.
-  - [ ] 8.3. Submit vacancy create form.
-  - [ ] 8.4. Submit vacancy edit form.
-  - [ ] 8.5. Execute vacancy delete action.
-  - [ ] 8.6. Surface validation and API errors.
-- [ ] 9. Complete Phase 3 implementation readiness.
-  - [ ] 9.1. Ensure Vacancy CRUD is implemented end to end.
-  - [ ] 9.2. Ensure vacancy validation is implemented.
-  - [ ] 9.3. Ensure vacancy status updates are implemented.
-  - [ ] 9.4. Commit Phase 3 as `phase-3-vacancy-management`.
+- [x] 1. Implement Vacancy database model.
+  - [x] 1.1. Add `id`.
+  - [x] 1.2. Add `position_name`.
+  - [x] 1.3. Add `department`.
+  - [x] 1.4. Add `hiring_needed`.
+  - [x] 1.5. Add `status`.
+  - [x] 1.6. Add `created_at`.
+  - [x] 1.7. Add `updated_at`.
+  - [x] 1.8. Defer the Vacancy relationship to Recruitments until the Recruitment model is introduced in Phase 4.
+  - [x] 1.9. Generate Vacancy migration.
+- [x] 2. Implement vacancy repository.
+  - [x] 2.1. Implement create vacancy.
+  - [x] 2.2. Implement update vacancy.
+  - [x] 2.3. Implement delete vacancy.
+  - [x] 2.4. Implement get vacancy.
+  - [x] 2.5. Implement list vacancies.
+- [x] 3. Implement vacancy service.
+  - [x] 3.1. Enforce hiring needed validation.
+  - [x] 3.2. Enforce `ACTIVE` and `INACTIVE` status validation.
+  - [x] 3.3. Keep vacancy business rules in the service layer.
+- [x] 4. Implement vacancy validation.
+  - [x] 4.1. Create vacancy create schema.
+  - [x] 4.2. Create vacancy update schema.
+  - [x] 4.3. Validate vacancy create requests.
+  - [x] 4.4. Validate vacancy update requests.
+- [x] 5. Implement vacancy controllers and routes.
+  - [x] 5.1. Implement `GET /vacancies`.
+  - [x] 5.2. Implement `GET /vacancies/{id}`.
+  - [x] 5.3. Implement `POST /vacancies`.
+  - [x] 5.4. Implement `PUT /vacancies/{id}`.
+  - [x] 5.5. Implement `DELETE /vacancies/{id}`.
+- [x] 6. Implement vacancy frontend pages.
+  - [x] 6.1. Create Vacancy List page.
+  - [x] 6.2. Create Create Vacancy page.
+  - [x] 6.3. Create Edit Vacancy page.
+- [x] 7. Implement vacancy frontend components.
+  - [x] 7.1. Create Vacancy Table.
+  - [x] 7.2. Create Vacancy Form.
+- [x] 8. Integrate vacancy frontend with backend APIs.
+  - [x] 8.1. Fetch vacancy list.
+  - [x] 8.2. Fetch vacancy detail for editing.
+  - [x] 8.3. Submit vacancy create form.
+  - [x] 8.4. Submit vacancy edit form.
+  - [x] 8.5. Execute vacancy delete action.
+  - [x] 8.6. Surface validation and API errors.
+- [x] 9. Complete Phase 3 implementation readiness.
+  - [x] 9.1. Ensure Vacancy CRUD is implemented end to end.
+  - [x] 9.2. Ensure vacancy validation is implemented.
+  - [x] 9.3. Ensure vacancy status updates are implemented.
+  - [x] 9.4. Commit Phase 3 as `feat: phase 3 vacancy management`.
 
 ## Phase 4 - Recruitment Core
 

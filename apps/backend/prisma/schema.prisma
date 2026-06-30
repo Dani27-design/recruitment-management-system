@@ -12,6 +12,11 @@ enum Role {
   MANAGER
 }
 
+enum VacancyStatus {
+  ACTIVE
+  INACTIVE
+}
+
 model User {
   id            String   @id @default(uuid())
   email         String   @unique
@@ -32,4 +37,16 @@ model Candidate {
   updated_at   DateTime @updatedAt
 
   @@map("candidates")
+}
+
+model Vacancy {
+  id            String        @id @default(uuid())
+  position_name String
+  department    String
+  hiring_needed Int
+  status        VacancyStatus
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @updatedAt
+
+  @@map("vacancies")
 }

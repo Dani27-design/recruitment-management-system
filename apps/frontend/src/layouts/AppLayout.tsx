@@ -18,6 +18,9 @@ export function AppLayout({ children }: PropsWithChildren) {
               <Link className="hover:text-slate-950" to="/candidates">
                 Candidates
               </Link>
+              <Link className="hover:text-slate-950" to="/vacancies">
+                Vacancies
+              </Link>
             </nav>
           </div>
           <button

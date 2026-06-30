@@ -5,8 +5,11 @@ import { CandidateDetailPage } from './pages/CandidateDetailPage';
 import { CandidateListPage } from './pages/CandidateListPage';
 import { CreateCandidatePage } from './pages/CreateCandidatePage';
 import { EditCandidatePage } from './pages/EditCandidatePage';
+import { CreateVacancyPage } from './pages/CreateVacancyPage';
+import { EditVacancyPage } from './pages/EditVacancyPage';
 import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
+import { VacancyListPage } from './pages/VacancyListPage';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 
 const queryClient = new QueryClient();
@@ -24,6 +27,9 @@ export function App() {
               <Route path="/candidates/new" element={<CreateCandidatePage />} />
               <Route path="/candidates/:id" element={<CandidateDetailPage />} />
               <Route path="/candidates/:id/edit" element={<EditCandidatePage />} />
+              <Route path="/vacancies" element={<VacancyListPage />} />
+              <Route path="/vacancies/new" element={<CreateVacancyPage />} />
+              <Route path="/vacancies/:id/edit" element={<EditVacancyPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

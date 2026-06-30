@@ -65,4 +65,36 @@ describe('createApp', () => {
       message: 'Forbidden',
     });
   });
+
+  it('protects vacancy routes with JWT authentication', async () => {
+    const app = createApp();
+
+    const response = await request(app).get('/vacancies').send();
+
+    expect(response.status).toBe(401);
+    expect(response.body).toEqual({
+      success: false,
+      message: 'Missing access token',
+    });
+  });
+
+  it('blocks managers from managing vacancies', async () => {
+    const app = createApp();
+    const managerToken = signAccessToken({
+      id: 'manager-1',
+      email: 'manager@rms.local',
+      role: 'MANAGER',
+    });
+
+    const response = await request(app)
+      .post('/vacancies')
+      .set('Authorization', `Bearer ${managerToken}`)
+      .send({});
+
+    expect(response.status).toBe(403);
+    expect(response.body).toEqual({
+      success: false,
+      message: 'Forbidden',
+    });
+  });
 });
