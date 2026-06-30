@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('../features/auth/AuthProvider', () => ({
@@ -12,12 +13,15 @@ describe('AppLayout', () => {
     const { AppLayout } = await import('./AppLayout');
 
     render(
-      <AppLayout>
-        <p>Protected content</p>
-      </AppLayout>,
+      <MemoryRouter>
+        <AppLayout>
+          <p>Protected content</p>
+        </AppLayout>
+      </MemoryRouter>,
     );
 
     expect(screen.getByText('Recruitment Management System')).toBeInTheDocument();
+    expect(screen.getByText('Candidates')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Logout' })).toBeInTheDocument();
     expect(screen.getByText('Protected content')).toBeInTheDocument();
   });

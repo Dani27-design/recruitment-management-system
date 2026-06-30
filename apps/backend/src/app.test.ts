@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { describe, expect, it, vi } from 'vitest';
 import { createApp } from './app';
+import { signAccessToken } from './utils/jwt';
 
 vi.mock('./repositories/user.repository', () => ({
   UserRepository: vi.fn().mockImplementation(() => ({
@@ -30,6 +31,38 @@ describe('createApp', () => {
     expect(response.body).toEqual({
       success: false,
       message: 'Missing access token',
+    });
+  });
+
+  it('protects candidate routes with JWT authentication', async () => {
+    const app = createApp();
+
+    const response = await request(app).get('/candidates').send();
+
+    expect(response.status).toBe(401);
+    expect(response.body).toEqual({
+      success: false,
+      message: 'Missing access token',
+    });
+  });
+
+  it('blocks managers from managing candidates', async () => {
+    const app = createApp();
+    const managerToken = signAccessToken({
+      id: 'manager-1',
+      email: 'manager@rms.local',
+      role: 'MANAGER',
+    });
+
+    const response = await request(app)
+      .post('/candidates')
+      .set('Authorization', `Bearer ${managerToken}`)
+      .send({});
+
+    expect(response.status).toBe(403);
+    expect(response.body).toEqual({
+      success: false,
+      message: 'Forbidden',
     });
   });
 });

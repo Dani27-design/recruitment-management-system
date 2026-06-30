@@ -169,66 +169,66 @@ These are implementation standards, not standalone tasks. Apply them across ever
   - [x] 15.3. Ensure JWT tokens are generated.
   - [x] 15.4. Ensure protected routes require authentication.
   - [x] 15.5. Ensure logout clears authenticated access.
-  - [x] 15.6. Commit Phase 1 as `phase-1-project-foundation`.
+  - [x] 15.6. Commit Phase 1 as `feat: phase-1-project-foundation`.
 
 ## Phase 2 - Candidate Management
 
-- [ ] 1. Implement Candidate database model.
-  - [ ] 1.1. Add `id`.
-  - [ ] 1.2. Add `full_name`.
-  - [ ] 1.3. Add `email`.
-  - [ ] 1.4. Add `phone_number`.
-  - [ ] 1.5. Add `created_at`.
-  - [ ] 1.6. Add `updated_at`.
-  - [ ] 1.7. Model one Candidate to many Recruitments.
-  - [ ] 1.8. Generate Candidate migration.
-- [ ] 2. Implement candidate repository.
-  - [ ] 2.1. Implement create candidate.
-  - [ ] 2.2. Implement update candidate.
-  - [ ] 2.3. Implement delete candidate.
-  - [ ] 2.4. Implement get candidate.
-  - [ ] 2.5. Implement list candidates.
-  - [ ] 2.6. Implement search candidates.
-- [ ] 3. Implement candidate service.
-  - [ ] 3.1. Enforce email uniqueness.
-  - [ ] 3.2. Enforce phone validation.
-  - [ ] 3.3. Keep candidate business rules in the service layer.
-- [ ] 4. Implement candidate validation.
-  - [ ] 4.1. Create `CandidateCreateSchema`.
-  - [ ] 4.2. Create `CandidateUpdateSchema`.
-  - [ ] 4.3. Validate candidate create requests.
-  - [ ] 4.4. Validate candidate update requests.
-  - [ ] 4.5. Validate candidate search input.
-- [ ] 5. Implement candidate controllers and routes.
-  - [ ] 5.1. Implement `GET /candidates`.
-  - [ ] 5.2. Implement `GET /candidates/{id}`.
-  - [ ] 5.3. Implement `POST /candidates`.
-  - [ ] 5.4. Implement `PUT /candidates/{id}`.
-  - [ ] 5.5. Implement `DELETE /candidates/{id}`.
-  - [ ] 5.6. Implement candidate search support.
-- [ ] 6. Implement candidate frontend pages.
-  - [ ] 6.1. Create Candidate List page.
-  - [ ] 6.2. Create Candidate Detail page.
-  - [ ] 6.3. Create Create Candidate page.
-  - [ ] 6.4. Create Edit Candidate page.
-- [ ] 7. Implement candidate frontend components.
-  - [ ] 7.1. Create Candidate Table.
-  - [ ] 7.2. Create Candidate Form.
-  - [ ] 7.3. Create Search Bar.
-  - [ ] 7.4. Create Delete Confirmation Dialog.
-- [ ] 8. Integrate candidate frontend with backend APIs.
-  - [ ] 8.1. Fetch candidate list.
-  - [ ] 8.2. Fetch candidate detail.
-  - [ ] 8.3. Submit candidate create form.
-  - [ ] 8.4. Submit candidate edit form.
-  - [ ] 8.5. Execute candidate delete action.
-  - [ ] 8.6. Execute candidate search.
-  - [ ] 8.7. Surface validation and API errors.
-- [ ] 9. Complete Phase 2 implementation readiness.
-  - [ ] 9.1. Ensure Candidate CRUD is implemented end to end.
-  - [ ] 9.2. Ensure candidate search is implemented end to end.
-  - [ ] 9.3. Ensure candidate validation and error handling are implemented.
-  - [ ] 9.4. Commit Phase 2 as `phase-2-candidate-management`.
+- [x] 1. Implement Candidate database model.
+  - [x] 1.1. Add `id`.
+  - [x] 1.2. Add `full_name`.
+  - [x] 1.3. Add `email`.
+  - [x] 1.4. Add `phone_number`.
+  - [x] 1.5. Add `created_at`.
+  - [x] 1.6. Add `updated_at`.
+  - [x] 1.7. Defer the Candidate relationship to Recruitments until the Recruitment model is introduced in Phase 4.
+  - [x] 1.8. Generate Candidate migration.
+- [x] 2. Implement candidate repository.
+  - [x] 2.1. Implement create candidate.
+  - [x] 2.2. Implement update candidate.
+  - [x] 2.3. Implement delete candidate.
+  - [x] 2.4. Implement get candidate.
+  - [x] 2.5. Implement list candidates.
+  - [x] 2.6. Implement search candidates.
+- [x] 3. Implement candidate service.
+  - [x] 3.1. Enforce email uniqueness.
+  - [x] 3.2. Enforce phone validation.
+  - [x] 3.3. Keep candidate business rules in the service layer.
+- [x] 4. Implement candidate validation.
+  - [x] 4.1. Create `CandidateCreateSchema`.
+  - [x] 4.2. Create `CandidateUpdateSchema`.
+  - [x] 4.3. Validate candidate create requests.
+  - [x] 4.4. Validate candidate update requests.
+  - [x] 4.5. Validate candidate search input.
+- [x] 5. Implement candidate controllers and routes.
+  - [x] 5.1. Implement `GET /candidates`.
+  - [x] 5.2. Implement `GET /candidates/{id}`.
+  - [x] 5.3. Implement `POST /candidates`.
+  - [x] 5.4. Implement `PUT /candidates/{id}`.
+  - [x] 5.5. Implement `DELETE /candidates/{id}`.
+  - [x] 5.6. Implement candidate search support.
+- [x] 6. Implement candidate frontend pages.
+  - [x] 6.1. Create Candidate List page.
+  - [x] 6.2. Create Candidate Detail page.
+  - [x] 6.3. Create Create Candidate page.
+  - [x] 6.4. Create Edit Candidate page.
+- [x] 7. Implement candidate frontend components.
+  - [x] 7.1. Create Candidate Table.
+  - [x] 7.2. Create Candidate Form.
+  - [x] 7.3. Create Search Bar.
+  - [x] 7.4. Create Delete Confirmation Dialog.
+- [x] 8. Integrate candidate frontend with backend APIs.
+  - [x] 8.1. Fetch candidate list.
+  - [x] 8.2. Fetch candidate detail.
+  - [x] 8.3. Submit candidate create form.
+  - [x] 8.4. Submit candidate edit form.
+  - [x] 8.5. Execute candidate delete action.
+  - [x] 8.6. Execute candidate search.
+  - [x] 8.7. Surface validation and API errors.
+- [x] 9. Complete Phase 2 implementation readiness.
+  - [x] 9.1. Ensure Candidate CRUD is implemented end to end.
+  - [x] 9.2. Ensure candidate search is implemented end to end.
+  - [x] 9.3. Ensure candidate validation and error handling are implemented.
+  - [x] 9.4. Commit Phase 2 as `feat: phase 2 candidate management`.
 
 ## Phase 3 - Vacancy Management
 

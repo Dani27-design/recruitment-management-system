@@ -22,3 +22,14 @@ model User {
 
   @@map("users")
 }
+
+model Candidate {
+  id           String   @id @default(uuid())
+  full_name    String
+  email        String   @unique
+  phone_number String
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  @@map("candidates")
+}
