@@ -57,119 +57,119 @@ These are implementation standards, not standalone tasks. Apply them across ever
 
 ## Phase 1 - Project Foundation and Authentication
 
-- [ ] 1. Initialize the root project.
-  - [ ] 1.1. Create root `package.json`.
-  - [ ] 1.2. Configure npm Workspaces for frontend and backend apps.
-  - [ ] 1.3. Add root scripts required to run, build, and manage workspace apps.
-  - [ ] 1.4. Add project `.gitignore`.
-- [ ] 2. Initialize the backend project.
-  - [ ] 2.1. Create `apps/backend`.
-  - [ ] 2.2. Configure TypeScript.
-  - [ ] 2.3. Configure Express.js.
-  - [ ] 2.4. Configure ESLint.
-  - [ ] 2.5. Configure Prettier.
-  - [ ] 2.6. Configure environment variable loading.
-  - [ ] 2.7. Create the backend application entry point.
-  - [ ] 2.8. Create the backend server bootstrap.
-- [ ] 3. Install backend dependencies.
-  - [ ] 3.1. Install Express.
-  - [ ] 3.2. Install Prisma.
-  - [ ] 3.3. Install PostgreSQL driver.
-  - [ ] 3.4. Install Zod.
-  - [ ] 3.5. Install JWT dependency.
-  - [ ] 3.6. Install bcrypt dependency.
-  - [ ] 3.7. Install Multer.
-  - [ ] 3.8. Install dotenv.
-  - [ ] 3.9. Install CORS.
-  - [ ] 3.10. Install Morgan.
-  - [ ] 3.11. Install Supabase SDK.
-- [ ] 4. Create backend source structure.
-  - [ ] 4.1. Create `src/config`.
-  - [ ] 4.2. Create `src/constants`.
-  - [ ] 4.3. Create `src/controllers`.
-  - [ ] 4.4. Create `src/middlewares`.
-  - [ ] 4.5. Create `src/repositories`.
-  - [ ] 4.6. Create `src/routes`.
-  - [ ] 4.7. Create `src/services`.
-  - [ ] 4.8. Create `src/validations`.
-  - [ ] 4.9. Create `src/utils`.
-  - [ ] 4.10. Create `src/types`.
-  - [ ] 4.11. Create `src/prisma`.
-  - [ ] 4.12. Create `src/app.ts`.
-  - [ ] 4.13. Create `src/server.ts`.
-- [ ] 5. Configure Prisma.
-  - [ ] 5.1. Initialize Prisma in the backend app.
-  - [ ] 5.2. Configure PostgreSQL connection through environment variables.
-  - [ ] 5.3. Add Prisma client generation.
-  - [ ] 5.4. Add migration scripts.
-- [ ] 6. Implement the User model.
-  - [ ] 6.1. Add `id`.
-  - [ ] 6.2. Add `email`.
-  - [ ] 6.3. Add `password_hash`.
-  - [ ] 6.4. Add `role`.
-  - [ ] 6.5. Add `created_at`.
-  - [ ] 6.6. Add `updated_at`.
-  - [ ] 6.7. Model the User relationship to created recruitments.
-  - [ ] 6.8. Model the User relationship to assigned recruitment stages.
-  - [ ] 6.9. Model the User relationship to uploaded recruitment documents.
-  - [ ] 6.10. Model the User relationship to audit logs.
-- [ ] 7. Create the initial database migration.
-- [ ] 8. Create the seed script.
-  - [ ] 8.1. Seed one Administrator account.
-  - [ ] 8.2. Seed one Manager account.
-  - [ ] 8.3. Hash seeded passwords with bcrypt.
-- [ ] 9. Implement authentication backend.
-  - [ ] 9.1. Implement password hashing with bcrypt.
-  - [ ] 9.2. Implement password verification with bcrypt.
-  - [ ] 9.3. Implement JWT access token generation.
-  - [ ] 9.4. Implement login service.
-  - [ ] 9.5. Implement login controller.
-  - [ ] 9.6. Register `POST /auth/login`.
-  - [ ] 9.7. Register `POST /auth/logout`.
-  - [ ] 9.8. Implement authentication middleware for protected API access.
-  - [ ] 9.9. Implement authorization middleware for role checks.
-- [ ] 10. Implement backend error and response utilities.
-  - [ ] 10.1. Implement global error handler.
-  - [ ] 10.2. Implement API response formatter.
-  - [ ] 10.3. Implement API error response formatter.
-  - [ ] 10.4. Implement exception classes.
-- [ ] 11. Initialize the frontend project.
-  - [ ] 11.1. Create `apps/frontend`.
-  - [ ] 11.2. Create React application using Vite.
-  - [ ] 11.3. Configure TypeScript.
-  - [ ] 11.4. Configure Tailwind CSS.
-- [ ] 12. Install frontend dependencies.
-  - [ ] 12.1. Install React Router.
-  - [ ] 12.2. Install React Query.
-  - [ ] 12.3. Install Axios.
-  - [ ] 12.4. Install React Hook Form.
-  - [ ] 12.5. Install Tailwind CSS.
-- [ ] 13. Create frontend source structure.
-  - [ ] 13.1. Create `src/api`.
-  - [ ] 13.2. Create `src/assets`.
-  - [ ] 13.3. Create `src/components`.
-  - [ ] 13.4. Create `src/features`.
-  - [ ] 13.5. Create `src/hooks`.
-  - [ ] 13.6. Create `src/layouts`.
-  - [ ] 13.7. Create `src/pages`.
-  - [ ] 13.8. Create `src/routes`.
-  - [ ] 13.9. Create `src/services`.
-  - [ ] 13.10. Create `src/types`.
-  - [ ] 13.11. Create `src/utils`.
-- [ ] 14. Implement frontend authentication.
-  - [ ] 14.1. Create login page.
-  - [ ] 14.2. Create authentication provider.
-  - [ ] 14.3. Implement protected routes.
-  - [ ] 14.4. Implement logout behavior.
-  - [ ] 14.5. Configure Axios interceptor.
-  - [ ] 14.6. Implement token persistence.
-- [ ] 15. Complete Phase 1 implementation readiness.
-  - [ ] 15.1. Ensure login succeeds with seeded users.
-  - [ ] 15.2. Ensure invalid credentials are rejected.
-  - [ ] 15.3. Ensure JWT tokens are generated.
-  - [ ] 15.4. Ensure protected routes require authentication.
-  - [ ] 15.5. Ensure logout clears authenticated access.
-  - [ ] 15.6. Commit Phase 1 as `phase-1-project-foundation`.
+- [x] 1. Initialize the root project.
+  - [x] 1.1. Create root `package.json`.
+  - [x] 1.2. Configure npm Workspaces for frontend and backend apps.
+  - [x] 1.3. Add root scripts required to run, build, and manage workspace apps.
+  - [x] 1.4. Add project `.gitignore`.
+- [x] 2. Initialize the backend project.
+  - [x] 2.1. Create `apps/backend`.
+  - [x] 2.2. Configure TypeScript.
+  - [x] 2.3. Configure Express.js.
+  - [x] 2.4. Configure ESLint.
+  - [x] 2.5. Configure Prettier.
+  - [x] 2.6. Configure environment variable loading.
+  - [x] 2.7. Create the backend application entry point.
+  - [x] 2.8. Create the backend server bootstrap.
+- [x] 3. Install backend dependencies.
+  - [x] 3.1. Install Express.
+  - [x] 3.2. Install Prisma.
+  - [x] 3.3. Install PostgreSQL driver.
+  - [x] 3.4. Install Zod.
+  - [x] 3.5. Install JWT dependency.
+  - [x] 3.6. Install bcrypt dependency.
+  - [x] 3.7. Install Multer.
+  - [x] 3.8. Install dotenv.
+  - [x] 3.9. Install CORS.
+  - [x] 3.10. Install Morgan.
+  - [x] 3.11. Install Supabase SDK.
+- [x] 4. Create backend source structure.
+  - [x] 4.1. Create `src/config`.
+  - [x] 4.2. Create `src/constants`.
+  - [x] 4.3. Create `src/controllers`.
+  - [x] 4.4. Create `src/middlewares`.
+  - [x] 4.5. Create `src/repositories`.
+  - [x] 4.6. Create `src/routes`.
+  - [x] 4.7. Create `src/services`.
+  - [x] 4.8. Create `src/validations`.
+  - [x] 4.9. Create `src/utils`.
+  - [x] 4.10. Create `src/types`.
+  - [x] 4.11. Create `src/prisma`.
+  - [x] 4.12. Create `src/app.ts`.
+  - [x] 4.13. Create `src/server.ts`.
+- [x] 5. Configure Prisma.
+  - [x] 5.1. Initialize Prisma in the backend app.
+  - [x] 5.2. Configure PostgreSQL connection through environment variables.
+  - [x] 5.3. Add Prisma client generation.
+  - [x] 5.4. Add migration scripts.
+- [x] 6. Implement the User model.
+  - [x] 6.1. Add `id`.
+  - [x] 6.2. Add `email`.
+  - [x] 6.3. Add `password_hash`.
+  - [x] 6.4. Add `role`.
+  - [x] 6.5. Add `created_at`.
+  - [x] 6.6. Add `updated_at`.
+  - [x] 6.7. Defer the User relationship to created recruitments until the Recruitment model is introduced in Phase 4.
+  - [x] 6.8. Defer the User relationship to assigned recruitment stages until the RecruitmentStage model is introduced in Phase 5.
+  - [x] 6.9. Defer the User relationship to uploaded recruitment documents until the RecruitmentDocument model is introduced in Phase 7.
+  - [x] 6.10. Defer the User relationship to audit logs until the AuditLog model is introduced in Phase 9.
+- [x] 7. Create the initial database migration.
+- [x] 8. Create the seed script.
+  - [x] 8.1. Seed one Administrator account.
+  - [x] 8.2. Seed one Manager account.
+  - [x] 8.3. Hash seeded passwords with bcrypt.
+- [x] 9. Implement authentication backend.
+  - [x] 9.1. Implement password hashing with bcrypt.
+  - [x] 9.2. Implement password verification with bcrypt.
+  - [x] 9.3. Implement JWT access token generation.
+  - [x] 9.4. Implement login service.
+  - [x] 9.5. Implement login controller.
+  - [x] 9.6. Register `POST /auth/login`.
+  - [x] 9.7. Register `POST /auth/logout`.
+  - [x] 9.8. Implement authentication middleware for protected API access.
+  - [x] 9.9. Implement authorization middleware for role checks.
+- [x] 10. Implement backend error and response utilities.
+  - [x] 10.1. Implement global error handler.
+  - [x] 10.2. Implement API response formatter.
+  - [x] 10.3. Implement API error response formatter.
+  - [x] 10.4. Implement exception classes.
+- [x] 11. Initialize the frontend project.
+  - [x] 11.1. Create `apps/frontend`.
+  - [x] 11.2. Create React application using Vite.
+  - [x] 11.3. Configure TypeScript.
+  - [x] 11.4. Configure Tailwind CSS.
+- [x] 12. Install frontend dependencies.
+  - [x] 12.1. Install React Router.
+  - [x] 12.2. Install React Query.
+  - [x] 12.3. Install Axios.
+  - [x] 12.4. Install React Hook Form.
+  - [x] 12.5. Install Tailwind CSS.
+- [x] 13. Create frontend source structure.
+  - [x] 13.1. Create `src/api`.
+  - [x] 13.2. Create `src/assets`.
+  - [x] 13.3. Create `src/components`.
+  - [x] 13.4. Create `src/features`.
+  - [x] 13.5. Create `src/hooks`.
+  - [x] 13.6. Create `src/layouts`.
+  - [x] 13.7. Create `src/pages`.
+  - [x] 13.8. Create `src/routes`.
+  - [x] 13.9. Create `src/services`.
+  - [x] 13.10. Create `src/types`.
+  - [x] 13.11. Create `src/utils`.
+- [x] 14. Implement frontend authentication.
+  - [x] 14.1. Create login page.
+  - [x] 14.2. Create authentication provider.
+  - [x] 14.3. Implement protected routes.
+  - [x] 14.4. Implement logout behavior.
+  - [x] 14.5. Configure Axios interceptor.
+  - [x] 14.6. Implement token persistence.
+- [x] 15. Complete Phase 1 implementation readiness.
+  - [x] 15.1. Ensure login succeeds with seeded users.
+  - [x] 15.2. Ensure invalid credentials are rejected.
+  - [x] 15.3. Ensure JWT tokens are generated.
+  - [x] 15.4. Ensure protected routes require authentication.
+  - [x] 15.5. Ensure logout clears authenticated access.
+  - [x] 15.6. Commit Phase 1 as `phase-1-project-foundation`.
 
 ## Phase 2 - Candidate Management
 
