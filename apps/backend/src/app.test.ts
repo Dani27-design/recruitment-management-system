@@ -144,6 +144,36 @@ describe('createApp', () => {
     });
   });
 
+  it('protects recruitment document routes with JWT authentication', async () => {
+    const app = createApp();
+
+    const listResponse = await request(app).get('/recruitments/invalid/documents').send();
+    const downloadResponse = await request(app).get('/documents/invalid/download').send();
+
+    expect(listResponse.status).toBe(401);
+    expect(downloadResponse.status).toBe(401);
+  });
+
+  it('blocks managers from deleting recruitment documents', async () => {
+    const app = createApp();
+    const managerToken = signAccessToken({
+      id: 'manager-1',
+      email: 'manager@rms.local',
+      role: 'MANAGER',
+    });
+
+    const response = await request(app)
+      .delete('/documents/11111111-1111-4111-8111-111111111111')
+      .set('Authorization', `Bearer ${managerToken}`)
+      .send();
+
+    expect(response.status).toBe(403);
+    expect(response.body).toEqual({
+      success: false,
+      message: 'Forbidden',
+    });
+  });
+
   it('blocks managers from stage assignment', async () => {
     const app = createApp();
     const managerToken = signAccessToken({

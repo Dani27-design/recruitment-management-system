@@ -452,74 +452,74 @@ These are implementation standards, not standalone tasks. Apply them across ever
 
 ## Phase 7 - Recruitment Documents
 
-- [ ] 1. Implement RecruitmentDocument database model.
-  - [ ] 1.1. Add `id`.
-  - [ ] 1.2. Add `recruitment_id`.
-  - [ ] 1.3. Add `document_type`.
-  - [ ] 1.4. Add `original_filename`.
-  - [ ] 1.5. Add `stored_filename`.
-  - [ ] 1.6. Add `mime_type`.
-  - [ ] 1.7. Add `file_size`.
-  - [ ] 1.8. Add `storage_provider`.
-  - [ ] 1.9. Add `storage_path`.
-  - [ ] 1.10. Add `uploaded_by`.
-  - [ ] 1.11. Add `created_at`.
-  - [ ] 1.12. Add `updated_at`.
-  - [ ] 1.13. Model RecruitmentDocument belongs to Recruitment.
-  - [ ] 1.14. Model RecruitmentDocument uploaded by User.
-  - [ ] 1.15. Generate RecruitmentDocument migration.
-- [ ] 2. Configure Supabase Storage infrastructure.
-  - [ ] 2.1. Configure Supabase Storage client.
-  - [ ] 2.2. Configure required storage environment variables.
-  - [ ] 2.3. Create storage bucket.
-  - [ ] 2.4. Configure backend access to the storage bucket.
-- [ ] 3. Implement recruitment document repository.
-  - [ ] 3.1. Implement save document metadata.
-  - [ ] 3.2. Implement list documents.
-  - [ ] 3.3. Implement delete document metadata.
-- [ ] 4. Implement recruitment document service.
-  - [ ] 4.1. Implement document upload.
-  - [ ] 4.2. Implement document download.
-  - [ ] 4.3. Implement document delete.
-  - [ ] 4.4. Store files in Supabase Storage.
-  - [ ] 4.5. Store only document metadata in PostgreSQL.
-  - [ ] 4.6. Allow multiple documents per recruitment.
-  - [ ] 4.7. Allow multiple documents of the same type per recruitment.
-  - [ ] 4.8. Reject unsupported document types.
-  - [ ] 4.9. Reject unsupported file types.
-  - [ ] 4.10. Validate MIME type.
-  - [ ] 4.11. Validate file size.
-  - [ ] 4.12. Ensure invalid uploads do not create database records.
-  - [ ] 4.13. Ensure storage consistency between Supabase Storage and PostgreSQL metadata.
-- [ ] 5. Implement recruitment document validation.
-  - [ ] 5.1. Validate `CV` document type.
-  - [ ] 5.2. Validate `PORTFOLIO` document type.
-  - [ ] 5.3. Validate upload request input.
-  - [ ] 5.4. Validate document identifiers.
-- [ ] 6. Implement recruitment document controllers and routes.
-  - [ ] 6.1. Implement `GET /recruitments/{id}/documents`.
-  - [ ] 6.2. Implement `POST /recruitments/{id}/documents`.
-  - [ ] 6.3. Implement `DELETE /documents/{id}`.
-  - [ ] 6.4. Implement download behavior for recruitment documents.
-- [ ] 7. Implement recruitment document frontend.
-  - [ ] 7.1. Create Recruitment Documents page or section.
-  - [ ] 7.2. Create Upload Dialog component.
-  - [ ] 7.3. Create Document Table component.
-  - [ ] 7.4. Create Download Button component.
-  - [ ] 7.5. Create Delete Button component.
-- [ ] 8. Integrate recruitment document frontend with backend APIs.
-  - [ ] 8.1. Fetch documents for a recruitment.
-  - [ ] 8.2. Upload a document for a recruitment.
-  - [ ] 8.3. Download a recruitment document.
-  - [ ] 8.4. Delete a recruitment document.
-  - [ ] 8.5. Surface upload, download, delete, validation, and API errors.
-- [ ] 9. Complete Phase 7 implementation readiness.
-  - [ ] 9.1. Ensure document upload is implemented end to end.
-  - [ ] 9.2. Ensure document download is implemented end to end.
-  - [ ] 9.3. Ensure document delete is implemented end to end.
-  - [ ] 9.4. Ensure invalid files are rejected.
-  - [ ] 9.5. Ensure invalid document types are rejected.
-  - [ ] 9.6. Commit Phase 7 as `phase-7-recruitment-documents`.
+- [x] 1. Implement RecruitmentDocument database model.
+  - [x] 1.1. Add `id`.
+  - [x] 1.2. Add `recruitment_id`.
+  - [x] 1.3. Add `document_type`.
+  - [x] 1.4. Add `original_filename`.
+  - [x] 1.5. Add `stored_filename`.
+  - [x] 1.6. Add `mime_type`.
+  - [x] 1.7. Add `file_size`.
+  - [x] 1.8. Add `storage_provider`.
+  - [x] 1.9. Add `storage_path`.
+  - [x] 1.10. Add `uploaded_by`.
+  - [x] 1.11. Add `created_at`.
+  - [x] 1.12. Add `updated_at`.
+  - [x] 1.13. Model RecruitmentDocument belongs to Recruitment.
+  - [x] 1.14. Model RecruitmentDocument uploaded by User.
+  - [x] 1.15. Generate RecruitmentDocument migration.
+- [x] 2. Configure Supabase Storage infrastructure.
+  - [x] 2.1. Configure Supabase Storage client.
+  - [x] 2.2. Configure required storage environment variables.
+  - [x] 2.3. Create storage bucket helper.
+  - [x] 2.4. Configure backend access to the storage bucket.
+- [x] 3. Implement recruitment document repository.
+  - [x] 3.1. Implement save document metadata.
+  - [x] 3.2. Implement list documents.
+  - [x] 3.3. Implement soft delete document metadata.
+- [x] 4. Implement recruitment document service.
+  - [x] 4.1. Implement document upload.
+  - [x] 4.2. Implement document download.
+  - [x] 4.3. Implement document soft delete.
+  - [x] 4.4. Store files in Supabase Storage.
+  - [x] 4.5. Store only document metadata in PostgreSQL.
+  - [x] 4.6. Allow multiple documents per recruitment.
+  - [x] 4.7. Allow multiple documents of the same type per recruitment.
+  - [x] 4.8. Reject unsupported document types.
+  - [x] 4.9. Reject unsupported file types.
+  - [x] 4.10. Validate MIME type.
+  - [x] 4.11. Validate file size.
+  - [x] 4.12. Ensure invalid uploads do not create database records.
+  - [x] 4.13. Ensure storage consistency between Supabase Storage and PostgreSQL metadata.
+- [x] 5. Implement recruitment document validation.
+  - [x] 5.1. Validate `CV` document type.
+  - [x] 5.2. Validate `PORTFOLIO` document type.
+  - [x] 5.3. Validate upload request input.
+  - [x] 5.4. Validate document identifiers.
+- [x] 6. Implement recruitment document controllers and routes.
+  - [x] 6.1. Implement `GET /recruitments/{id}/documents`.
+  - [x] 6.2. Implement `POST /recruitments/{id}/documents`.
+  - [x] 6.3. Implement `DELETE /documents/{id}` as soft delete.
+  - [x] 6.4. Implement download behavior for recruitment documents.
+- [x] 7. Implement recruitment document frontend.
+  - [x] 7.1. Create Recruitment Documents page or section.
+  - [x] 7.2. Create Upload Dialog component.
+  - [x] 7.3. Create Document Table component.
+  - [x] 7.4. Create Download Button component.
+  - [x] 7.5. Create Delete Button component.
+- [x] 8. Integrate recruitment document frontend with backend APIs.
+  - [x] 8.1. Fetch documents for a recruitment.
+  - [x] 8.2. Upload a document for a recruitment.
+  - [x] 8.3. Download a recruitment document.
+  - [x] 8.4. Soft delete a recruitment document.
+  - [x] 8.5. Surface upload, download, soft delete, validation, and API errors.
+- [x] 9. Complete Phase 7 implementation readiness.
+  - [x] 9.1. Ensure document upload is implemented end to end.
+  - [x] 9.2. Ensure document download is implemented end to end.
+  - [x] 9.3. Ensure document soft delete is implemented end to end.
+  - [x] 9.4. Ensure invalid files are rejected.
+  - [x] 9.5. Ensure invalid document types are rejected.
+  - [x] 9.6. Commit Phase 7 as `feat: phase 7 recruitment documents`.
 
 ## Phase 8 - Dashboard
 

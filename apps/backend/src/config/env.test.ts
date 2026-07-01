@@ -11,6 +11,7 @@ describe('parseEnv', () => {
     expect(parsed.PORT).toBe(4000);
     expect(parsed.NODE_ENV).toBe('development');
     expect(parsed.FRONTEND_URL).toBe('http://localhost:5173');
+    expect(parsed.STORAGE_BUCKET_NAME).toBe('database');
   });
 
   it('rejects missing required environment variables', () => {

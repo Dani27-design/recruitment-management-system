@@ -1,8 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, useParams } from 'react-router-dom';
 import { useAuth } from '../features/auth/AuthProvider';
+import { DocumentTable } from '../features/recruitments/components/DocumentTable';
 import { RecruitmentTimeline } from '../features/recruitments/components/RecruitmentTimeline';
+import { UploadDialog } from '../features/recruitments/components/UploadDialog';
 import { AppLayout } from '../layouts/AppLayout';
+import {
+  createRecruitmentDocumentDownloadUrl,
+  deleteRecruitmentDocument,
+  listRecruitmentDocuments,
+  uploadRecruitmentDocument,
+} from '../services/recruitment-document-service';
 import { getRecruitment } from '../services/recruitment-service';
 import {
   assignRecruitmentStageManager,
@@ -10,6 +18,7 @@ import {
   updateRecruitmentStage,
 } from '../services/recruitment-stage-service';
 import { listManagers } from '../services/user-service';
+import type { RecruitmentDocumentUploadInput } from '../types/recruitment-document';
 import type { RecruitmentStageUpdateInput } from '../types/recruitment';
 
 interface StageMutationInput {
@@ -29,6 +38,11 @@ export function RecruitmentDetailPage() {
   const stagesQuery = useQuery({
     queryKey: ['recruitment-stages', id],
     queryFn: () => listRecruitmentStages(id!),
+    enabled: Boolean(id),
+  });
+  const documentsQuery = useQuery({
+    queryKey: ['recruitment-documents', id],
+    queryFn: () => listRecruitmentDocuments(id!),
     enabled: Boolean(id),
   });
   const managersQuery = useQuery({
@@ -51,6 +65,26 @@ export function RecruitmentDetailPage() {
       queryClient.invalidateQueries({ queryKey: ['recruitment-stages', id] });
     },
   });
+  const uploadDocumentMutation = useMutation({
+    mutationFn: (input: RecruitmentDocumentUploadInput) => uploadRecruitmentDocument(id!, input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['recruitment-documents', id] });
+    },
+  });
+  const downloadDocumentMutation = useMutation({
+    mutationFn: (documentId: string) => createRecruitmentDocumentDownloadUrl(documentId),
+    onSuccess: (url) => {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    },
+  });
+  const deleteDocumentMutation = useMutation({
+    mutationFn: (documentId: string) => deleteRecruitmentDocument(documentId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['recruitment-documents', id] });
+    },
+  });
+  const canUploadDocuments = user?.role === 'ADMINISTRATOR' || user?.role === 'MANAGER';
+  const canDeleteDocuments = user?.role === 'ADMINISTRATOR';
 
   return (
     <AppLayout>
@@ -98,6 +132,36 @@ export function RecruitmentDetailPage() {
               onUpdate={(stageId, input) => updateStageMutation.mutate({ stageId, input })}
             />
           ) : null}
+          <section className="mt-8">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <h3 className="text-xl font-semibold text-slate-950">Recruitment Documents</h3>
+            </div>
+            {canUploadDocuments ? (
+              <UploadDialog
+                disabled={uploadDocumentMutation.isPending}
+                onUpload={(input) => uploadDocumentMutation.mutate(input)}
+              />
+            ) : null}
+            {documentsQuery.isLoading ? (
+              <p className="mt-4 text-slate-600">Loading documents...</p>
+            ) : null}
+            {documentsQuery.isError ||
+            uploadDocumentMutation.isError ||
+            downloadDocumentMutation.isError ||
+            deleteDocumentMutation.isError ? (
+              <p className="mt-4 text-red-600">Unable to update recruitment documents.</p>
+            ) : null}
+            {documentsQuery.data ? (
+              <DocumentTable
+                canDelete={canDeleteDocuments}
+                documents={documentsQuery.data}
+                isDeleting={deleteDocumentMutation.isPending}
+                isDownloading={downloadDocumentMutation.isPending}
+                onDelete={(documentId) => deleteDocumentMutation.mutate(documentId)}
+                onDownload={(documentId) => downloadDocumentMutation.mutate(documentId)}
+              />
+            ) : null}
+          </section>
         </section>
       ) : null}
     </AppLayout>

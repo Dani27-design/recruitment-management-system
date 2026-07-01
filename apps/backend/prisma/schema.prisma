@@ -31,6 +31,11 @@ enum RecruitmentStageStatus {
   REJECTED
 }
 
+enum RecruitmentDocumentType {
+  CV
+  PORTFOLIO
+}
+
 model User {
   id            String   @id @default(uuid())
   email         String   @unique
@@ -40,6 +45,7 @@ model User {
   updated_at    DateTime @updatedAt
   recruitments  Recruitment[] @relation("RecruitmentCreator")
   assigned_stages RecruitmentStage[] @relation("StageAssignee")
+  uploaded_documents RecruitmentDocument[] @relation("DocumentUploader")
 
   @@map("users")
 }
@@ -80,6 +86,7 @@ model Recruitment {
   vacancy      Vacancy            @relation(fields: [vacancy_id], references: [id])
   creator      User               @relation("RecruitmentCreator", fields: [created_by], references: [id])
   stages       RecruitmentStage[]
+  documents    RecruitmentDocument[]
 
   @@map("recruitments")
 }
@@ -100,4 +107,24 @@ model RecruitmentStage {
 
   @@unique([recruitment_id, stage])
   @@map("recruitment_stages")
+}
+
+model RecruitmentDocument {
+  id                String                  @id @default(uuid())
+  recruitment_id    String
+  document_type     RecruitmentDocumentType
+  original_filename String
+  stored_filename   String
+  mime_type         String
+  file_size         Int
+  storage_provider  String
+  storage_path      String
+  uploaded_by       String
+  created_at        DateTime                @default(now())
+  updated_at        DateTime                @updatedAt
+  deleted_at        DateTime?
+  recruitment       Recruitment             @relation(fields: [recruitment_id], references: [id])
+  uploader          User                    @relation("DocumentUploader", fields: [uploaded_by], references: [id])
+
+  @@map("recruitment_documents")
 }

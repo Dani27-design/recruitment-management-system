@@ -688,6 +688,8 @@ Stage ownership fully enforced.
 
 # Phase 7 — Recruitment Documents
 
+**Phase Status:** Completed
+
 ## Objective
 
 Implement recruitment document management.
@@ -718,7 +720,7 @@ Implement:
 
 * Save metadata
 * List documents
-* Delete metadata
+* Soft delete metadata
 
 ### Service
 
@@ -726,7 +728,7 @@ Implement:
 
 * Upload
 * Download
-* Delete
+* Soft delete
 
 Business Rules
 
@@ -744,7 +746,7 @@ Implement:
 
 * Upload endpoint
 * Document list endpoint
-* Delete endpoint
+* Soft delete endpoint
 
 ---
 
@@ -767,7 +769,7 @@ Components
 
 * Upload
 * Download
-* Delete
+* Soft delete
 * Invalid file
 * Invalid document type
 

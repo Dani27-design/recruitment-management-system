@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import { env } from './config/env';
 import { authRoutes } from './routes/auth.routes';
 import { candidateRoutes } from './routes/candidate.routes';
+import { recruitmentDocumentRoutes } from './routes/recruitment-document.routes';
 import { recruitmentStageRoutes } from './routes/recruitment-stage.routes';
 import { recruitmentRoutes } from './routes/recruitment.routes';
 import { userRoutes } from './routes/user.routes';
@@ -24,6 +25,7 @@ export function createApp() {
 
   app.use('/auth', authRoutes);
   app.use('/candidates', candidateRoutes);
+  app.use('/documents', recruitmentDocumentRoutes);
   app.use('/recruitments', recruitmentRoutes);
   app.use('/stages', recruitmentStageRoutes);
   app.use('/users', userRoutes);

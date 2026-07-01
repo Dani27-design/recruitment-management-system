@@ -12,6 +12,7 @@ const envSchema = z.object({
   FRONTEND_URL: z.string().url().default('http://localhost:5173'),
   SUPABASE_URL: z.string().optional(),
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
+  STORAGE_BUCKET_NAME: z.string().min(1).default('database'),
 });
 
 export type Env = z.infer<typeof envSchema>;
