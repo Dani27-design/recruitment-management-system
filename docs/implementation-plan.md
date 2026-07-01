@@ -902,6 +902,8 @@ Audit logging completed.
 
 # Phase 10 — Production Readiness
 
+**Phase Status:** Local readiness completed; public deployment verification pending external platform access.
+
 ## Objective
 
 Prepare the application for final delivery.
@@ -971,6 +973,8 @@ Complete and review:
 * IMPLEMENTATION_PLAN.md
 * ERD.md
 * AI_USAGE_REPORT.md
+
+Additional local readiness notes are captured in `docs/production-readiness.md`.
 
 ---
 

@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "prisma generate && tsc",
-    "start": "node dist/server.js",
+    "start": "node dist/src/server.js",
     "lint": "eslint src prisma --ext .ts",
     "typecheck": "prisma generate && tsc --noEmit",
     "test": "prisma generate && vitest run",

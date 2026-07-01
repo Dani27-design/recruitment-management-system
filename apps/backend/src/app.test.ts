@@ -34,6 +34,21 @@ vi.mock('./repositories/user.repository', () => ({
 }));
 
 describe('createApp', () => {
+  it('registers the public health check route', async () => {
+    const app = createApp();
+
+    const response = await request(app).get('/health').send();
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      success: true,
+      message: 'Health check passed',
+      data: {
+        status: 'ok',
+      },
+    });
+  });
+
   it('registers auth routes and validation errors', async () => {
     const app = createApp();
 

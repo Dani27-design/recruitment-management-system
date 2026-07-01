@@ -6,6 +6,7 @@ import { auditRoutes } from './routes/audit.routes';
 import { authRoutes } from './routes/auth.routes';
 import { candidateRoutes } from './routes/candidate.routes';
 import { dashboardRoutes } from './routes/dashboard.routes';
+import { healthRoutes } from './routes/health.routes';
 import { recruitmentDocumentRoutes } from './routes/recruitment-document.routes';
 import { recruitmentStageRoutes } from './routes/recruitment-stage.routes';
 import { recruitmentRoutes } from './routes/recruitment.routes';
@@ -25,6 +26,7 @@ export function createApp() {
   app.use(express.json());
   app.use(morgan(env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
+  app.use('/health', healthRoutes);
   app.use('/audit-logs', auditRoutes);
   app.use('/auth', authRoutes);
   app.use('/candidates', candidateRoutes);
