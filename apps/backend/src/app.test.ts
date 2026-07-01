@@ -3,6 +3,15 @@ import { describe, expect, it, vi } from 'vitest';
 import { createApp } from './app';
 import { signAccessToken } from './utils/jwt';
 
+vi.mock('./repositories/dashboard.repository', () => ({
+  DashboardRepository: vi.fn().mockImplementation(() => ({
+    countActiveVacancies: vi.fn().mockResolvedValue(0),
+    countCandidates: vi.fn().mockResolvedValue(0),
+    countRecruitments: vi.fn().mockResolvedValue(0),
+    listRecruitmentStageSnapshots: vi.fn().mockResolvedValue([]),
+  })),
+}));
+
 vi.mock('./repositories/user.repository', () => ({
   UserRepository: vi.fn().mockImplementation(() => ({
     findByEmail: vi.fn().mockResolvedValue(null),
@@ -152,6 +161,33 @@ describe('createApp', () => {
 
     expect(listResponse.status).toBe(401);
     expect(downloadResponse.status).toBe(401);
+  });
+
+  it('protects dashboard summary routes with JWT authentication and permits managers', async () => {
+    const app = createApp();
+    const managerToken = signAccessToken({
+      id: 'manager-1',
+      email: 'manager@rms.local',
+      role: 'MANAGER',
+    });
+
+    const unauthenticatedResponse = await request(app).get('/dashboard/summary').send();
+    const managerResponse = await request(app)
+      .get('/dashboard/summary')
+      .set('Authorization', `Bearer ${managerToken}`)
+      .send();
+
+    expect(unauthenticatedResponse.status).toBe(401);
+    expect(managerResponse.status).toBe(200);
+    expect(managerResponse.body).toMatchObject({
+      success: true,
+      message: 'Dashboard summary retrieved successfully',
+      data: {
+        total_candidates: 0,
+        total_active_vacancies: 0,
+        total_recruitments: 0,
+      },
+    });
   });
 
   it('blocks managers from deleting recruitment documents', async () => {

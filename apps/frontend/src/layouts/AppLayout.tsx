@@ -13,7 +13,7 @@ export function AppLayout({ children }: PropsWithChildren) {
             <h1 className="text-lg font-semibold text-slate-950">Recruitment Management System</h1>
             <nav className="flex items-center gap-4 text-sm font-medium text-slate-700">
               <Link className="hover:text-slate-950" to="/">
-                Home
+                Dashboard
               </Link>
               <Link className="hover:text-slate-950" to="/candidates">
                 Candidates

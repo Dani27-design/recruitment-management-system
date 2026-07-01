@@ -6,8 +6,8 @@ import { CandidateListPage } from './pages/CandidateListPage';
 import { CreateCandidatePage } from './pages/CreateCandidatePage';
 import { EditCandidatePage } from './pages/EditCandidatePage';
 import { CreateVacancyPage } from './pages/CreateVacancyPage';
+import { DashboardPage } from './pages/DashboardPage';
 import { EditVacancyPage } from './pages/EditVacancyPage';
-import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
 import { CreateRecruitmentPage } from './pages/CreateRecruitmentPage';
 import { RecruitmentDetailPage } from './pages/RecruitmentDetailPage';
@@ -25,7 +25,7 @@ export function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route element={<ProtectedRoute />}>
-              <Route path="/" element={<HomePage />} />
+              <Route path="/" element={<DashboardPage />} />
               <Route path="/candidates" element={<CandidateListPage />} />
               <Route path="/candidates/new" element={<CreateCandidatePage />} />
               <Route path="/candidates/:id" element={<CandidateDetailPage />} />

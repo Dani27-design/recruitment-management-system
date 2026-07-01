@@ -523,38 +523,38 @@ These are implementation standards, not standalone tasks. Apply them across ever
 
 ## Phase 8 - Dashboard
 
-- [ ] 1. Implement dashboard backend aggregation.
-  - [ ] 1.1. Calculate total candidates.
-  - [ ] 1.2. Calculate total active vacancies.
-  - [ ] 1.3. Calculate total recruitments.
-  - [ ] 1.4. Calculate recruitment count by current stage.
-  - [ ] 1.5. Calculate recruitment count by current status.
-- [ ] 2. Implement dashboard service.
-  - [ ] 2.1. Keep dashboard aggregation rules in the service layer.
-  - [ ] 2.2. Ensure dashboard values represent current system data.
-  - [ ] 2.3. Handle empty data states.
-- [ ] 3. Implement dashboard controller and route.
-  - [ ] 3.1. Implement `GET /dashboard/summary`.
-  - [ ] 3.2. Protect dashboard endpoint with authentication.
-  - [ ] 3.3. Permit Administrator access.
-  - [ ] 3.4. Permit Manager access.
-- [ ] 4. Implement dashboard frontend.
-  - [ ] 4.1. Create Dashboard page.
-  - [ ] 4.2. Create Statistic Cards.
-  - [ ] 4.3. Create Summary Panels.
-  - [ ] 4.4. Display total candidates.
-  - [ ] 4.5. Display total active vacancies.
-  - [ ] 4.6. Display total recruitments.
-  - [ ] 4.7. Display recruitment count by current stage.
-  - [ ] 4.8. Display recruitment count by current status.
-  - [ ] 4.9. Implement loading state.
-  - [ ] 4.10. Implement empty state.
-  - [ ] 4.11. Surface dashboard API errors.
-- [ ] 5. Complete Phase 8 implementation readiness.
-  - [ ] 5.1. Ensure dashboard aggregation is implemented.
-  - [ ] 5.2. Ensure dashboard empty state is implemented.
-  - [ ] 5.3. Ensure dashboard loading state is implemented.
-  - [ ] 5.4. Commit Phase 8 as `phase-8-dashboard`.
+- [x] 1. Implement dashboard backend aggregation.
+  - [x] 1.1. Calculate total candidates.
+  - [x] 1.2. Calculate total active vacancies.
+  - [x] 1.3. Calculate total recruitments.
+  - [x] 1.4. Calculate recruitment count by current stage.
+  - [x] 1.5. Calculate recruitment count by current status.
+- [x] 2. Implement dashboard service.
+  - [x] 2.1. Keep dashboard aggregation rules in the service layer.
+  - [x] 2.2. Ensure dashboard values represent current system data.
+  - [x] 2.3. Handle empty data states.
+- [x] 3. Implement dashboard controller and route.
+  - [x] 3.1. Implement `GET /dashboard/summary`.
+  - [x] 3.2. Protect dashboard endpoint with authentication.
+  - [x] 3.3. Permit Administrator access.
+  - [x] 3.4. Permit Manager access.
+- [x] 4. Implement dashboard frontend.
+  - [x] 4.1. Create Dashboard page.
+  - [x] 4.2. Create Statistic Cards.
+  - [x] 4.3. Create Summary Panels.
+  - [x] 4.4. Display total candidates.
+  - [x] 4.5. Display total active vacancies.
+  - [x] 4.6. Display total recruitments.
+  - [x] 4.7. Display recruitment count by current stage.
+  - [x] 4.8. Display recruitment count by current status.
+  - [x] 4.9. Implement loading state.
+  - [x] 4.10. Implement empty state.
+  - [x] 4.11. Surface dashboard API errors.
+- [x] 5. Complete Phase 8 implementation readiness.
+  - [x] 5.1. Ensure dashboard aggregation is implemented.
+  - [x] 5.2. Ensure dashboard empty state is implemented.
+  - [x] 5.3. Ensure dashboard loading state is implemented.
+  - [x] 5.4. Commit Phase 8 as `feat: phase 8 dashboard`.
 
 ## Phase 9 - Audit Logging
 
