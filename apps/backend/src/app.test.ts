@@ -129,4 +129,36 @@ describe('createApp', () => {
       message: 'Forbidden',
     });
   });
+
+  it('protects recruitment stage routes with JWT authentication', async () => {
+    const app = createApp();
+
+    const response = await request(app).patch('/stages/invalid/status').send({});
+
+    expect(response.status).toBe(401);
+    expect(response.body).toEqual({
+      success: false,
+      message: 'Missing access token',
+    });
+  });
+
+  it('blocks managers from workflow updates until assignment rules exist', async () => {
+    const app = createApp();
+    const managerToken = signAccessToken({
+      id: 'manager-1',
+      email: 'manager@rms.local',
+      role: 'MANAGER',
+    });
+
+    const response = await request(app)
+      .patch('/stages/11111111-1111-4111-8111-111111111111/status')
+      .set('Authorization', `Bearer ${managerToken}`)
+      .send({ status: 'PASSED' });
+
+    expect(response.status).toBe(403);
+    expect(response.body).toEqual({
+      success: false,
+      message: 'Forbidden',
+    });
+  });
 });

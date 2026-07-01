@@ -21,6 +21,11 @@ export interface RecruitmentStage {
   notes: string | null;
   created_at: string;
   updated_at: string;
+  assigned_user?: {
+    id: string;
+    email: string;
+    role: string;
+  } | null;
 }
 
 export interface Recruitment {
@@ -38,4 +43,9 @@ export interface Recruitment {
 export interface RecruitmentFormInput {
   candidate_id: string;
   vacancy_id: string;
+}
+
+export interface RecruitmentStageUpdateInput {
+  status?: Exclude<RecruitmentStageStatus, 'PENDING'>;
+  notes?: string | null;
 }

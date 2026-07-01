@@ -1,14 +1,38 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, useParams } from 'react-router-dom';
+import { RecruitmentTimeline } from '../features/recruitments/components/RecruitmentTimeline';
 import { AppLayout } from '../layouts/AppLayout';
 import { getRecruitment } from '../services/recruitment-service';
+import {
+  listRecruitmentStages,
+  updateRecruitmentStage,
+} from '../services/recruitment-stage-service';
+import type { RecruitmentStageUpdateInput } from '../types/recruitment';
+
+interface StageMutationInput {
+  stageId: string;
+  input: RecruitmentStageUpdateInput;
+}
 
 export function RecruitmentDetailPage() {
   const { id } = useParams<{ id: string }>();
+  const queryClient = useQueryClient();
   const recruitmentQuery = useQuery({
     queryKey: ['recruitment', id],
     queryFn: () => getRecruitment(id!),
     enabled: Boolean(id),
+  });
+  const stagesQuery = useQuery({
+    queryKey: ['recruitment-stages', id],
+    queryFn: () => listRecruitmentStages(id!),
+    enabled: Boolean(id),
+  });
+  const updateStageMutation = useMutation({
+    mutationFn: ({ stageId, input }: StageMutationInput) => updateRecruitmentStage(stageId, input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['recruitment', id] });
+      queryClient.invalidateQueries({ queryKey: ['recruitment-stages', id] });
+    },
   });
 
   return (
@@ -33,13 +57,26 @@ export function RecruitmentDetailPage() {
               </dd>
             </div>
             <div>
-              <dt className="text-sm font-medium text-slate-500">Initial stage</dt>
+              <dt className="text-sm font-medium text-slate-500">Current stage</dt>
               <dd className="mt-1 text-slate-950">
-                {recruitmentQuery.data.stages[0]?.stage ?? '-'} /{' '}
-                {recruitmentQuery.data.stages[0]?.status ?? '-'}
+                {recruitmentQuery.data.stages.find((stage) => stage.status === 'PENDING')
+                  ?.stage ??
+                  recruitmentQuery.data.stages.at(-1)?.stage ??
+                  '-'}
               </dd>
             </div>
           </dl>
+          {stagesQuery.isLoading ? <p className="mt-4 text-slate-600">Loading timeline...</p> : null}
+          {stagesQuery.isError || updateStageMutation.isError ? (
+            <p className="mt-4 text-red-600">Unable to update recruitment timeline.</p>
+          ) : null}
+          {stagesQuery.data ? (
+            <RecruitmentTimeline
+              stages={stagesQuery.data}
+              isUpdating={updateStageMutation.isPending}
+              onUpdate={(stageId, input) => updateStageMutation.mutate({ stageId, input })}
+            />
+          ) : null}
         </section>
       ) : null}
     </AppLayout>

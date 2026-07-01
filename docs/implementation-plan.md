@@ -547,6 +547,8 @@ Recruitment aggregate root completed.
 
 # Phase 5 — Recruitment Workflow Engine
 
+**Phase Status:** Completed
+
 ## Objective
 
 Implement the stage-driven recruitment workflow.

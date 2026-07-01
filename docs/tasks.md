@@ -339,76 +339,76 @@ These are implementation standards, not standalone tasks. Apply them across ever
 
 ## Phase 5 - Recruitment Workflow Engine
 
-- [ ] 1. Implement RecruitmentStage database model.
-  - [ ] 1.1. Add `id`.
-  - [ ] 1.2. Add `recruitment_id`.
-  - [ ] 1.3. Add `stage`.
-  - [ ] 1.4. Add `status`.
-  - [ ] 1.5. Add `assigned_user_id`.
-  - [ ] 1.6. Add `scheduled_at`.
-  - [ ] 1.7. Add `completed_at`.
-  - [ ] 1.8. Add `notes`.
-  - [ ] 1.9. Add `created_at`.
-  - [ ] 1.10. Add `updated_at`.
-  - [ ] 1.11. Model RecruitmentStage belongs to Recruitment.
-  - [ ] 1.12. Model RecruitmentStage assigned to User.
-  - [ ] 1.13. Generate RecruitmentStage migration.
-- [ ] 2. Implement recruitment stage repository.
-  - [ ] 2.1. Implement create stage.
-  - [ ] 2.2. Implement get stage.
-  - [ ] 2.3. Implement list stages.
-  - [ ] 2.4. Implement update stage.
-- [ ] 3. Implement workflow sequence rules.
-  - [ ] 3.1. Define the fixed stage order: `APPLIED`, `SCREENING`, `TECHNICAL_TEST`, `INTERVIEW`, `ACCEPTANCE`.
-  - [ ] 3.2. Prevent stage skipping.
-  - [ ] 3.3. Prevent stage reordering.
-  - [ ] 3.4. Require a stage to be completed before the next stage is created.
-  - [ ] 3.5. Allow only one `PENDING` stage per recruitment.
-  - [ ] 3.6. Treat `PENDING` as the active stage status.
-- [ ] 4. Implement stage completion rules.
-  - [ ] 4.1. Allow stage status updates to `PASSED`.
-  - [ ] 4.2. Allow stage status updates to `REJECTED`.
-  - [ ] 4.3. Set `completed_at` when a stage is completed.
-  - [ ] 4.4. Make completed stages immutable.
-  - [ ] 4.5. Prevent status changes after stage completion.
-  - [ ] 4.6. Prevent notes changes after stage completion.
-- [ ] 5. Implement pass-flow behavior.
-  - [ ] 5.1. When a stage is marked `PASSED`, create the next workflow stage with status `PENDING`.
-  - [ ] 5.2. Do not create a next stage after `ACCEPTANCE` is marked `PASSED`.
-  - [ ] 5.3. Complete the workflow when `ACCEPTANCE` is passed.
-- [ ] 6. Implement reject-flow behavior.
-  - [ ] 6.1. When a stage is marked `REJECTED`, terminate the recruitment workflow.
-  - [ ] 6.2. Prevent additional stages from being created after rejection.
-- [ ] 7. Implement stage notes behavior.
-  - [ ] 7.1. Allow notes to be added while a stage is active.
-  - [ ] 7.2. Persist notes on the recruitment stage.
-  - [ ] 7.3. Enforce notes immutability after stage completion.
-- [ ] 8. Implement recruitment stage validation.
-  - [ ] 8.1. Validate stage status update requests.
-  - [ ] 8.2. Validate notes input.
-  - [ ] 8.3. Validate stage identifiers.
-- [ ] 9. Implement recruitment stage controllers and routes.
-  - [ ] 9.1. Implement `GET /recruitments/{id}/stages`.
-  - [ ] 9.2. Implement `PATCH /stages/{id}/status`.
-- [ ] 10. Implement recruitment timeline frontend.
-  - [ ] 10.1. Create Recruitment Timeline page or section.
-  - [ ] 10.2. Create Timeline component.
-  - [ ] 10.3. Create Stage Card component.
-  - [ ] 10.4. Create Status Badge component.
-  - [ ] 10.5. Create Stage Notes component.
-- [ ] 11. Integrate recruitment workflow frontend with backend APIs.
-  - [ ] 11.1. Fetch stage timeline for a recruitment.
-  - [ ] 11.2. Submit stage status updates.
-  - [ ] 11.3. Submit stage notes updates.
-  - [ ] 11.4. Refresh timeline after workflow changes.
-  - [ ] 11.5. Surface validation, authorization, and API errors.
-- [ ] 12. Complete Phase 5 implementation readiness.
-  - [ ] 12.1. Ensure pass flow is implemented.
-  - [ ] 12.2. Ensure reject flow is implemented.
-  - [ ] 12.3. Ensure sequential validation is implemented.
-  - [ ] 12.4. Ensure completed stage immutability is implemented.
-  - [ ] 12.5. Ensure timeline rendering is implemented.
-  - [ ] 12.6. Commit Phase 5 as `phase-5-recruitment-workflow`.
+- [x] 1. Implement RecruitmentStage database model.
+  - [x] 1.1. Add `id`.
+  - [x] 1.2. Add `recruitment_id`.
+  - [x] 1.3. Add `stage`.
+  - [x] 1.4. Add `status`.
+  - [x] 1.5. Add `assigned_user_id`.
+  - [x] 1.6. Add `scheduled_at`.
+  - [x] 1.7. Add `completed_at`.
+  - [x] 1.8. Add `notes`.
+  - [x] 1.9. Add `created_at`.
+  - [x] 1.10. Add `updated_at`.
+  - [x] 1.11. Model RecruitmentStage belongs to Recruitment.
+  - [x] 1.12. Model RecruitmentStage assigned to User.
+  - [x] 1.13. Generate RecruitmentStage workflow constraint migration.
+- [x] 2. Implement recruitment stage repository.
+  - [x] 2.1. Implement create stage.
+  - [x] 2.2. Implement get stage.
+  - [x] 2.3. Implement list stages.
+  - [x] 2.4. Implement update stage.
+- [x] 3. Implement workflow sequence rules.
+  - [x] 3.1. Define the fixed stage order: `APPLIED`, `SCREENING`, `TECHNICAL_TEST`, `INTERVIEW`, `ACCEPTANCE`.
+  - [x] 3.2. Prevent stage skipping.
+  - [x] 3.3. Prevent stage reordering.
+  - [x] 3.4. Require a stage to be completed before the next stage is created.
+  - [x] 3.5. Allow only one `PENDING` stage per recruitment.
+  - [x] 3.6. Treat `PENDING` as the active stage status.
+- [x] 4. Implement stage completion rules.
+  - [x] 4.1. Allow stage status updates to `PASSED`.
+  - [x] 4.2. Allow stage status updates to `REJECTED`.
+  - [x] 4.3. Set `completed_at` when a stage is completed.
+  - [x] 4.4. Make completed stages immutable.
+  - [x] 4.5. Prevent status changes after stage completion.
+  - [x] 4.6. Prevent notes changes after stage completion.
+- [x] 5. Implement pass-flow behavior.
+  - [x] 5.1. When a stage is marked `PASSED`, create the next workflow stage with status `PENDING`.
+  - [x] 5.2. Do not create a next stage after `ACCEPTANCE` is marked `PASSED`.
+  - [x] 5.3. Complete the workflow when `ACCEPTANCE` is passed.
+- [x] 6. Implement reject-flow behavior.
+  - [x] 6.1. When a stage is marked `REJECTED`, terminate the recruitment workflow.
+  - [x] 6.2. Prevent additional stages from being created after rejection.
+- [x] 7. Implement stage notes behavior.
+  - [x] 7.1. Allow notes to be added while a stage is active.
+  - [x] 7.2. Persist notes on the recruitment stage.
+  - [x] 7.3. Enforce notes immutability after stage completion.
+- [x] 8. Implement recruitment stage validation.
+  - [x] 8.1. Validate stage status update requests.
+  - [x] 8.2. Validate notes input.
+  - [x] 8.3. Validate stage identifiers.
+- [x] 9. Implement recruitment stage controllers and routes.
+  - [x] 9.1. Implement `GET /recruitments/{id}/stages`.
+  - [x] 9.2. Implement `PATCH /stages/{id}/status`.
+- [x] 10. Implement recruitment timeline frontend.
+  - [x] 10.1. Create Recruitment Timeline page or section.
+  - [x] 10.2. Create Timeline component.
+  - [x] 10.3. Create Stage Card component.
+  - [x] 10.4. Create Status Badge component.
+  - [x] 10.5. Create Stage Notes component.
+- [x] 11. Integrate recruitment workflow frontend with backend APIs.
+  - [x] 11.1. Fetch stage timeline for a recruitment.
+  - [x] 11.2. Submit stage status updates.
+  - [x] 11.3. Submit stage notes updates.
+  - [x] 11.4. Refresh timeline after workflow changes.
+  - [x] 11.5. Surface validation, authorization, and API errors.
+- [x] 12. Complete Phase 5 implementation readiness.
+  - [x] 12.1. Ensure pass flow is implemented.
+  - [x] 12.2. Ensure reject flow is implemented.
+  - [x] 12.3. Ensure sequential validation is implemented.
+  - [x] 12.4. Ensure completed stage immutability is implemented.
+  - [x] 12.5. Ensure timeline rendering is implemented.
+  - [x] 12.6. Commit Phase 5 as `feat: phase 5 recruitment workflow`.
 
 ## Phase 6 - Stage Assignment and Authorization
 

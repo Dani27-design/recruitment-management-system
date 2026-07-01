@@ -98,5 +98,6 @@ model RecruitmentStage {
   recruitment      Recruitment            @relation(fields: [recruitment_id], references: [id])
   assigned_user    User?                  @relation("StageAssignee", fields: [assigned_user_id], references: [id])
 
+  @@unique([recruitment_id, stage])
   @@map("recruitment_stages")
 }
