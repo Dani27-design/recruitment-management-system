@@ -19,10 +19,12 @@ describe('RecruitmentService', () => {
         stages: [{ stage: 'APPLIED', status: 'PENDING' }],
       }),
     };
+    const auditService = { record: vi.fn().mockResolvedValue({ id: 'audit-1' }) };
     const service = new RecruitmentService(
       recruitmentRepository as any,
       { findById: vi.fn().mockResolvedValue(candidate) } as any,
       { findById: vi.fn().mockResolvedValue(activeVacancy) } as any,
+      auditService as any,
     );
 
     await expect(
@@ -34,6 +36,14 @@ describe('RecruitmentService', () => {
     expect(recruitmentRepository.create).toHaveBeenCalledWith(
       { candidate_id: 'candidate-1', vacancy_id: 'vacancy-1' },
       'admin-1',
+    );
+    expect(auditService.record).toHaveBeenCalledWith(
+      expect.objectContaining({
+        actorId: 'admin-1',
+        entityId: 'recruitment-1',
+        entityType: 'RECRUITMENT',
+        eventType: 'CREATE',
+      }),
     );
   });
 

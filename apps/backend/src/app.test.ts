@@ -3,6 +3,19 @@ import { describe, expect, it, vi } from 'vitest';
 import { createApp } from './app';
 import { signAccessToken } from './utils/jwt';
 
+vi.mock('./repositories/audit.repository', () => ({
+  AuditRepository: vi.fn().mockImplementation(() => ({
+    create: vi.fn().mockResolvedValue({ id: 'audit-1' }),
+    list: vi.fn().mockResolvedValue([
+      {
+        id: 'audit-1',
+        entity_type: 'CANDIDATE',
+        event_type: 'CREATE',
+      },
+    ]),
+  })),
+}));
+
 vi.mock('./repositories/dashboard.repository', () => ({
   DashboardRepository: vi.fn().mockImplementation(() => ({
     countActiveVacancies: vi.fn().mockResolvedValue(0),
@@ -31,6 +44,45 @@ describe('createApp', () => {
 
     expect(response.status).toBe(400);
     expect(response.body.success).toBe(false);
+  });
+
+  it('restricts audit logs to administrators', async () => {
+    const app = createApp();
+    const adminToken = signAccessToken({
+      id: 'admin-1',
+      email: 'admin@rms.local',
+      role: 'ADMINISTRATOR',
+    });
+    const managerToken = signAccessToken({
+      id: 'manager-1',
+      email: 'manager@rms.local',
+      role: 'MANAGER',
+    });
+
+    const unauthenticatedResponse = await request(app).get('/audit-logs').send();
+    const managerResponse = await request(app)
+      .get('/audit-logs')
+      .set('Authorization', `Bearer ${managerToken}`)
+      .send();
+    const adminResponse = await request(app)
+      .get('/audit-logs?entity_type=CANDIDATE&event_type=CREATE')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send();
+
+    expect(unauthenticatedResponse.status).toBe(401);
+    expect(managerResponse.status).toBe(403);
+    expect(adminResponse.status).toBe(200);
+    expect(adminResponse.body).toMatchObject({
+      success: true,
+      message: 'Audit logs retrieved successfully',
+      data: [
+        {
+          id: 'audit-1',
+          entity_type: 'CANDIDATE',
+          event_type: 'CREATE',
+        },
+      ],
+    });
   });
 
   it('protects logout with JWT authentication', async () => {

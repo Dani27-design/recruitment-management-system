@@ -1,4 +1,5 @@
 import type { RecruitmentStageName } from '@prisma/client';
+import { AUDIT_ENTITY_TYPES, AUDIT_EVENT_TYPES } from '../constants/audit';
 import {
   RecruitmentStageRepository,
   type RecruitmentStageWithAssignee,
@@ -11,6 +12,7 @@ import type {
   RecruitmentStageAssignmentInput,
   RecruitmentStageStatusUpdateInput,
 } from '../validations/recruitment-stage.validation';
+import { AuditService } from './audit.service';
 
 const WORKFLOW_STAGES: RecruitmentStageName[] = [
   'APPLIED',
@@ -25,6 +27,7 @@ export class RecruitmentStageService {
     private readonly recruitmentStageRepository = new RecruitmentStageRepository(),
     private readonly recruitmentRepository = new RecruitmentRepository(),
     private readonly userRepository = new UserRepository(),
+    private readonly auditService = new AuditService(),
   ) {}
 
   async listByRecruitmentId(
@@ -65,9 +68,13 @@ export class RecruitmentStageService {
     this.ensureRejectedWorkflowCanNotContinue(stage, sortedStages);
 
     if (!input.status) {
-      return this.recruitmentStageRepository.update(stage.id, {
+      const updatedStage = await this.recruitmentStageRepository.update(stage.id, {
         notes: input.notes,
       });
+
+      await this.recordStageUpdate(user.id, stage, updatedStage);
+
+      return updatedStage;
     }
 
     this.ensurePreviousStagesPassed(stage, sortedStages);
@@ -80,14 +87,18 @@ export class RecruitmentStageService {
     };
 
     if (input.status === 'REJECTED') {
-      return this.recruitmentStageRepository.completeStage(stage.id, updateData);
+      const updatedStage = await this.recruitmentStageRepository.completeStage(stage.id, updateData);
+
+      await this.recordStageUpdate(user.id, stage, updatedStage);
+
+      return updatedStage;
     }
 
     this.ensureFutureStagesDoNotExist(stage, sortedStages);
 
     const nextStageName = this.getNextStage(stage.stage);
 
-    return this.recruitmentStageRepository.completeStage(
+    const updatedStage = await this.recruitmentStageRepository.completeStage(
       stage.id,
       updateData,
       nextStageName
@@ -98,11 +109,16 @@ export class RecruitmentStageService {
           }
         : undefined,
     );
+
+    await this.recordStageUpdate(user.id, stage, updatedStage);
+
+    return updatedStage;
   }
 
   async assignManager(
     stageId: string,
     input: RecruitmentStageAssignmentInput,
+    user: AuthenticatedUser,
   ): Promise<RecruitmentStageWithAssignee> {
     const stage = await this.recruitmentStageRepository.findById(stageId);
 
@@ -116,7 +132,26 @@ export class RecruitmentStageService {
       throw new AppError('Assigned user must be a Manager', 400);
     }
 
-    return this.recruitmentStageRepository.assignManager(stage.id, manager.id);
+    const updatedStage = await this.recruitmentStageRepository.assignManager(stage.id, manager.id);
+
+    await this.recordStageUpdate(user.id, stage, updatedStage);
+
+    return updatedStage;
+  }
+
+  private recordStageUpdate(
+    actorId: string,
+    before: RecruitmentStageWithAssignee,
+    after: RecruitmentStageWithAssignee,
+  ) {
+    return this.auditService.record({
+      actorId,
+      before,
+      after,
+      entityId: after.id,
+      entityType: AUDIT_ENTITY_TYPES.RECRUITMENT_STAGE,
+      eventType: AUDIT_EVENT_TYPES.UPDATE,
+    });
   }
 
   private sortByWorkflow(

@@ -37,20 +37,20 @@ describe('CandidateController', () => {
 
     for (const action of [
       () => controller.getById({ params: { id: 'candidate-1' } } as any, createResponse()),
-      () => controller.create({ body: candidate } as any, createResponse()),
+      () => controller.create({ body: candidate, user: { id: 'admin-1' } } as any, createResponse()),
       () =>
         controller.update(
-          { params: { id: 'candidate-1' }, body: { full_name: 'Jane' } } as any,
+          { params: { id: 'candidate-1' }, body: { full_name: 'Jane' }, user: { id: 'admin-1' } } as any,
           createResponse(),
         ),
-      () => controller.delete({ params: { id: 'candidate-1' } } as any, createResponse()),
+      () => controller.delete({ params: { id: 'candidate-1' }, user: { id: 'admin-1' } } as any, createResponse()),
     ]) {
       await expect(action()).resolves.toBeDefined();
     }
 
     expect(service.getById).toHaveBeenCalledWith('candidate-1');
-    expect(service.create).toHaveBeenCalledWith(candidate);
-    expect(service.update).toHaveBeenCalledWith('candidate-1', { full_name: 'Jane' });
-    expect(service.delete).toHaveBeenCalledWith('candidate-1');
+    expect(service.create).toHaveBeenCalledWith(candidate, 'admin-1');
+    expect(service.update).toHaveBeenCalledWith('candidate-1', { full_name: 'Jane' }, 'admin-1');
+    expect(service.delete).toHaveBeenCalledWith('candidate-1', 'admin-1');
   });
 });

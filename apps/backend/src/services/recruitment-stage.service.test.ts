@@ -79,7 +79,13 @@ describe('RecruitmentStageService', () => {
       listByRecruitmentId: vi.fn().mockResolvedValue([assignedStage]),
       completeStage: vi.fn().mockResolvedValue({ ...baseStage, status: 'PASSED' }),
     };
-    const service = new RecruitmentStageService(repository as any, {} as any);
+    const auditService = { record: vi.fn().mockResolvedValue({ id: 'audit-1' }) };
+    const service = new RecruitmentStageService(
+      repository as any,
+      {} as any,
+      {} as any,
+      auditService as any,
+    );
 
     await service.updateStatus('stage-1', { status: 'PASSED', notes: 'Move forward' }, manager);
 
@@ -91,10 +97,18 @@ describe('RecruitmentStageService', () => {
         notes: 'Move forward',
       },
       {
-          recruitment_id: 'recruitment-1',
+        recruitment_id: 'recruitment-1',
         stage: 'SCREENING',
         status: 'PENDING',
       },
+    );
+    expect(auditService.record).toHaveBeenCalledWith(
+      expect.objectContaining({
+        actorId: 'manager-1',
+        before: assignedStage,
+        entityType: 'RECRUITMENT_STAGE',
+        eventType: 'UPDATE',
+      }),
     );
   });
 
@@ -116,7 +130,12 @@ describe('RecruitmentStageService', () => {
       ]),
       completeStage: vi.fn().mockResolvedValue({ ...acceptanceStage, status: 'PASSED' }),
     };
-    const service = new RecruitmentStageService(repository as any, {} as any);
+    const service = new RecruitmentStageService(
+      repository as any,
+      {} as any,
+      {} as any,
+      { record: vi.fn().mockResolvedValue({ id: 'audit-1' }) } as any,
+    );
 
     await service.updateStatus('stage-5', { status: 'PASSED' }, admin);
 
@@ -133,7 +152,12 @@ describe('RecruitmentStageService', () => {
       listByRecruitmentId: vi.fn().mockResolvedValue([baseStage]),
       completeStage: vi.fn().mockResolvedValue({ ...baseStage, status: 'REJECTED' }),
     };
-    const service = new RecruitmentStageService(repository as any, {} as any);
+    const service = new RecruitmentStageService(
+      repository as any,
+      {} as any,
+      {} as any,
+      { record: vi.fn().mockResolvedValue({ id: 'audit-1' }) } as any,
+    );
 
     await service.updateStatus('stage-1', { status: 'REJECTED' }, admin);
 
@@ -149,11 +173,26 @@ describe('RecruitmentStageService', () => {
       listByRecruitmentId: vi.fn().mockResolvedValue([baseStage]),
       update: vi.fn().mockResolvedValue({ ...baseStage, notes: 'Updated notes' }),
     };
-    const service = new RecruitmentStageService(repository as any, {} as any);
+    const auditService = { record: vi.fn().mockResolvedValue({ id: 'audit-1' }) };
+    const service = new RecruitmentStageService(
+      repository as any,
+      {} as any,
+      {} as any,
+      auditService as any,
+    );
 
     await service.updateStatus('stage-1', { notes: 'Updated notes' }, admin);
 
     expect(repository.update).toHaveBeenCalledWith('stage-1', { notes: 'Updated notes' });
+    expect(auditService.record).toHaveBeenCalledWith(
+      expect.objectContaining({
+        actorId: 'admin-1',
+        before: baseStage,
+        entityId: 'stage-1',
+        entityType: 'RECRUITMENT_STAGE',
+        eventType: 'UPDATE',
+      }),
+    );
   });
 
   it('prevents completed stages from being modified', async () => {
@@ -231,10 +270,11 @@ describe('RecruitmentStageService', () => {
       repository as any,
       {} as any,
       userRepository as any,
+      { record: vi.fn().mockResolvedValue({ id: 'audit-1' }) } as any,
     );
 
     await expect(
-      service.assignManager('stage-1', { assigned_user_id: 'manager-1' }),
+      service.assignManager('stage-1', { assigned_user_id: 'manager-1' }, admin),
     ).resolves.toEqual(assignedStage);
     expect(repository.assignManager).toHaveBeenCalledWith('stage-1', 'manager-1');
   });
@@ -247,7 +287,7 @@ describe('RecruitmentStageService', () => {
     );
 
     await expect(
-      service.assignManager('stage-1', { assigned_user_id: 'admin-1' }),
+      service.assignManager('stage-1', { assigned_user_id: 'admin-1' }, admin),
     ).rejects.toMatchObject({ statusCode: 400 });
   });
 });

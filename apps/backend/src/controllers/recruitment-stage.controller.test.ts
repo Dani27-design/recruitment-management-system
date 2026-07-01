@@ -71,13 +71,18 @@ describe('RecruitmentStageController', () => {
       {
         params: { id: 'stage-1' },
         body: { assigned_user_id: 'manager-1' },
+        user: { id: 'admin-1', role: 'ADMINISTRATOR' },
       } as any,
       res,
     );
 
-    expect(service.assignManager).toHaveBeenCalledWith('stage-1', {
-      assigned_user_id: 'manager-1',
-    });
+    expect(service.assignManager).toHaveBeenCalledWith(
+      'stage-1',
+      {
+        assigned_user_id: 'manager-1',
+      },
+      { id: 'admin-1', role: 'ADMINISTRATOR' },
+    );
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
       success: true,

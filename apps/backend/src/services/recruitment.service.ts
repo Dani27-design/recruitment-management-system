@@ -1,15 +1,18 @@
 import { CandidateRepository } from '../repositories/candidate.repository';
+import { AUDIT_ENTITY_TYPES, AUDIT_EVENT_TYPES } from '../constants/audit';
 import { RecruitmentRepository, type RecruitmentWithRelations } from '../repositories/recruitment.repository';
 import { VacancyRepository } from '../repositories/vacancy.repository';
 import type { AuthenticatedUser } from '../types/auth';
 import { AppError } from '../utils/app-error';
 import type { RecruitmentCreateInput } from '../validations/recruitment.validation';
+import { AuditService } from './audit.service';
 
 export class RecruitmentService {
   constructor(
     private readonly recruitmentRepository = new RecruitmentRepository(),
     private readonly candidateRepository = new CandidateRepository(),
     private readonly vacancyRepository = new VacancyRepository(),
+    private readonly auditService = new AuditService(),
   ) {}
 
   async create(
@@ -32,7 +35,17 @@ export class RecruitmentService {
       throw new AppError('Vacancy must be ACTIVE', 400);
     }
 
-    return this.recruitmentRepository.create(input, createdBy);
+    const recruitment = await this.recruitmentRepository.create(input, createdBy);
+
+    await this.auditService.record({
+      actorId: createdBy,
+      after: recruitment,
+      entityId: recruitment.id,
+      entityType: AUDIT_ENTITY_TYPES.RECRUITMENT,
+      eventType: AUDIT_EVENT_TYPES.CREATE,
+    });
+
+    return recruitment;
   }
 
   async getById(id: string, user: AuthenticatedUser): Promise<RecruitmentWithRelations> {

@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './features/auth/AuthProvider';
+import { AuditLogPage } from './pages/AuditLogPage';
 import { CandidateDetailPage } from './pages/CandidateDetailPage';
 import { CandidateListPage } from './pages/CandidateListPage';
 import { CreateCandidatePage } from './pages/CreateCandidatePage';
@@ -36,6 +37,7 @@ export function App() {
               <Route path="/recruitments" element={<RecruitmentListPage />} />
               <Route path="/recruitments/new" element={<CreateRecruitmentPage />} />
               <Route path="/recruitments/:id" element={<RecruitmentDetailPage />} />
+              <Route path="/audit-logs" element={<AuditLogPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

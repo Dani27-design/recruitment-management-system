@@ -2,6 +2,7 @@ import cors from 'cors';
 import express from 'express';
 import morgan from 'morgan';
 import { env } from './config/env';
+import { auditRoutes } from './routes/audit.routes';
 import { authRoutes } from './routes/auth.routes';
 import { candidateRoutes } from './routes/candidate.routes';
 import { dashboardRoutes } from './routes/dashboard.routes';
@@ -24,6 +25,7 @@ export function createApp() {
   app.use(express.json());
   app.use(morgan(env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
+  app.use('/audit-logs', auditRoutes);
   app.use('/auth', authRoutes);
   app.use('/candidates', candidateRoutes);
   app.use('/dashboard', dashboardRoutes);

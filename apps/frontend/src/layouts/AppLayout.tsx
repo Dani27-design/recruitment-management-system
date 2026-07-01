@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../features/auth/AuthProvider';
 
 export function AppLayout({ children }: PropsWithChildren) {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -24,6 +24,11 @@ export function AppLayout({ children }: PropsWithChildren) {
               <Link className="hover:text-slate-950" to="/recruitments">
                 Recruitments
               </Link>
+              {user?.role === 'ADMINISTRATOR' ? (
+                <Link className="hover:text-slate-950" to="/audit-logs">
+                  Audit Logs
+                </Link>
+              ) : null}
             </nav>
           </div>
           <button

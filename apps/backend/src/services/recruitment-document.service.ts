@@ -1,6 +1,7 @@
 import type { RecruitmentDocumentType } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import path from 'path';
+import { AUDIT_ENTITY_TYPES, AUDIT_EVENT_TYPES } from '../constants/audit';
 import {
   RecruitmentDocumentRepository,
   type RecruitmentDocumentWithUploader,
@@ -8,6 +9,7 @@ import {
 import { RecruitmentRepository } from '../repositories/recruitment.repository';
 import type { AuthenticatedUser } from '../types/auth';
 import { AppError, ForbiddenError } from '../utils/app-error';
+import { AuditService } from './audit.service';
 import { DocumentStorageService } from './document-storage.service';
 
 const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024;
@@ -33,6 +35,7 @@ export class RecruitmentDocumentService {
     private readonly recruitmentDocumentRepository = new RecruitmentDocumentRepository(),
     private readonly recruitmentRepository = new RecruitmentRepository(),
     private readonly documentStorageService = new DocumentStorageService(),
+    private readonly auditService = new AuditService(),
   ) {}
 
   async listByRecruitmentId(
@@ -58,7 +61,7 @@ export class RecruitmentDocumentService {
     });
 
     try {
-      return await this.recruitmentDocumentRepository.create({
+      const document = await this.recruitmentDocumentRepository.create({
         recruitment_id: input.recruitmentId,
         document_type: input.documentType,
         original_filename: file.originalname,
@@ -69,6 +72,16 @@ export class RecruitmentDocumentService {
         storage_path: storageResult.storage_path,
         uploaded_by: input.user.id,
       });
+
+      await this.auditService.record({
+        actorId: input.user.id,
+        after: document,
+        entityId: document.id,
+        entityType: AUDIT_ENTITY_TYPES.RECRUITMENT_DOCUMENT,
+        eventType: AUDIT_EVENT_TYPES.CREATE,
+      });
+
+      return document;
     } catch (error) {
       await this.documentStorageService.deletePhysicalFile(storagePath);
       throw error;
@@ -88,8 +101,17 @@ export class RecruitmentDocumentService {
     }
 
     const document = await this.getAccessibleDocument(id, user);
+    const deletedDocument = await this.recruitmentDocumentRepository.softDelete(document.id);
 
-    return this.recruitmentDocumentRepository.softDelete(document.id);
+    await this.auditService.record({
+      actorId: user.id,
+      before: document,
+      entityId: deletedDocument.id,
+      entityType: AUDIT_ENTITY_TYPES.RECRUITMENT_DOCUMENT,
+      eventType: AUDIT_EVENT_TYPES.DELETE,
+    });
+
+    return deletedDocument;
   }
 
   private async getAccessibleDocument(id: string, user: AuthenticatedUser) {

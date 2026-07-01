@@ -25,7 +25,11 @@ export class RecruitmentStageController {
   };
 
   assignManager = async (req: Request, res: Response) => {
-    const stage = await this.recruitmentStageService.assignManager(req.params.id, req.body);
+    const stage = await this.recruitmentStageService.assignManager(
+      req.params.id,
+      req.body,
+      req.user!,
+    );
 
     return sendSuccess(res, 200, 'Recruitment stage assignment updated successfully', stage);
   };

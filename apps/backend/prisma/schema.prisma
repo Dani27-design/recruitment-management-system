@@ -36,6 +36,12 @@ enum RecruitmentDocumentType {
   PORTFOLIO
 }
 
+enum AuditEventType {
+  CREATE
+  UPDATE
+  DELETE
+}
+
 model User {
   id            String   @id @default(uuid())
   email         String   @unique
@@ -46,6 +52,7 @@ model User {
   recruitments  Recruitment[] @relation("RecruitmentCreator")
   assigned_stages RecruitmentStage[] @relation("StageAssignee")
   uploaded_documents RecruitmentDocument[] @relation("DocumentUploader")
+  audit_logs AuditLog[] @relation("AuditActor")
 
   @@map("users")
 }
@@ -127,4 +134,17 @@ model RecruitmentDocument {
   uploader          User                    @relation("DocumentUploader", fields: [uploaded_by], references: [id])
 
   @@map("recruitment_documents")
+}
+
+model AuditLog {
+  id          String         @id @default(uuid())
+  entity_type String
+  entity_id   String
+  event_type  AuditEventType
+  actor_id    String
+  changes     Json
+  created_at  DateTime       @default(now())
+  actor       User           @relation("AuditActor", fields: [actor_id], references: [id])
+
+  @@map("audit_logs")
 }

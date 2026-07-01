@@ -1,4 +1,5 @@
 import type { Candidate } from '@prisma/client';
+import { AUDIT_ENTITY_TYPES, AUDIT_EVENT_TYPES } from '../constants/audit';
 import { CandidateRepository } from '../repositories/candidate.repository';
 import { AppError } from '../utils/app-error';
 import type {
@@ -6,30 +7,64 @@ import type {
   CandidateListQuery,
   CandidateUpdateInput,
 } from '../validations/candidate.validation';
+import { AuditService } from './audit.service';
 
 export class CandidateService {
-  constructor(private readonly candidateRepository = new CandidateRepository()) {}
+  constructor(
+    private readonly candidateRepository = new CandidateRepository(),
+    private readonly auditService = new AuditService(),
+  ) {}
 
-  async create(input: CandidateCreateInput): Promise<Candidate> {
+  async create(input: CandidateCreateInput, actorId: string): Promise<Candidate> {
     await this.ensureEmailIsUnique(input.email);
 
-    return this.candidateRepository.create(input);
+    const candidate = await this.candidateRepository.create(input);
+
+    await this.auditService.record({
+      actorId,
+      after: candidate,
+      entityId: candidate.id,
+      entityType: AUDIT_ENTITY_TYPES.CANDIDATE,
+      eventType: AUDIT_EVENT_TYPES.CREATE,
+    });
+
+    return candidate;
   }
 
-  async update(id: string, input: CandidateUpdateInput): Promise<Candidate> {
-    await this.ensureCandidateExists(id);
+  async update(id: string, input: CandidateUpdateInput, actorId: string): Promise<Candidate> {
+    const before = await this.getById(id);
 
     if (input.email) {
       await this.ensureEmailIsUnique(input.email, id);
     }
 
-    return this.candidateRepository.update(id, input);
+    const candidate = await this.candidateRepository.update(id, input);
+
+    await this.auditService.record({
+      actorId,
+      before,
+      after: candidate,
+      entityId: candidate.id,
+      entityType: AUDIT_ENTITY_TYPES.CANDIDATE,
+      eventType: AUDIT_EVENT_TYPES.UPDATE,
+    });
+
+    return candidate;
   }
 
-  async delete(id: string): Promise<Candidate> {
-    await this.ensureCandidateExists(id);
+  async delete(id: string, actorId: string): Promise<Candidate> {
+    const before = await this.getById(id);
+    const candidate = await this.candidateRepository.delete(id);
 
-    return this.candidateRepository.delete(id);
+    await this.auditService.record({
+      actorId,
+      before,
+      entityId: candidate.id,
+      entityType: AUDIT_ENTITY_TYPES.CANDIDATE,
+      eventType: AUDIT_EVENT_TYPES.DELETE,
+    });
+
+    return candidate;
   }
 
   async getById(id: string): Promise<Candidate> {
@@ -44,10 +79,6 @@ export class CandidateService {
 
   list(query: CandidateListQuery): Promise<Candidate[]> {
     return this.candidateRepository.list(query.search);
-  }
-
-  private async ensureCandidateExists(id: string): Promise<void> {
-    await this.getById(id);
   }
 
   private async ensureEmailIsUnique(email: string, currentCandidateId?: string): Promise<void> {

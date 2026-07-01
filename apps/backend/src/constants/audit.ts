@@ -1,0 +1,16 @@
+export const AUDIT_EVENT_TYPES = {
+  CREATE: 'CREATE',
+  UPDATE: 'UPDATE',
+  DELETE: 'DELETE',
+} as const;
+
+export const AUDIT_ENTITY_TYPES = {
+  CANDIDATE: 'CANDIDATE',
+  RECRUITMENT: 'RECRUITMENT',
+  RECRUITMENT_DOCUMENT: 'RECRUITMENT_DOCUMENT',
+  RECRUITMENT_STAGE: 'RECRUITMENT_STAGE',
+  VACANCY: 'VACANCY',
+} as const;
+
+export type AuditEventType = (typeof AUDIT_EVENT_TYPES)[keyof typeof AUDIT_EVENT_TYPES];
+export type AuditEntityType = (typeof AUDIT_ENTITY_TYPES)[keyof typeof AUDIT_ENTITY_TYPES];

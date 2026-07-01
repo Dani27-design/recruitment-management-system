@@ -18,19 +18,19 @@ export class CandidateController {
   };
 
   create = async (req: Request, res: Response) => {
-    const candidate = await this.candidateService.create(req.body);
+    const candidate = await this.candidateService.create(req.body, req.user!.id);
 
     return sendSuccess(res, 201, 'Candidate created successfully', candidate);
   };
 
   update = async (req: Request, res: Response) => {
-    const candidate = await this.candidateService.update(req.params.id, req.body);
+    const candidate = await this.candidateService.update(req.params.id, req.body, req.user!.id);
 
     return sendSuccess(res, 200, 'Candidate updated successfully', candidate);
   };
 
   delete = async (req: Request, res: Response) => {
-    const candidate = await this.candidateService.delete(req.params.id);
+    const candidate = await this.candidateService.delete(req.params.id, req.user!.id);
 
     return sendSuccess(res, 200, 'Candidate deleted successfully', candidate);
   };

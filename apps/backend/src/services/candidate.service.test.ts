@@ -18,16 +18,26 @@ describe('CandidateService', () => {
       findByEmail: vi.fn().mockResolvedValue(null),
       create: vi.fn().mockResolvedValue(candidate),
     };
-    const service = new CandidateService(repository as any);
+    const auditService = { record: vi.fn().mockResolvedValue({ id: 'audit-1' }) };
+    const service = new CandidateService(repository as any, auditService as any);
 
     await expect(
       service.create({
         full_name: 'Jane Doe',
         email: 'jane@example.com',
         phone_number: '+62 812-3456-7890',
-      }),
+      }, 'admin-1'),
     ).resolves.toEqual(candidate);
     expect(repository.create).toHaveBeenCalledOnce();
+    expect(auditService.record).toHaveBeenCalledWith(
+      expect.objectContaining({
+        actorId: 'admin-1',
+        after: candidate,
+        entityId: 'candidate-1',
+        entityType: 'CANDIDATE',
+        eventType: 'CREATE',
+      }),
+    );
   });
 
   it('rejects duplicate emails on create', async () => {
@@ -40,7 +50,7 @@ describe('CandidateService', () => {
         full_name: 'Jane Doe',
         email: 'jane@example.com',
         phone_number: '+62 812-3456-7890',
-      }),
+      }, 'admin-1'),
     ).rejects.toMatchObject({ statusCode: 409 });
   });
 
@@ -50,14 +60,23 @@ describe('CandidateService', () => {
       findByEmail: vi.fn().mockResolvedValue(null),
       update: vi.fn().mockResolvedValue({ ...candidate, full_name: 'Jane Updated' }),
     };
-    const service = new CandidateService(repository as any);
+    const auditService = { record: vi.fn().mockResolvedValue({ id: 'audit-1' }) };
+    const service = new CandidateService(repository as any, auditService as any);
 
     await expect(
       service.update('candidate-1', {
         full_name: 'Jane Updated',
         email: 'jane.updated@example.com',
-      }),
+      }, 'admin-1'),
     ).resolves.toMatchObject({ full_name: 'Jane Updated' });
+    expect(auditService.record).toHaveBeenCalledWith(
+      expect.objectContaining({
+        actorId: 'admin-1',
+        before: candidate,
+        entityType: 'CANDIDATE',
+        eventType: 'UPDATE',
+      }),
+    );
   });
 
   it('allows updating a candidate with its existing email', async () => {
@@ -66,11 +85,14 @@ describe('CandidateService', () => {
       findByEmail: vi.fn().mockResolvedValue(candidate),
       update: vi.fn().mockResolvedValue(candidate),
     };
-    const service = new CandidateService(repository as any);
-
-    await expect(service.update('candidate-1', { email: 'jane@example.com' })).resolves.toEqual(
-      candidate,
+    const service = new CandidateService(
+      repository as any,
+      { record: vi.fn().mockResolvedValue({ id: 'audit-1' }) } as any,
     );
+
+    await expect(
+      service.update('candidate-1', { email: 'jane@example.com' }, 'admin-1'),
+    ).resolves.toEqual(candidate);
   });
 
   it('rejects missing candidates', async () => {
@@ -87,10 +109,20 @@ describe('CandidateService', () => {
       delete: vi.fn().mockResolvedValue(candidate),
       list: vi.fn().mockResolvedValue([candidate]),
     };
-    const service = new CandidateService(repository as any);
+    const auditService = { record: vi.fn().mockResolvedValue({ id: 'audit-1' }) };
+    const service = new CandidateService(repository as any, auditService as any);
 
-    await expect(service.delete('candidate-1')).resolves.toEqual(candidate);
+    await expect(service.delete('candidate-1', 'admin-1')).resolves.toEqual(candidate);
     await expect(service.list({ search: 'Jane' })).resolves.toEqual([candidate]);
     expect(repository.list).toHaveBeenCalledWith('Jane');
+    expect(auditService.record).toHaveBeenCalledWith(
+      expect.objectContaining({
+        actorId: 'admin-1',
+        before: candidate,
+        entityId: 'candidate-1',
+        entityType: 'CANDIDATE',
+        eventType: 'DELETE',
+      }),
+    );
   });
 });

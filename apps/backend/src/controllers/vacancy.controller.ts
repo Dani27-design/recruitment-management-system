@@ -18,19 +18,19 @@ export class VacancyController {
   };
 
   create = async (req: Request, res: Response) => {
-    const vacancy = await this.vacancyService.create(req.body);
+    const vacancy = await this.vacancyService.create(req.body, req.user!.id);
 
     return sendSuccess(res, 201, 'Vacancy created successfully', vacancy);
   };
 
   update = async (req: Request, res: Response) => {
-    const vacancy = await this.vacancyService.update(req.params.id, req.body);
+    const vacancy = await this.vacancyService.update(req.params.id, req.body, req.user!.id);
 
     return sendSuccess(res, 200, 'Vacancy updated successfully', vacancy);
   };
 
   delete = async (req: Request, res: Response) => {
-    const vacancy = await this.vacancyService.delete(req.params.id);
+    const vacancy = await this.vacancyService.delete(req.params.id, req.user!.id);
 
     return sendSuccess(res, 200, 'Vacancy deleted successfully', vacancy);
   };

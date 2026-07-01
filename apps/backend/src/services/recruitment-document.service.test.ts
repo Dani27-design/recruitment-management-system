@@ -47,6 +47,7 @@ describe('RecruitmentDocumentService', () => {
       repository as any,
       { findById: vi.fn().mockResolvedValue({ id: 'recruitment-1' }) } as any,
       storage as any,
+      { record: vi.fn().mockResolvedValue({ id: 'audit-1' }) } as any,
     );
 
     await expect(
@@ -87,6 +88,7 @@ describe('RecruitmentDocumentService', () => {
       repository as any,
       { findById: vi.fn().mockResolvedValue({ id: 'recruitment-1' }) } as any,
       storage as any,
+      { record: vi.fn().mockResolvedValue({ id: 'audit-1' }) } as any,
     );
 
     await expect(
@@ -143,10 +145,12 @@ describe('RecruitmentDocumentService', () => {
       findById: vi.fn().mockResolvedValue(document),
       softDelete: vi.fn().mockResolvedValue({ ...document, deleted_at: new Date() }),
     };
+    const auditService = { record: vi.fn().mockResolvedValue({ id: 'audit-1' }) };
     const service = new RecruitmentDocumentService(
       repository as any,
       { findById: vi.fn().mockResolvedValue({ id: 'recruitment-1' }) } as any,
       {} as any,
+      auditService as any,
     );
 
     await expect(service.softDelete('document-1', admin)).resolves.toEqual(
@@ -155,5 +159,14 @@ describe('RecruitmentDocumentService', () => {
     await expect(service.softDelete('document-1', manager)).rejects.toMatchObject({
       statusCode: 403,
     });
+    expect(auditService.record).toHaveBeenCalledWith(
+      expect.objectContaining({
+        actorId: 'admin-1',
+        before: document,
+        entityId: 'document-1',
+        entityType: 'RECRUITMENT_DOCUMENT',
+        eventType: 'DELETE',
+      }),
+    );
   });
 });
