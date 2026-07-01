@@ -56,8 +56,36 @@ export class RecruitmentRepository {
     });
   }
 
+  findAssignedById(id: string, managerId: string): Promise<RecruitmentWithRelations | null> {
+    return this.db.recruitment.findFirst({
+      where: {
+        id,
+        stages: {
+          some: {
+            assigned_user_id: managerId,
+          },
+        },
+      },
+      include: recruitmentInclude,
+    });
+  }
+
   list(): Promise<RecruitmentWithRelations[]> {
     return this.db.recruitment.findMany({
+      include: recruitmentInclude,
+      orderBy: { created_at: 'desc' },
+    });
+  }
+
+  listAssignedToManager(managerId: string): Promise<RecruitmentWithRelations[]> {
+    return this.db.recruitment.findMany({
+      where: {
+        stages: {
+          some: {
+            assigned_user_id: managerId,
+          },
+        },
+      },
       include: recruitmentInclude,
       orderBy: { created_at: 'desc' },
     });

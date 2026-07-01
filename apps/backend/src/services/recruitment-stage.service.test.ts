@@ -16,6 +16,10 @@ const baseStage = {
   assigned_user: null,
 };
 
+const admin = { id: 'admin-1', email: 'admin@rms.local', role: 'ADMINISTRATOR' as const };
+const manager = { id: 'manager-1', email: 'manager@rms.local', role: 'MANAGER' as const };
+const assignedStage = { ...baseStage, assigned_user_id: 'manager-1' };
+
 describe('RecruitmentStageService', () => {
   beforeEach(() => {
     vi.useRealTimers();
@@ -30,19 +34,37 @@ describe('RecruitmentStageService', () => {
       { findById: vi.fn().mockResolvedValue({ id: 'recruitment-1' }) } as any,
     );
 
-    await expect(service.listByRecruitmentId('recruitment-1')).resolves.toEqual([
+    await expect(service.listByRecruitmentId('recruitment-1', admin)).resolves.toEqual([
       baseStage,
       screeningStage,
     ]);
   });
 
-  it('rejects timeline requests for missing recruitments', async () => {
+  it('filters manager timeline access to assigned recruitments', async () => {
+    const recruitmentRepository = {
+      findAssignedById: vi.fn().mockResolvedValue({ id: 'recruitment-1' }),
+    };
+    const service = new RecruitmentStageService(
+      { listByRecruitmentId: vi.fn().mockResolvedValue([assignedStage]) } as any,
+      recruitmentRepository as any,
+    );
+
+    await expect(service.listByRecruitmentId('recruitment-1', manager)).resolves.toEqual([
+      assignedStage,
+    ]);
+    expect(recruitmentRepository.findAssignedById).toHaveBeenCalledWith(
+      'recruitment-1',
+      'manager-1',
+    );
+  });
+
+  it('rejects timeline requests for missing or unassigned recruitments', async () => {
     const service = new RecruitmentStageService(
       { listByRecruitmentId: vi.fn() } as any,
       { findById: vi.fn().mockResolvedValue(null) } as any,
     );
 
-    await expect(service.listByRecruitmentId('recruitment-1')).rejects.toMatchObject({
+    await expect(service.listByRecruitmentId('recruitment-1', admin)).rejects.toMatchObject({
       statusCode: 404,
     });
   });
@@ -53,13 +75,13 @@ describe('RecruitmentStageService', () => {
     vi.setSystemTime(now);
 
     const repository = {
-      findById: vi.fn().mockResolvedValue(baseStage),
-      listByRecruitmentId: vi.fn().mockResolvedValue([baseStage]),
+      findById: vi.fn().mockResolvedValue(assignedStage),
+      listByRecruitmentId: vi.fn().mockResolvedValue([assignedStage]),
       completeStage: vi.fn().mockResolvedValue({ ...baseStage, status: 'PASSED' }),
     };
     const service = new RecruitmentStageService(repository as any, {} as any);
 
-    await service.updateStatus('stage-1', { status: 'PASSED', notes: 'Move forward' });
+    await service.updateStatus('stage-1', { status: 'PASSED', notes: 'Move forward' }, manager);
 
     expect(repository.completeStage).toHaveBeenCalledWith(
       'stage-1',
@@ -69,7 +91,7 @@ describe('RecruitmentStageService', () => {
         notes: 'Move forward',
       },
       {
-        recruitment_id: 'recruitment-1',
+          recruitment_id: 'recruitment-1',
         stage: 'SCREENING',
         status: 'PENDING',
       },
@@ -96,7 +118,7 @@ describe('RecruitmentStageService', () => {
     };
     const service = new RecruitmentStageService(repository as any, {} as any);
 
-    await service.updateStatus('stage-5', { status: 'PASSED' });
+    await service.updateStatus('stage-5', { status: 'PASSED' }, admin);
 
     expect(repository.completeStage).toHaveBeenCalledWith(
       'stage-1',
@@ -113,7 +135,7 @@ describe('RecruitmentStageService', () => {
     };
     const service = new RecruitmentStageService(repository as any, {} as any);
 
-    await service.updateStatus('stage-1', { status: 'REJECTED' });
+    await service.updateStatus('stage-1', { status: 'REJECTED' }, admin);
 
     expect(repository.completeStage).toHaveBeenCalledWith(
       'stage-1',
@@ -129,7 +151,7 @@ describe('RecruitmentStageService', () => {
     };
     const service = new RecruitmentStageService(repository as any, {} as any);
 
-    await service.updateStatus('stage-1', { notes: 'Updated notes' });
+    await service.updateStatus('stage-1', { notes: 'Updated notes' }, admin);
 
     expect(repository.update).toHaveBeenCalledWith('stage-1', { notes: 'Updated notes' });
   });
@@ -148,9 +170,9 @@ describe('RecruitmentStageService', () => {
       {} as any,
     );
 
-    await expect(service.updateStatus('stage-1', { notes: 'No change' })).rejects.toBeInstanceOf(
-      AppError,
-    );
+    await expect(
+      service.updateStatus('stage-1', { notes: 'No change' }, admin),
+    ).rejects.toBeInstanceOf(AppError);
   });
 
   it('prevents invalid sequence and multiple pending stages', async () => {
@@ -165,7 +187,7 @@ describe('RecruitmentStageService', () => {
     );
 
     await expect(
-      serviceWithMissingPrevious.updateStatus('stage-2', { status: 'PASSED' }),
+      serviceWithMissingPrevious.updateStatus('stage-2', { status: 'PASSED' }, admin),
     ).rejects.toMatchObject({ statusCode: 400 });
 
     const serviceWithDuplicatePending = new RecruitmentStageService(
@@ -180,7 +202,52 @@ describe('RecruitmentStageService', () => {
     );
 
     await expect(
-      serviceWithDuplicatePending.updateStatus('stage-1', { status: 'PASSED' }),
+      serviceWithDuplicatePending.updateStatus('stage-1', { status: 'PASSED' }, admin),
+    ).rejects.toMatchObject({ statusCode: 400 });
+  });
+
+  it('prevents managers from updating stages assigned to other users', async () => {
+    const service = new RecruitmentStageService(
+      {
+        findById: vi.fn().mockResolvedValue({ ...baseStage, assigned_user_id: 'manager-2' }),
+      } as any,
+      {} as any,
+    );
+
+    await expect(
+      service.updateStatus('stage-1', { notes: 'No access' }, manager),
+    ).rejects.toMatchObject({ statusCode: 403 });
+  });
+
+  it('assigns manager users to stages', async () => {
+    const repository = {
+      findById: vi.fn().mockResolvedValue(baseStage),
+      assignManager: vi.fn().mockResolvedValue(assignedStage),
+    };
+    const userRepository = {
+      findById: vi.fn().mockResolvedValue({ id: 'manager-1', role: 'MANAGER' }),
+    };
+    const service = new RecruitmentStageService(
+      repository as any,
+      {} as any,
+      userRepository as any,
+    );
+
+    await expect(
+      service.assignManager('stage-1', { assigned_user_id: 'manager-1' }),
+    ).resolves.toEqual(assignedStage);
+    expect(repository.assignManager).toHaveBeenCalledWith('stage-1', 'manager-1');
+  });
+
+  it('rejects assignment to non-manager users', async () => {
+    const service = new RecruitmentStageService(
+      { findById: vi.fn().mockResolvedValue(baseStage) } as any,
+      {} as any,
+      { findById: vi.fn().mockResolvedValue({ id: 'admin-1', role: 'ADMINISTRATOR' }) } as any,
+    );
+
+    await expect(
+      service.assignManager('stage-1', { assigned_user_id: 'admin-1' }),
     ).rejects.toMatchObject({ statusCode: 400 });
   });
 });

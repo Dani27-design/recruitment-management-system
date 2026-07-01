@@ -15,7 +15,7 @@ describe('RecruitmentController', () => {
     } as any);
     const res = createResponse();
 
-    await controller.list({} as any, res);
+    await controller.list({ user: { id: 'admin-1', role: 'ADMINISTRATOR' } } as any, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
@@ -33,7 +33,10 @@ describe('RecruitmentController', () => {
     };
     const controller = new RecruitmentController(service as any);
 
-    await controller.getById({ params: { id: 'recruitment-1' } } as any, createResponse());
+    await controller.getById(
+      { params: { id: 'recruitment-1' }, user: { id: 'admin-1', role: 'ADMINISTRATOR' } } as any,
+      createResponse(),
+    );
     await controller.create(
       {
         body: { candidate_id: 'candidate-1', vacancy_id: 'vacancy-1' },
@@ -42,7 +45,10 @@ describe('RecruitmentController', () => {
       createResponse(),
     );
 
-    expect(service.getById).toHaveBeenCalledWith('recruitment-1');
+    expect(service.getById).toHaveBeenCalledWith('recruitment-1', {
+      id: 'admin-1',
+      role: 'ADMINISTRATOR',
+    });
     expect(service.create).toHaveBeenCalledWith(
       { candidate_id: 'candidate-1', vacancy_id: 'vacancy-1' },
       'admin-1',

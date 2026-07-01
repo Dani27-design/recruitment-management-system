@@ -14,15 +14,29 @@ const recruitmentController = new RecruitmentController();
 const recruitmentStageController = new RecruitmentStageController();
 
 router.use(authenticate);
-router.use(authorize(USER_ROLES.ADMINISTRATOR));
 
-router.get('/', asyncHandler(recruitmentController.list));
+router.get(
+  '/',
+  authorize(USER_ROLES.ADMINISTRATOR, USER_ROLES.MANAGER),
+  asyncHandler(recruitmentController.list),
+);
 router.get(
   '/:id/stages',
+  authorize(USER_ROLES.ADMINISTRATOR, USER_ROLES.MANAGER),
   validateRequest(recruitmentStageListParamSchema),
   asyncHandler(recruitmentStageController.listByRecruitment),
 );
-router.get('/:id', validateRequest(recruitmentIdParamSchema), asyncHandler(recruitmentController.getById));
-router.post('/', validateRequest(recruitmentCreateSchema), asyncHandler(recruitmentController.create));
+router.get(
+  '/:id',
+  authorize(USER_ROLES.ADMINISTRATOR, USER_ROLES.MANAGER),
+  validateRequest(recruitmentIdParamSchema),
+  asyncHandler(recruitmentController.getById),
+);
+router.post(
+  '/',
+  authorize(USER_ROLES.ADMINISTRATOR),
+  validateRequest(recruitmentCreateSchema),
+  asyncHandler(recruitmentController.create),
+);
 
 export { router as recruitmentRoutes };

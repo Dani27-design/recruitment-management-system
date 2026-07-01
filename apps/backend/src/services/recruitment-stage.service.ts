@@ -4,8 +4,13 @@ import {
   type RecruitmentStageWithAssignee,
 } from '../repositories/recruitment-stage.repository';
 import { RecruitmentRepository } from '../repositories/recruitment.repository';
-import { AppError } from '../utils/app-error';
-import type { RecruitmentStageStatusUpdateInput } from '../validations/recruitment-stage.validation';
+import { UserRepository } from '../repositories/user.repository';
+import type { AuthenticatedUser } from '../types/auth';
+import { AppError, ForbiddenError } from '../utils/app-error';
+import type {
+  RecruitmentStageAssignmentInput,
+  RecruitmentStageStatusUpdateInput,
+} from '../validations/recruitment-stage.validation';
 
 const WORKFLOW_STAGES: RecruitmentStageName[] = [
   'APPLIED',
@@ -19,12 +24,17 @@ export class RecruitmentStageService {
   constructor(
     private readonly recruitmentStageRepository = new RecruitmentStageRepository(),
     private readonly recruitmentRepository = new RecruitmentRepository(),
+    private readonly userRepository = new UserRepository(),
   ) {}
 
   async listByRecruitmentId(
     recruitmentId: string,
+    user: AuthenticatedUser,
   ): Promise<RecruitmentStageWithAssignee[]> {
-    const recruitment = await this.recruitmentRepository.findById(recruitmentId);
+    const recruitment =
+      user.role === 'ADMINISTRATOR'
+        ? await this.recruitmentRepository.findById(recruitmentId)
+        : await this.recruitmentRepository.findAssignedById(recruitmentId, user.id);
 
     if (!recruitment) {
       throw new AppError('Recruitment not found', 404);
@@ -38,12 +48,15 @@ export class RecruitmentStageService {
   async updateStatus(
     stageId: string,
     input: RecruitmentStageStatusUpdateInput,
+    user: AuthenticatedUser,
   ): Promise<RecruitmentStageWithAssignee> {
     const stage = await this.recruitmentStageRepository.findById(stageId);
 
     if (!stage) {
       throw new AppError('Recruitment stage not found', 404);
     }
+
+    this.ensureCanUpdateStage(stage, user);
 
     const stages = await this.recruitmentStageRepository.listByRecruitmentId(stage.recruitment_id);
     const sortedStages = this.sortByWorkflow(stages);
@@ -87,6 +100,25 @@ export class RecruitmentStageService {
     );
   }
 
+  async assignManager(
+    stageId: string,
+    input: RecruitmentStageAssignmentInput,
+  ): Promise<RecruitmentStageWithAssignee> {
+    const stage = await this.recruitmentStageRepository.findById(stageId);
+
+    if (!stage) {
+      throw new AppError('Recruitment stage not found', 404);
+    }
+
+    const manager = await this.userRepository.findById(input.assigned_user_id);
+
+    if (!manager || manager.role !== 'MANAGER') {
+      throw new AppError('Assigned user must be a Manager', 400);
+    }
+
+    return this.recruitmentStageRepository.assignManager(stage.id, manager.id);
+  }
+
   private sortByWorkflow(
     stages: RecruitmentStageWithAssignee[],
   ): RecruitmentStageWithAssignee[] {
@@ -107,6 +139,19 @@ export class RecruitmentStageService {
 
     if (pendingStages.length !== 1 || pendingStages[0]?.id !== stage.id) {
       throw new AppError('Only one active stage is allowed', 400);
+    }
+  }
+
+  private ensureCanUpdateStage(
+    stage: RecruitmentStageWithAssignee,
+    user: AuthenticatedUser,
+  ) {
+    if (user.role === 'ADMINISTRATOR') {
+      return;
+    }
+
+    if (stage.assigned_user_id !== user.id) {
+      throw new ForbiddenError('Managers may only update stages assigned to themselves');
     }
   }
 

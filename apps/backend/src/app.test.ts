@@ -6,6 +6,8 @@ import { signAccessToken } from './utils/jwt';
 vi.mock('./repositories/user.repository', () => ({
   UserRepository: vi.fn().mockImplementation(() => ({
     findByEmail: vi.fn().mockResolvedValue(null),
+    findById: vi.fn().mockResolvedValue(null),
+    findManagers: vi.fn().mockResolvedValue([]),
   })),
 }));
 
@@ -110,7 +112,7 @@ describe('createApp', () => {
     });
   });
 
-  it('blocks managers from recruitment access until assignment rules exist', async () => {
+  it('blocks managers from creating recruitments', async () => {
     const app = createApp();
     const managerToken = signAccessToken({
       id: 'manager-1',
@@ -119,9 +121,9 @@ describe('createApp', () => {
     });
 
     const response = await request(app)
-      .get('/recruitments')
+      .post('/recruitments')
       .set('Authorization', `Bearer ${managerToken}`)
-      .send();
+      .send({});
 
     expect(response.status).toBe(403);
     expect(response.body).toEqual({
@@ -142,7 +144,7 @@ describe('createApp', () => {
     });
   });
 
-  it('blocks managers from workflow updates until assignment rules exist', async () => {
+  it('blocks managers from stage assignment', async () => {
     const app = createApp();
     const managerToken = signAccessToken({
       id: 'manager-1',
@@ -151,12 +153,35 @@ describe('createApp', () => {
     });
 
     const response = await request(app)
-      .patch('/stages/11111111-1111-4111-8111-111111111111/status')
+      .patch('/stages/11111111-1111-4111-8111-111111111111/assignment')
       .set('Authorization', `Bearer ${managerToken}`)
-      .send({ status: 'PASSED' });
+      .send({ assigned_user_id: '11111111-1111-4111-8111-111111111111' });
 
     expect(response.status).toBe(403);
     expect(response.body).toEqual({
+      success: false,
+      message: 'Forbidden',
+    });
+  });
+
+  it('protects manager listing with administrator authorization', async () => {
+    const app = createApp();
+    const managerToken = signAccessToken({
+      id: 'manager-1',
+      email: 'manager@rms.local',
+      role: 'MANAGER',
+    });
+
+    const unauthenticatedResponse = await request(app).get('/users/managers').send();
+    expect(unauthenticatedResponse.status).toBe(401);
+
+    const managerResponse = await request(app)
+      .get('/users/managers')
+      .set('Authorization', `Bearer ${managerToken}`)
+      .send();
+
+    expect(managerResponse.status).toBe(403);
+    expect(managerResponse.body).toEqual({
       success: false,
       message: 'Forbidden',
     });

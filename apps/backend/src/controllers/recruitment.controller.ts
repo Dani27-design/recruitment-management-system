@@ -5,14 +5,14 @@ import { sendSuccess } from '../utils/api-response';
 export class RecruitmentController {
   constructor(private readonly recruitmentService = new RecruitmentService()) {}
 
-  list = async (_req: Request, res: Response) => {
-    const recruitments = await this.recruitmentService.list();
+  list = async (req: Request, res: Response) => {
+    const recruitments = await this.recruitmentService.list(req.user!);
 
     return sendSuccess(res, 200, 'Recruitments retrieved successfully', recruitments);
   };
 
   getById = async (req: Request, res: Response) => {
-    const recruitment = await this.recruitmentService.getById(req.params.id);
+    const recruitment = await this.recruitmentService.getById(req.params.id, req.user!);
 
     return sendSuccess(res, 200, 'Recruitment retrieved successfully', recruitment);
   };

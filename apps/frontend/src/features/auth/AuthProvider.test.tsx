@@ -1,5 +1,5 @@
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
 import { AuthProvider, useAuth } from './AuthProvider';
 
 vi.mock('../../services/auth-service', () => ({
@@ -11,16 +11,20 @@ vi.mock('../../services/auth-service', () => ({
 }));
 
 function TestConsumer() {
-  const { isAuthenticated, login } = useAuth();
+  const { isAuthenticated, login, user } = useAuth();
 
   return (
     <button onClick={() => login({ email: 'admin@rms.local', password: 'Admin@12345' })}>
-      {isAuthenticated ? 'Authenticated' : 'Anonymous'}
+      {isAuthenticated ? user?.role ?? 'Authenticated' : 'Anonymous'}
     </button>
   );
 }
 
 describe('AuthProvider', () => {
+  afterEach(() => {
+    window.localStorage.clear();
+  });
+
   it('updates authentication state after login', async () => {
     render(
       <AuthProvider>
@@ -31,7 +35,22 @@ describe('AuthProvider', () => {
     screen.getByRole('button', { name: 'Anonymous' }).click();
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: 'Authenticated' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'ADMINISTRATOR' })).toBeInTheDocument();
     });
+  });
+
+  it('hydrates the authenticated user from a stored token', () => {
+    const payload = window.btoa(
+      JSON.stringify({ id: 'manager-1', email: 'manager@rms.local', role: 'MANAGER' }),
+    );
+    window.localStorage.setItem('rms_access_token', `header.${payload}.signature`);
+
+    render(
+      <AuthProvider>
+        <TestConsumer />
+      </AuthProvider>,
+    );
+
+    expect(screen.getByRole('button', { name: 'MANAGER' })).toBeInTheDocument();
   });
 });

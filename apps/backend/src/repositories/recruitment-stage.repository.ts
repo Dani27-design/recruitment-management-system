@@ -28,6 +28,7 @@ type RecruitmentStageUpdateInput = {
   status?: Prisma.RecruitmentStageUpdateInput['status'];
   completed_at?: Date | null;
   notes?: string | null;
+  assigned_user_id?: string | null;
 };
 
 export class RecruitmentStageRepository {
@@ -63,6 +64,12 @@ export class RecruitmentStageRepository {
       where: { id },
       data,
       include: recruitmentStageInclude,
+    });
+  }
+
+  assignManager(id: string, assignedUserId: string): Promise<RecruitmentStageWithAssignee> {
+    return this.update(id, {
+      assigned_user_id: assignedUserId,
     });
   }
 

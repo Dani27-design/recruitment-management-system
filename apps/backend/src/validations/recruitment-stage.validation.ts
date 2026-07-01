@@ -22,6 +22,19 @@ export const recruitmentStageStatusUpdateSchema = z.object({
     }),
 });
 
+export const recruitmentStageAssignmentSchema = z.object({
+  params: z.object({
+    id: z.string().uuid(),
+  }),
+  body: z.object({
+    assigned_user_id: z.string().uuid(),
+  }),
+});
+
 export type RecruitmentStageStatusUpdateInput = z.infer<
   typeof recruitmentStageStatusUpdateSchema
+>['body'];
+
+export type RecruitmentStageAssignmentInput = z.infer<
+  typeof recruitmentStageAssignmentSchema
 >['body'];

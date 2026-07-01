@@ -77,6 +77,7 @@ describe('RecruitmentService', () => {
 
   it('gets and lists recruitments', async () => {
     const recruitment = { id: 'recruitment-1' };
+    const admin = { id: 'admin-1', email: 'admin@rms.local', role: 'ADMINISTRATOR' as const };
     const service = new RecruitmentService(
       {
         findById: vi.fn().mockResolvedValue(recruitment),
@@ -86,7 +87,25 @@ describe('RecruitmentService', () => {
       {} as any,
     );
 
-    await expect(service.getById('recruitment-1')).resolves.toEqual(recruitment);
-    await expect(service.list()).resolves.toEqual([recruitment]);
+    await expect(service.getById('recruitment-1', admin)).resolves.toEqual(recruitment);
+    await expect(service.list(admin)).resolves.toEqual([recruitment]);
+  });
+
+  it('filters manager recruitment access to assigned recruitments', async () => {
+    const recruitment = { id: 'recruitment-1' };
+    const manager = { id: 'manager-1', email: 'manager@rms.local', role: 'MANAGER' as const };
+    const recruitmentRepository = {
+      findAssignedById: vi.fn().mockResolvedValue(recruitment),
+      listAssignedToManager: vi.fn().mockResolvedValue([recruitment]),
+    };
+    const service = new RecruitmentService(recruitmentRepository as any, {} as any, {} as any);
+
+    await expect(service.getById('recruitment-1', manager)).resolves.toEqual(recruitment);
+    await expect(service.list(manager)).resolves.toEqual([recruitment]);
+    expect(recruitmentRepository.findAssignedById).toHaveBeenCalledWith(
+      'recruitment-1',
+      'manager-1',
+    );
+    expect(recruitmentRepository.listAssignedToManager).toHaveBeenCalledWith('manager-1');
   });
 });

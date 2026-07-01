@@ -47,4 +47,24 @@ describe('recruitment-stage-service', () => {
       notes: 'Move forward',
     });
   });
+
+  it('assigns managers through the assignment endpoint', async () => {
+    const { http } = await import('../api/http');
+    const { assignRecruitmentStageManager } = await import('./recruitment-stage-service');
+    vi.mocked(http.patch).mockResolvedValue({
+      data: {
+        success: true,
+        message: 'OK',
+        data: { ...stage, assigned_user_id: 'manager-1' },
+      },
+    });
+
+    await expect(assignRecruitmentStageManager('stage-1', 'manager-1')).resolves.toEqual({
+      ...stage,
+      assigned_user_id: 'manager-1',
+    });
+    expect(http.patch).toHaveBeenCalledWith('/stages/stage-1/assignment', {
+      assigned_user_id: 'manager-1',
+    });
+  });
 });

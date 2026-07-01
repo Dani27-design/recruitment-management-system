@@ -21,7 +21,7 @@ describe('StageCard', () => {
     const user = userEvent.setup();
     const onUpdate = vi.fn();
 
-    render(<StageCard stage={stage} onUpdate={onUpdate} />);
+    render(<StageCard stage={stage} canUpdate onUpdate={onUpdate} />);
 
     await user.type(screen.getByLabelText('Notes'), 'Ready');
     await user.click(screen.getByRole('button', { name: 'Mark passed' }));
@@ -45,5 +45,32 @@ describe('StageCard', () => {
     );
 
     expect(screen.queryByRole('button', { name: 'Mark passed' })).not.toBeInTheDocument();
+  });
+
+  it('submits manager assignment when assignment is allowed', async () => {
+    const user = userEvent.setup();
+    const onAssign = vi.fn();
+
+    render(
+      <StageCard
+        stage={stage}
+        canAssign
+        managers={[{ id: 'manager-1', email: 'manager@rms.local', role: 'MANAGER' }]}
+        onAssign={onAssign}
+        onUpdate={vi.fn()}
+      />,
+    );
+
+    await user.selectOptions(screen.getByLabelText('Assigned manager'), 'manager-1');
+    await user.click(screen.getByRole('button', { name: 'Assign' }));
+
+    expect(onAssign).toHaveBeenCalledWith('stage-1', 'manager-1');
+  });
+
+  it('hides active stage controls when users cannot update the stage', () => {
+    render(<StageCard stage={stage} canUpdate={false} onUpdate={vi.fn()} />);
+
+    expect(screen.queryByRole('button', { name: 'Mark passed' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Save notes' })).not.toBeInTheDocument();
   });
 });

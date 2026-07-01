@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  recruitmentStageAssignmentSchema,
   recruitmentStageListParamSchema,
   recruitmentStageStatusUpdateSchema,
 } from './recruitment-stage.validation';
@@ -36,6 +37,22 @@ describe('recruitment-stage.validation', () => {
       recruitmentStageStatusUpdateSchema.parse({
         params: { id: uuid },
         body: {},
+      }),
+    ).toThrow();
+  });
+
+  it('validates stage assignment input', () => {
+    expect(() =>
+      recruitmentStageAssignmentSchema.parse({
+        params: { id: uuid },
+        body: { assigned_user_id: uuid },
+      }),
+    ).not.toThrow();
+
+    expect(() =>
+      recruitmentStageAssignmentSchema.parse({
+        params: { id: uuid },
+        body: { assigned_user_id: 'not-a-uuid' },
       }),
     ).toThrow();
   });

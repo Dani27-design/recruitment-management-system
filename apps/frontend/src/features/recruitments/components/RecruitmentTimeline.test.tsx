@@ -6,6 +6,7 @@ describe('RecruitmentTimeline', () => {
   it('renders stage cards in the timeline', () => {
     render(
       <RecruitmentTimeline
+        currentUser={{ id: 'admin-1', email: 'admin@rms.local', role: 'ADMINISTRATOR' }}
         stages={[
           {
             id: 'stage-1',

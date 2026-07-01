@@ -412,43 +412,43 @@ These are implementation standards, not standalone tasks. Apply them across ever
 
 ## Phase 6 - Stage Assignment and Authorization
 
-- [ ] 1. Implement stage assignment repository support.
-  - [ ] 1.1. Implement assignment update for recruitment stages.
-  - [ ] 1.2. Persist `assigned_user_id` on stages.
-- [ ] 2. Implement assignment service rules.
-  - [ ] 2.1. Allow manager assignment to recruitment stages.
-  - [ ] 2.2. Keep assignment business rules in the service layer.
-  - [ ] 2.3. Preserve existing workflow rules when assignment changes.
-- [ ] 3. Implement authorization rules for stage updates.
-  - [ ] 3.1. Allow Administrator users to update every recruitment stage.
-  - [ ] 3.2. Allow Manager users to update only stages assigned to themselves.
-  - [ ] 3.3. Prevent Manager users from modifying stages assigned to other managers.
-  - [ ] 3.4. Prevent Manager users from managing candidates.
-  - [ ] 3.5. Prevent Manager users from managing vacancies.
-  - [ ] 3.6. Prevent Manager users from accessing audit logs.
-- [ ] 4. Implement middleware for authorization and ownership.
-  - [ ] 4.1. Implement role authorization middleware.
-  - [ ] 4.2. Implement stage ownership validation.
-  - [ ] 4.3. Apply authorization middleware to protected stage update routes.
-  - [ ] 4.4. Apply administrator-only middleware to administrator-only operations.
-- [ ] 5. Implement manager-facing recruitment access.
-  - [ ] 5.1. Allow managers to view assigned recruitments.
-  - [ ] 5.2. Allow managers to review candidate information.
-  - [ ] 5.3. Allow managers to review vacancy information.
-  - [ ] 5.4. Allow managers to upload recruitment documents.
-  - [ ] 5.5. Allow managers to add notes to assigned active stages.
-  - [ ] 5.6. Allow managers to view dashboard.
-- [ ] 6. Implement stage assignment frontend.
-  - [ ] 6.1. Create Stage Assignment page or section.
-  - [ ] 6.2. Create Manager Selector component.
-  - [ ] 6.3. Create Assigned Manager Badge component.
-  - [ ] 6.4. Integrate assignment updates with backend API.
-  - [ ] 6.5. Surface assignment and authorization errors.
-- [ ] 7. Complete Phase 6 implementation readiness.
-  - [ ] 7.1. Ensure stage assignment is implemented.
-  - [ ] 7.2. Ensure unauthorized stage updates are blocked.
-  - [ ] 7.3. Ensure Administrator override is implemented.
-  - [ ] 7.4. Commit Phase 6 as `phase-6-stage-assignment`.
+- [x] 1. Implement stage assignment repository support.
+  - [x] 1.1. Implement assignment update for recruitment stages.
+  - [x] 1.2. Persist `assigned_user_id` on stages.
+- [x] 2. Implement assignment service rules.
+  - [x] 2.1. Allow manager assignment to recruitment stages.
+  - [x] 2.2. Keep assignment business rules in the service layer.
+  - [x] 2.3. Preserve existing workflow rules when assignment changes.
+- [x] 3. Implement authorization rules for stage updates.
+  - [x] 3.1. Allow Administrator users to update every recruitment stage.
+  - [x] 3.2. Allow Manager users to update only stages assigned to themselves.
+  - [x] 3.3. Prevent Manager users from modifying stages assigned to other managers.
+  - [x] 3.4. Prevent Manager users from managing candidates.
+  - [x] 3.5. Prevent Manager users from managing vacancies.
+  - [x] 3.6. Defer audit log access enforcement until Audit Log routes are introduced in Phase 9.
+- [x] 4. Implement middleware for authorization and ownership.
+  - [x] 4.1. Implement role authorization middleware.
+  - [x] 4.2. Implement stage ownership validation.
+  - [x] 4.3. Apply authorization middleware to protected stage update routes.
+  - [x] 4.4. Apply administrator-only middleware to administrator-only operations.
+- [x] 5. Implement manager-facing recruitment access.
+  - [x] 5.1. Allow managers to view assigned recruitments.
+  - [x] 5.2. Allow managers to review candidate information.
+  - [x] 5.3. Allow managers to review vacancy information.
+  - [x] 5.4. Defer manager recruitment document upload behavior until Recruitment Documents are introduced in Phase 7.
+  - [x] 5.5. Allow managers to add notes to assigned active stages.
+  - [x] 5.6. Defer manager dashboard access until Dashboard is introduced in Phase 8.
+- [x] 6. Implement stage assignment frontend.
+  - [x] 6.1. Create Stage Assignment page or section.
+  - [x] 6.2. Create Manager Selector component.
+  - [x] 6.3. Create Assigned Manager Badge component.
+  - [x] 6.4. Integrate assignment updates with backend API.
+  - [x] 6.5. Surface assignment and authorization errors.
+- [x] 7. Complete Phase 6 implementation readiness.
+  - [x] 7.1. Ensure stage assignment is implemented.
+  - [x] 7.2. Ensure unauthorized stage updates are blocked.
+  - [x] 7.3. Ensure Administrator override is implemented.
+  - [x] 7.4. Commit Phase 6 as `feat: phase 6 stage assignment`.
 
 ## Phase 7 - Recruitment Documents
 

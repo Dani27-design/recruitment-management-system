@@ -8,6 +8,12 @@ vi.mock('../layouts/AppLayout', () => ({
   AppLayout: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
+vi.mock('../features/auth/AuthProvider', () => ({
+  useAuth: () => ({
+    user: { id: 'admin-1', email: 'admin@rms.local', role: 'ADMINISTRATOR' },
+  }),
+}));
+
 vi.mock('../services/recruitment-service', () => ({
   listRecruitments: vi.fn().mockResolvedValue([
     {

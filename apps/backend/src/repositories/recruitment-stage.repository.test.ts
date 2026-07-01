@@ -28,6 +28,10 @@ describe('RecruitmentStageRepository', () => {
       id: 'stage-1',
       notes: 'Updated',
     });
+    await expect(repository.assignManager('stage-1', 'manager-1')).resolves.toEqual({
+      id: 'stage-1',
+      notes: 'Updated',
+    });
 
     expect(db.recruitmentStage.findMany).toHaveBeenCalledWith(
       expect.objectContaining({

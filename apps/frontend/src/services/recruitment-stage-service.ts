@@ -26,3 +26,15 @@ export async function updateRecruitmentStage(
 
   return response.data.data;
 }
+
+export async function assignRecruitmentStageManager(
+  stageId: string,
+  assignedUserId: string,
+): Promise<RecruitmentStage> {
+  const response = await http.patch<ApiResponse<RecruitmentStage>>(
+    `/stages/${stageId}/assignment`,
+    { assigned_user_id: assignedUserId },
+  );
+
+  return response.data.data;
+}

@@ -1,9 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../features/auth/AuthProvider';
 import { AppLayout } from '../layouts/AppLayout';
 import { listRecruitments } from '../services/recruitment-service';
 
 export function RecruitmentListPage() {
+  const { user } = useAuth();
+  const canCreate = user?.role === 'ADMINISTRATOR';
   const recruitmentsQuery = useQuery({
     queryKey: ['recruitments'],
     queryFn: listRecruitments,
@@ -16,12 +19,14 @@ export function RecruitmentListPage() {
           <h2 className="text-2xl font-semibold text-slate-950">Recruitments</h2>
           <p className="mt-1 text-sm text-slate-600">Track candidate applications to vacancies.</p>
         </div>
-        <Link
-          className="rounded bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
-          to="/recruitments/new"
-        >
-          Create Recruitment
-        </Link>
+        {canCreate ? (
+          <Link
+            className="rounded bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+            to="/recruitments/new"
+          >
+            Create Recruitment
+          </Link>
+        ) : null}
       </div>
 
       {recruitmentsQuery.isLoading ? <p className="text-slate-600">Loading recruitments...</p> : null}
@@ -52,7 +57,13 @@ export function RecruitmentListPage() {
                     {recruitment.vacancy.position_name}
                   </td>
                   <td className="px-4 py-3 text-sm text-slate-700">
-                    {recruitment.stages[0]?.stage ?? '-'} / {recruitment.stages[0]?.status ?? '-'}
+                    {recruitment.stages.find((stage) => stage.status === 'PENDING')?.stage ??
+                      recruitment.stages.at(-1)?.stage ??
+                      '-'}{' '}
+                    /{' '}
+                    {recruitment.stages.find((stage) => stage.status === 'PENDING')?.status ??
+                      recruitment.stages.at(-1)?.status ??
+                      '-'}
                   </td>
                   <td className="px-4 py-3 text-sm">
                     <Link className="font-medium text-slate-900 underline" to={`/recruitments/${recruitment.id}`}>

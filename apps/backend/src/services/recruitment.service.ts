@@ -1,6 +1,7 @@
 import { CandidateRepository } from '../repositories/candidate.repository';
 import { RecruitmentRepository, type RecruitmentWithRelations } from '../repositories/recruitment.repository';
 import { VacancyRepository } from '../repositories/vacancy.repository';
+import type { AuthenticatedUser } from '../types/auth';
 import { AppError } from '../utils/app-error';
 import type { RecruitmentCreateInput } from '../validations/recruitment.validation';
 
@@ -34,8 +35,11 @@ export class RecruitmentService {
     return this.recruitmentRepository.create(input, createdBy);
   }
 
-  async getById(id: string): Promise<RecruitmentWithRelations> {
-    const recruitment = await this.recruitmentRepository.findById(id);
+  async getById(id: string, user: AuthenticatedUser): Promise<RecruitmentWithRelations> {
+    const recruitment =
+      user.role === 'ADMINISTRATOR'
+        ? await this.recruitmentRepository.findById(id)
+        : await this.recruitmentRepository.findAssignedById(id, user.id);
 
     if (!recruitment) {
       throw new AppError('Recruitment not found', 404);
@@ -44,7 +48,11 @@ export class RecruitmentService {
     return recruitment;
   }
 
-  list(): Promise<RecruitmentWithRelations[]> {
-    return this.recruitmentRepository.list();
+  list(user: AuthenticatedUser): Promise<RecruitmentWithRelations[]> {
+    if (user.role === 'ADMINISTRATOR') {
+      return this.recruitmentRepository.list();
+    }
+
+    return this.recruitmentRepository.listAssignedToManager(user.id);
   }
 }

@@ -6,6 +6,7 @@ import { authRoutes } from './routes/auth.routes';
 import { candidateRoutes } from './routes/candidate.routes';
 import { recruitmentStageRoutes } from './routes/recruitment-stage.routes';
 import { recruitmentRoutes } from './routes/recruitment.routes';
+import { userRoutes } from './routes/user.routes';
 import { vacancyRoutes } from './routes/vacancy.routes';
 import { errorHandler } from './middlewares/error-handler';
 
@@ -25,6 +26,7 @@ export function createApp() {
   app.use('/candidates', candidateRoutes);
   app.use('/recruitments', recruitmentRoutes);
   app.use('/stages', recruitmentStageRoutes);
+  app.use('/users', userRoutes);
   app.use('/vacancies', vacancyRoutes);
 
   app.use(errorHandler);

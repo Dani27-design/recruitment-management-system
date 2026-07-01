@@ -50,20 +50,40 @@ describe('RecruitmentRepository', () => {
 
   it('finds and lists recruitments with relations', async () => {
     const findUnique = vi.fn().mockResolvedValue({ id: 'recruitment-1' });
+    const findFirst = vi.fn().mockResolvedValue({ id: 'recruitment-1' });
     const findMany = vi.fn().mockResolvedValue([{ id: 'recruitment-1' }]);
     const repository = new RecruitmentRepository({
       recruitment: {
         findUnique,
+        findFirst,
         findMany,
       },
     } as any);
 
     await expect(repository.findById('recruitment-1')).resolves.toEqual({ id: 'recruitment-1' });
+    await expect(repository.findAssignedById('recruitment-1', 'manager-1')).resolves.toEqual({
+      id: 'recruitment-1',
+    });
     await expect(repository.list()).resolves.toEqual([{ id: 'recruitment-1' }]);
+    await expect(repository.listAssignedToManager('manager-1')).resolves.toEqual([
+      { id: 'recruitment-1' },
+    ]);
 
     expect(findUnique).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { id: 'recruitment-1' },
+      }),
+    );
+    expect(findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          id: 'recruitment-1',
+          stages: {
+            some: {
+              assigned_user_id: 'manager-1',
+            },
+          },
+        },
       }),
     );
     expect(findMany).toHaveBeenCalledWith(

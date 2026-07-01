@@ -1,12 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, useParams } from 'react-router-dom';
+import { useAuth } from '../features/auth/AuthProvider';
 import { RecruitmentTimeline } from '../features/recruitments/components/RecruitmentTimeline';
 import { AppLayout } from '../layouts/AppLayout';
 import { getRecruitment } from '../services/recruitment-service';
 import {
+  assignRecruitmentStageManager,
   listRecruitmentStages,
   updateRecruitmentStage,
 } from '../services/recruitment-stage-service';
+import { listManagers } from '../services/user-service';
 import type { RecruitmentStageUpdateInput } from '../types/recruitment';
 
 interface StageMutationInput {
@@ -16,6 +19,7 @@ interface StageMutationInput {
 
 export function RecruitmentDetailPage() {
   const { id } = useParams<{ id: string }>();
+  const { user } = useAuth();
   const queryClient = useQueryClient();
   const recruitmentQuery = useQuery({
     queryKey: ['recruitment', id],
@@ -27,8 +31,21 @@ export function RecruitmentDetailPage() {
     queryFn: () => listRecruitmentStages(id!),
     enabled: Boolean(id),
   });
+  const managersQuery = useQuery({
+    queryKey: ['managers'],
+    queryFn: listManagers,
+    enabled: user?.role === 'ADMINISTRATOR',
+  });
   const updateStageMutation = useMutation({
     mutationFn: ({ stageId, input }: StageMutationInput) => updateRecruitmentStage(stageId, input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['recruitment', id] });
+      queryClient.invalidateQueries({ queryKey: ['recruitment-stages', id] });
+    },
+  });
+  const assignStageMutation = useMutation({
+    mutationFn: ({ stageId, managerId }: { stageId: string; managerId: string }) =>
+      assignRecruitmentStageManager(stageId, managerId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['recruitment', id] });
       queryClient.invalidateQueries({ queryKey: ['recruitment-stages', id] });
@@ -67,13 +84,17 @@ export function RecruitmentDetailPage() {
             </div>
           </dl>
           {stagesQuery.isLoading ? <p className="mt-4 text-slate-600">Loading timeline...</p> : null}
-          {stagesQuery.isError || updateStageMutation.isError ? (
+          {stagesQuery.isError || updateStageMutation.isError || assignStageMutation.isError ? (
             <p className="mt-4 text-red-600">Unable to update recruitment timeline.</p>
           ) : null}
           {stagesQuery.data ? (
             <RecruitmentTimeline
               stages={stagesQuery.data}
+              currentUser={user}
+              managers={managersQuery.data ?? []}
+              isAssigning={assignStageMutation.isPending}
               isUpdating={updateStageMutation.isPending}
+              onAssign={(stageId, managerId) => assignStageMutation.mutate({ stageId, managerId })}
               onUpdate={(stageId, input) => updateStageMutation.mutate({ stageId, input })}
             />
           ) : null}
