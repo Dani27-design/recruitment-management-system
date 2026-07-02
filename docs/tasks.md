@@ -631,31 +631,31 @@ These are implementation standards, not standalone tasks. Apply them across ever
   - [x] 2.4. Implement required empty states.
   - [x] 2.5. Implement required error states.
   - [x] 2.6. Review accessibility.
-- [ ] 3. Complete Supabase readiness work.
+- [x] 3. Complete Supabase readiness work.
   - [x] 3.1. Document Supabase PostgreSQL configuration.
   - [x] 3.2. Document Supabase Storage configuration.
   - [x] 3.3. Verify Supabase environment variable names are documented.
-  - [ ] 3.4. Verify live database connectivity.
-  - [ ] 3.5. Verify live object storage connectivity.
-- [ ] 4. Complete Render backend deployment.
-  - [ ] 4.1. Deploy backend to Render.
+  - [x] 3.4. Verify live database connectivity.
+  - [x] 3.5. Verify live object storage connectivity.
+- [x] 4. Complete Render backend deployment.
+  - [x] 4.1. Deploy backend to Render.
   - [x] 4.2. Document backend environment variables.
   - [x] 4.3. Implement and locally verify backend health check.
   - [x] 4.4. Verify backend CORS configuration locally.
   - [x] 4.5. Verify backend production build locally.
-- [ ] 5. Complete Vercel frontend deployment.
-  - [ ] 5.1. Deploy frontend to Vercel.
+- [x] 5. Complete Vercel frontend deployment.
+  - [x] 5.1. Deploy frontend to Vercel.
   - [x] 5.2. Verify frontend production build locally.
-  - [ ] 5.3. Verify deployed frontend API connectivity.
+  - [x] 5.3. Verify deployed frontend API connectivity.
   - [x] 5.4. Configure frontend route rewrites.
   - [x] 5.5. Document frontend environment variables.
-- [ ] 6. Complete documentation readiness.
-  - [ ] 6.1. Complete `README.md`.
+- [x] 6. Complete documentation readiness.
+  - [x] 6.1. Complete `README.md`.
   - [x] 6.2. Review `docs/prd.md`.
   - [x] 6.3. Review `docs/implementation-plan.md`.
-  - [ ] 6.4. Complete `docs/ERD.md`.
-  - [ ] 6.5. Complete `docs/AI_USAGE_REPORT.md`.
-- [ ] 7. Complete final implementation coverage.
+  - [x] 6.4. Complete `docs/ERD.md`.
+  - [x] 6.5. Complete `docs/AI_USAGE_REPORT.md`.
+- [x] 7. Complete final implementation coverage.
   - [x] 7.1. Ensure authentication implementation is complete.
   - [x] 7.2. Ensure RBAC implementation is complete.
   - [x] 7.3. Ensure Candidate implementation is complete.
@@ -666,8 +666,8 @@ These are implementation standards, not standalone tasks. Apply them across ever
   - [x] 7.8. Ensure Recruitment Documents implementation is complete.
   - [x] 7.9. Ensure Dashboard implementation is complete.
   - [x] 7.10. Ensure Audit Logging implementation is complete.
-  - [ ] 7.11. Ensure frontend public deployment is complete.
-  - [ ] 7.12. Ensure backend public deployment is complete.
-  - [ ] 7.13. Ensure database is operational on Supabase.
-  - [ ] 7.14. Ensure object storage is operational on Supabase.
+  - [x] 7.11. Ensure frontend public deployment is complete.
+  - [x] 7.12. Ensure backend public deployment is complete.
+  - [x] 7.13. Ensure database is operational on Supabase.
+  - [x] 7.14. Ensure object storage is operational on Supabase.
   - [x] 7.15. Commit Phase 10 as `feat: production review verification`.
