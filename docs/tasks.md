@@ -639,6 +639,9 @@ These are implementation standards, not standalone tasks. Apply them across ever
   - [x] 2.8. Apply consistent table, card, button, form, alert, badge, and dialog styling.
   - [x] 2.9. Improve dashboard, list, detail, workflow, document, audit, and authentication UI presentation.
   - [x] 2.10. Keep recruitment document action visibility aligned with Administrator and Manager permissions.
+  - [x] 2.11. Replace clipped mobile horizontal navigation with a mobile drawer navigation.
+  - [x] 2.12. Remove desktop app shell width constraint so the layout fills the viewport professionally.
+  - [x] 2.13. Tighten dashboard statistic and summary panel density for mobile, tablet, and desktop layouts.
 - [x] 3. Complete Supabase readiness work.
   - [x] 3.1. Document Supabase PostgreSQL configuration.
   - [x] 3.2. Document Supabase Storage configuration.

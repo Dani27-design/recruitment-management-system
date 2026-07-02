@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -36,6 +37,29 @@ describe('AppLayout', () => {
     expect(screen.getAllByText('Audit Logs').length).toBeGreaterThan(0);
     expect(screen.getByRole('button', { name: 'Logout' })).toBeInTheDocument();
     expect(screen.getByText('Protected content')).toBeInTheDocument();
+  });
+
+  it('opens and closes mobile drawer navigation', async () => {
+    const user = userEvent.setup();
+    const { AppLayout } = await import('./AppLayout');
+
+    render(
+      <MemoryRouter>
+        <AppLayout>
+          <p>Protected content</p>
+        </AppLayout>
+      </MemoryRouter>,
+    );
+
+    expect(screen.queryByRole('navigation', { name: 'Mobile navigation' })).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Open navigation' }));
+
+    expect(screen.getByRole('navigation', { name: 'Mobile navigation' })).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Close' }));
+
+    expect(screen.queryByRole('navigation', { name: 'Mobile navigation' })).not.toBeInTheDocument();
   });
 
   it('hides audit logs navigation from managers', async () => {

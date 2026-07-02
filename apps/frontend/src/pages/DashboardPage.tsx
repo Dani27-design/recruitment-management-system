@@ -36,12 +36,11 @@ export function DashboardPage() {
   return (
     <AppLayout>
       <section>
-        <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div className="mb-5">
           <div>
             <h2 className="page-title">Dashboard</h2>
             <p className="page-description">Recruitment summary information.</p>
           </div>
-          <p className="text-sm font-medium text-slate-500">Operational snapshot</p>
         </div>
 
         {dashboardQuery.isLoading ? (
@@ -56,11 +55,9 @@ export function DashboardPage() {
             {summary.total_candidates === 0 &&
             summary.total_active_vacancies === 0 &&
             summary.total_recruitments === 0 ? (
-              <p className="empty-state mb-4">
-                No dashboard data available.
-              </p>
+              <p className="empty-state mb-4">No dashboard data available.</p>
             ) : null}
-            <dl className="grid gap-4 sm:grid-cols-3">
+            <dl className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
               <StatisticCard label="Total Candidates" value={summary.total_candidates} />
               <StatisticCard
                 label="Total Active Vacancies"
@@ -68,7 +65,7 @@ export function DashboardPage() {
               />
               <StatisticCard label="Total Recruitments" value={summary.total_recruitments} />
             </dl>
-            <div className="mt-6 grid gap-4 lg:grid-cols-2">
+            <div className="mt-4 grid gap-4 xl:grid-cols-2">
               <SummaryPanel
                 title="Recruitment Count by Current Stage"
                 items={toSummaryItems(

@@ -934,6 +934,8 @@ Prepare the application for final delivery.
 * Responsive validation
 * UI consistency review
 * Professional internal dashboard layout
+* Responsive full-width application shell with mobile drawer navigation
+* Compact dashboard density across mobile, tablet, and desktop
 * Shared table, card, button, form, and alert styling
 * Role-aware document action presentation
 * Loading states
