@@ -41,7 +41,7 @@ router.get(
 );
 router.post(
   '/:id/documents',
-  authorize(USER_ROLES.ADMINISTRATOR, USER_ROLES.MANAGER),
+  authorize(USER_ROLES.ADMINISTRATOR),
   uploadDocumentFile.single('file'),
   validateRequest(recruitmentDocumentUploadSchema),
   asyncHandler(recruitmentDocumentController.upload),

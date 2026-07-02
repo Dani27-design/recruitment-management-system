@@ -2,10 +2,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { RecruitmentDetailPage } from './RecruitmentDetailPage';
 
 const mocks = vi.hoisted(() => ({
+  currentUser: { id: 'admin-1', email: 'admin@rms.local', role: 'ADMINISTRATOR' },
   assignRecruitmentStageManager: vi.fn().mockResolvedValue({
     id: 'stage-1',
     assigned_user_id: 'manager-1',
@@ -43,7 +44,7 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock('../features/auth/AuthProvider', () => ({
   useAuth: () => ({
-    user: { id: 'admin-1', email: 'admin@rms.local', role: 'ADMINISTRATOR' },
+    user: mocks.currentUser,
   }),
 }));
 
@@ -106,6 +107,11 @@ vi.mock('../services/user-service', () => ({
 }));
 
 describe('RecruitmentDetailPage', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mocks.currentUser = { id: 'admin-1', email: 'admin@rms.local', role: 'ADMINISTRATOR' };
+  });
+
   it('renders recruitment detail timeline and document workflow', async () => {
     const user = userEvent.setup();
     const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
@@ -150,5 +156,37 @@ describe('RecruitmentDetailPage', () => {
     expect(mocks.createRecruitmentDocumentDownloadUrl).toHaveBeenCalledWith('document-1');
     expect(openSpy).toHaveBeenCalledWith('https://signed.local', '_blank', 'noopener,noreferrer');
     expect(mocks.deleteRecruitmentDocument).toHaveBeenCalledWith('document-1');
+  });
+
+  it('limits managers to viewing and downloading recruitment documents', async () => {
+    mocks.currentUser = { id: 'manager-1', email: 'manager@rms.local', role: 'MANAGER' };
+    const user = userEvent.setup();
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter initialEntries={['/recruitments/recruitment-1']}>
+          <Routes>
+            <Route path="/recruitments/:id" element={<RecruitmentDetailPage />} />
+          </Routes>
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    expect(await screen.findByText('Recruitment Documents')).toBeInTheDocument();
+    expect(await screen.findByText('cv.pdf')).toBeInTheDocument();
+    expect(screen.queryByLabelText('File')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Upload' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Delete' })).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Download' }));
+
+    expect(mocks.uploadRecruitmentDocument).not.toHaveBeenCalled();
+    expect(mocks.deleteRecruitmentDocument).not.toHaveBeenCalled();
+    expect(mocks.createRecruitmentDocumentDownloadUrl).toHaveBeenCalledWith('document-1');
+    expect(openSpy).toHaveBeenCalledWith('https://signed.local', '_blank', 'noopener,noreferrer');
   });
 });

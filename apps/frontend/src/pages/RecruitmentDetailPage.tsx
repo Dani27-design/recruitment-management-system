@@ -83,7 +83,7 @@ export function RecruitmentDetailPage() {
       queryClient.invalidateQueries({ queryKey: ['recruitment-documents', id] });
     },
   });
-  const canUploadDocuments = user?.role === 'ADMINISTRATOR' || user?.role === 'MANAGER';
+  const canUploadDocuments = user?.role === 'ADMINISTRATOR';
   const canDeleteDocuments = user?.role === 'ADMINISTRATOR';
 
   return (

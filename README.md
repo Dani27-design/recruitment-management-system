@@ -264,8 +264,8 @@ Recruitments:
 - `GET /recruitments/:id` - get recruitment detail. Administrator and Manager.
 - `POST /recruitments` - create recruitment. Administrator only.
 - `GET /recruitments/:id/stages` - list recruitment stages.
-- `GET /recruitments/:id/documents` - list recruitment documents.
-- `POST /recruitments/:id/documents` - upload recruitment document using multipart field `file`.
+- `GET /recruitments/:id/documents` - list recruitment documents. Administrator and Manager.
+- `POST /recruitments/:id/documents` - upload recruitment document using multipart field `file`. Administrator only.
 
 Stages:
 

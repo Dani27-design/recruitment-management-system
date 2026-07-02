@@ -230,6 +230,36 @@ describe('createApp', () => {
     expect(downloadResponse.status).toBe(401);
   });
 
+  it('limits managers to view and download recruitment documents', async () => {
+    const app = createApp();
+    const managerToken = signAccessToken({
+      id: 'manager-1',
+      email: 'manager@rms.local',
+      role: 'MANAGER',
+    });
+
+    const listResponse = await request(app)
+      .get('/recruitments/invalid/documents')
+      .set('Authorization', `Bearer ${managerToken}`)
+      .send();
+    const downloadResponse = await request(app)
+      .get('/documents/invalid/download')
+      .set('Authorization', `Bearer ${managerToken}`)
+      .send();
+    const uploadResponse = await request(app)
+      .post('/recruitments/11111111-1111-4111-8111-111111111111/documents')
+      .set('Authorization', `Bearer ${managerToken}`)
+      .send({ document_type: 'CV' });
+
+    expect(listResponse.status).not.toBe(403);
+    expect(downloadResponse.status).not.toBe(403);
+    expect(uploadResponse.status).toBe(403);
+    expect(uploadResponse.body).toEqual({
+      success: false,
+      message: 'Forbidden',
+    });
+  });
+
   it('protects dashboard summary routes with JWT authentication and permits managers', async () => {
     const app = createApp();
     const managerToken = signAccessToken({

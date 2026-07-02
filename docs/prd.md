@@ -123,7 +123,7 @@ Manager represents interviewers or recruitment evaluators.
 * Review candidate information
 * Review vacancy information
 * Update assigned recruitment stages
-* Upload recruitment documents
+* View and download recruitment documents
 * Add stage notes
 * View dashboard
 
@@ -516,7 +516,8 @@ Deletion or modification of audit records is prohibited.
 * View candidates
 * View vacancies
 * Update assigned recruitment stages
-* Upload recruitment documents
+* View recruitment documents
+* Download recruitment documents
 * Add recruitment notes
 * View dashboard
 
@@ -524,6 +525,8 @@ Managers cannot:
 
 * Manage candidates
 * Manage vacancies
+* Upload recruitment documents
+* Delete recruitment documents
 * Modify other managers' stages
 * Access audit logs
 
@@ -680,7 +683,12 @@ The backend exposes RESTful APIs.
 
 * GET /recruitments/{id}/documents
 * POST /recruitments/{id}/documents
+* GET /documents/{id}/download
 * DELETE /documents/{id}
+
+Manager access is limited to viewing and downloading recruitment documents.
+
+Administrator access includes viewing, uploading, downloading, and deleting recruitment documents.
 
 ---
 

@@ -498,21 +498,25 @@ These are implementation standards, not standalone tasks. Apply them across ever
   - [x] 5.4. Validate document identifiers.
 - [x] 6. Implement recruitment document controllers and routes.
   - [x] 6.1. Implement `GET /recruitments/{id}/documents`.
-  - [x] 6.2. Implement `POST /recruitments/{id}/documents`.
+  - [x] 6.2. Implement `POST /recruitments/{id}/documents` as Administrator-only.
   - [x] 6.3. Implement `DELETE /documents/{id}` as soft delete.
   - [x] 6.4. Implement download behavior for recruitment documents.
+  - [x] 6.5. Permit Manager users to list and download recruitment documents only.
+  - [x] 6.6. Prevent Manager users from uploading recruitment documents.
 - [x] 7. Implement recruitment document frontend.
   - [x] 7.1. Create Recruitment Documents page or section.
-  - [x] 7.2. Create Upload Dialog component.
+  - [x] 7.2. Create Upload Dialog component for Administrator users.
   - [x] 7.3. Create Document Table component.
   - [x] 7.4. Create Download Button component.
   - [x] 7.5. Create Delete Button component.
+  - [x] 7.6. Hide upload controls from Manager users.
 - [x] 8. Integrate recruitment document frontend with backend APIs.
   - [x] 8.1. Fetch documents for a recruitment.
-  - [x] 8.2. Upload a document for a recruitment.
+  - [x] 8.2. Upload a document for a recruitment as an Administrator user.
   - [x] 8.3. Download a recruitment document.
   - [x] 8.4. Soft delete a recruitment document.
   - [x] 8.5. Surface upload, download, soft delete, validation, and API errors.
+  - [x] 8.6. Keep Manager document access limited to list and download actions.
 - [x] 9. Complete Phase 7 implementation readiness.
   - [x] 9.1. Ensure document upload is implemented end to end.
   - [x] 9.2. Ensure document download is implemented end to end.

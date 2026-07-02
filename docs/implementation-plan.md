@@ -744,9 +744,10 @@ Business Rules
 
 Implement:
 
-* Upload endpoint
-* Document list endpoint
-* Soft delete endpoint
+* Administrator-only upload endpoint
+* Administrator and Manager document list endpoint
+* Administrator and Manager download endpoint
+* Administrator-only soft delete endpoint
 
 ---
 
@@ -763,13 +764,20 @@ Components
 * Download Button
 * Delete Button
 
+Role-based UI behavior:
+
+* Administrators may upload, download, and delete recruitment documents.
+* Managers may view and download recruitment documents only.
+
 ---
 
 ## Testing Checklist
 
-* Upload
+* Administrator upload
+* Manager upload rejection
 * Download
-* Soft delete
+* Administrator soft delete
+* Manager view/download-only behavior
 * Invalid file
 * Invalid document type
 
