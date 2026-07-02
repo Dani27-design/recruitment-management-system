@@ -29,14 +29,14 @@ export function VacancyListPage() {
 
   return (
     <AppLayout>
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 className="text-2xl font-semibold text-slate-950">Vacancies</h2>
-          <p className="mt-1 text-sm text-slate-600">Manage job openings.</p>
+          <h2 className="page-title">Vacancies</h2>
+          <p className="page-description">Manage job openings.</p>
         </div>
         {canManage ? (
           <Link
-            className="rounded bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+            className="primary-action"
             to="/vacancies/new"
           >
             Create Vacancy
@@ -44,8 +44,8 @@ export function VacancyListPage() {
         ) : null}
       </div>
 
-      {vacanciesQuery.isLoading ? <p className="text-slate-600">Loading vacancies...</p> : null}
-      {vacanciesQuery.isError ? <p className="text-red-600">Unable to load vacancies.</p> : null}
+      {vacanciesQuery.isLoading ? <p className="surface-panel p-4 text-sm text-slate-600">Loading vacancies...</p> : null}
+      {vacanciesQuery.isError ? <p className="alert-error">Unable to load vacancies.</p> : null}
       {vacanciesQuery.data ? (
         <VacancyTable
           vacancies={vacanciesQuery.data}

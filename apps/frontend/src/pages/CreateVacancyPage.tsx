@@ -17,8 +17,8 @@ export function CreateVacancyPage() {
   return (
     <AppLayout>
       <section className="max-w-2xl">
-        <h2 className="mb-6 text-2xl font-semibold text-slate-950">Create Vacancy</h2>
-        {mutation.isError ? <p className="mb-4 text-red-600">Unable to create vacancy.</p> : null}
+        <h2 className="page-title mb-6">Create Vacancy</h2>
+        {mutation.isError ? <p className="alert-error mb-4">Unable to create vacancy.</p> : null}
         <VacancyForm
           submitLabel="Create Vacancy"
           isSubmitting={mutation.isPending}

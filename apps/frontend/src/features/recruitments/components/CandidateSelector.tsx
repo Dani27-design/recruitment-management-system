@@ -9,14 +9,14 @@ interface CandidateSelectorProps {
 export function CandidateSelector({ candidates, value, onChange }: CandidateSelectorProps) {
   return (
     <div>
-      <label className="block text-sm font-medium text-slate-700" htmlFor="candidate_id">
+      <label className="form-label" htmlFor="candidate_id">
         Candidate
       </label>
       <select
         id="candidate_id"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="mt-1 w-full rounded border border-slate-300 px-3 py-2"
+        className="form-input"
       >
         <option value="">Select candidate</option>
         {candidates.map((candidate) => (

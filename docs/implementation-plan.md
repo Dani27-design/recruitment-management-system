@@ -933,6 +933,9 @@ Prepare the application for final delivery.
 
 * Responsive validation
 * UI consistency review
+* Professional internal dashboard layout
+* Shared table, card, button, form, and alert styling
+* Role-aware document action presentation
 * Loading states
 * Empty states
 * Error states

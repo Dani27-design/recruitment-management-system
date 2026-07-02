@@ -41,6 +41,7 @@ describe('RecruitmentListPage', () => {
 
     expect(await screen.findByText('Jane Doe')).toBeInTheDocument();
     expect(screen.getByText('Software Engineer')).toBeInTheDocument();
-    expect(screen.getByText('APPLIED / PENDING')).toBeInTheDocument();
+    expect(screen.getByText('APPLIED')).toBeInTheDocument();
+    expect(screen.getByText('PENDING')).toBeInTheDocument();
   });
 });

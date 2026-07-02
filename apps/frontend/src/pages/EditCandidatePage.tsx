@@ -23,10 +23,10 @@ export function EditCandidatePage() {
   return (
     <AppLayout>
       <section className="max-w-2xl">
-        <h2 className="mb-6 text-2xl font-semibold text-slate-950">Edit Candidate</h2>
-        {candidateQuery.isLoading ? <p className="text-slate-600">Loading candidate...</p> : null}
+        <h2 className="page-title mb-6">Edit Candidate</h2>
+        {candidateQuery.isLoading ? <p className="surface-panel p-4 text-sm text-slate-600">Loading candidate...</p> : null}
         {candidateQuery.isError || mutation.isError ? (
-          <p className="mb-4 text-red-600">Unable to update candidate.</p>
+          <p className="alert-error mb-4">Unable to update candidate.</p>
         ) : null}
         {candidateQuery.data ? (
           <CandidateForm

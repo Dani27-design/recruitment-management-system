@@ -28,43 +28,51 @@ export function LoginPage() {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-50 px-6">
-      <section className="w-full max-w-md rounded border border-slate-200 bg-white p-6 shadow-sm">
-        <h1 className="text-xl font-semibold text-slate-950">Recruitment Management System</h1>
-        <form className="mt-6 space-y-4" onSubmit={handleSubmit(onSubmit)}>
+    <main className="flex min-h-screen items-center justify-center px-6 py-10">
+      <section className="w-full max-w-md rounded-xl border border-slate-200/80 bg-white/95 p-8 shadow-xl shadow-slate-200/70">
+        <div className="mb-8 flex items-center gap-3">
+          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-teal-700 text-sm font-bold text-white">
+            RMS
+          </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700" htmlFor="email">
+            <h1 className="text-xl font-semibold text-slate-950">Recruitment Management System</h1>
+            <p className="text-sm font-medium text-slate-500">Internal access</p>
+          </div>
+        </div>
+        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+          <div>
+            <label className="form-label" htmlFor="email">
               Email
             </label>
             <input
               id="email"
               type="email"
               autoComplete="email"
-              className="mt-1 w-full rounded border border-slate-300 px-3 py-2"
+              className="form-input"
               {...register('email', { required: 'Email is required' })}
             />
             {errors.email ? <p className="mt-1 text-sm text-red-600">{errors.email.message}</p> : null}
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700" htmlFor="password">
+            <label className="form-label" htmlFor="password">
               Password
             </label>
             <input
               id="password"
               type="password"
               autoComplete="current-password"
-              className="mt-1 w-full rounded border border-slate-300 px-3 py-2"
+              className="form-input"
               {...register('password', { required: 'Password is required' })}
             />
             {errors.password ? (
               <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
             ) : null}
           </div>
-          {errorMessage ? <p className="text-sm text-red-600">{errorMessage}</p> : null}
+          {errorMessage ? <p className="alert-error">{errorMessage}</p> : null}
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full rounded bg-slate-900 px-4 py-2 font-medium text-white hover:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-400"
+            className="primary-action w-full"
           >
             {isSubmitting ? 'Signing in' : 'Login'}
           </button>

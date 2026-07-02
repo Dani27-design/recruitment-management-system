@@ -88,28 +88,37 @@ export function RecruitmentDetailPage() {
 
   return (
     <AppLayout>
-      <Link className="text-sm font-medium text-slate-700 underline" to="/recruitments">
+      <Link className="text-action" to="/recruitments">
         Back to recruitments
       </Link>
-      {recruitmentQuery.isLoading ? <p className="mt-4 text-slate-600">Loading recruitment...</p> : null}
+      {recruitmentQuery.isLoading ? <p className="surface-panel mt-4 p-4 text-sm text-slate-600">Loading recruitment...</p> : null}
       {recruitmentQuery.isError ? (
-        <p className="mt-4 text-red-600">Unable to load recruitment.</p>
+        <p className="alert-error mt-4">Unable to load recruitment.</p>
       ) : null}
       {recruitmentQuery.data ? (
-        <section className="mt-6 rounded border border-slate-200 bg-white p-6">
-          <h2 className="text-2xl font-semibold text-slate-950">
-            {recruitmentQuery.data.candidate.full_name}
-          </h2>
-          <dl className="mt-4 grid gap-4 sm:grid-cols-2">
-            <div>
+        <section className="mt-6">
+          <div className="section-card">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <h2 className="page-title">{recruitmentQuery.data.candidate.full_name}</h2>
+                <p className="page-description">{recruitmentQuery.data.vacancy.position_name}</p>
+              </div>
+              <span className="inline-flex w-fit rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-800 ring-1 ring-teal-200">
+                {recruitmentQuery.data.stages.find((stage) => stage.status === 'PENDING')?.status ??
+                  recruitmentQuery.data.stages.at(-1)?.status ??
+                  '-'}
+              </span>
+            </div>
+          <dl className="mt-6 grid gap-4 sm:grid-cols-2">
+            <div className="rounded-lg bg-slate-50 p-4">
               <dt className="text-sm font-medium text-slate-500">Vacancy</dt>
-              <dd className="mt-1 text-slate-950">
+              <dd className="mt-1 font-semibold text-slate-950">
                 {recruitmentQuery.data.vacancy.position_name}
               </dd>
             </div>
-            <div>
+            <div className="rounded-lg bg-slate-50 p-4">
               <dt className="text-sm font-medium text-slate-500">Current stage</dt>
-              <dd className="mt-1 text-slate-950">
+              <dd className="mt-1 font-semibold text-slate-950">
                 {recruitmentQuery.data.stages.find((stage) => stage.status === 'PENDING')
                   ?.stage ??
                   recruitmentQuery.data.stages.at(-1)?.stage ??
@@ -117,9 +126,10 @@ export function RecruitmentDetailPage() {
               </dd>
             </div>
           </dl>
-          {stagesQuery.isLoading ? <p className="mt-4 text-slate-600">Loading timeline...</p> : null}
+          </div>
+          {stagesQuery.isLoading ? <p className="surface-panel mt-4 p-4 text-sm text-slate-600">Loading timeline...</p> : null}
           {stagesQuery.isError || updateStageMutation.isError || assignStageMutation.isError ? (
-            <p className="mt-4 text-red-600">Unable to update recruitment timeline.</p>
+            <p className="alert-error mt-4">Unable to update recruitment timeline.</p>
           ) : null}
           {stagesQuery.data ? (
             <RecruitmentTimeline
@@ -132,9 +142,12 @@ export function RecruitmentDetailPage() {
               onUpdate={(stageId, input) => updateStageMutation.mutate({ stageId, input })}
             />
           ) : null}
-          <section className="mt-8">
+          <section className="section-card mt-8">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <h3 className="text-xl font-semibold text-slate-950">Recruitment Documents</h3>
+              <p className="text-sm font-medium text-slate-500">
+                {documentsQuery.data?.length ?? 0} documents
+              </p>
             </div>
             {canUploadDocuments ? (
               <UploadDialog
@@ -143,13 +156,13 @@ export function RecruitmentDetailPage() {
               />
             ) : null}
             {documentsQuery.isLoading ? (
-              <p className="mt-4 text-slate-600">Loading documents...</p>
+              <p className="mt-4 text-sm text-slate-600">Loading documents...</p>
             ) : null}
             {documentsQuery.isError ||
             uploadDocumentMutation.isError ||
             downloadDocumentMutation.isError ||
             deleteDocumentMutation.isError ? (
-              <p className="mt-4 text-red-600">Unable to update recruitment documents.</p>
+              <p className="alert-error mt-4">Unable to update recruitment documents.</p>
             ) : null}
             {documentsQuery.data ? (
               <DocumentTable

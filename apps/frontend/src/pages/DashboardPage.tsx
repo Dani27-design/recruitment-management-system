@@ -36,16 +36,19 @@ export function DashboardPage() {
   return (
     <AppLayout>
       <section>
-        <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-slate-950">Dashboard</h2>
-          <p className="mt-1 text-sm text-slate-600">Recruitment summary information.</p>
+        <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="page-title">Dashboard</h2>
+            <p className="page-description">Recruitment summary information.</p>
+          </div>
+          <p className="text-sm font-medium text-slate-500">Operational snapshot</p>
         </div>
 
         {dashboardQuery.isLoading ? (
-          <p className="text-slate-600">Loading dashboard...</p>
+          <p className="surface-panel p-4 text-sm text-slate-600">Loading dashboard...</p>
         ) : null}
         {dashboardQuery.isError ? (
-          <p className="text-red-600">Unable to load dashboard summary.</p>
+          <p className="alert-error">Unable to load dashboard summary.</p>
         ) : null}
 
         {summary ? (
@@ -53,7 +56,7 @@ export function DashboardPage() {
             {summary.total_candidates === 0 &&
             summary.total_active_vacancies === 0 &&
             summary.total_recruitments === 0 ? (
-              <p className="mb-4 rounded border border-slate-200 bg-white p-4 text-slate-600">
+              <p className="empty-state mb-4">
                 No dashboard data available.
               </p>
             ) : null}

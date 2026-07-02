@@ -6,7 +6,7 @@ interface DownloadButtonProps {
 export function DownloadButton({ disabled, onDownload }: DownloadButtonProps) {
   return (
     <button
-      className="font-medium text-slate-900 underline disabled:text-slate-400"
+      className="text-action disabled:text-slate-400 disabled:no-underline"
       disabled={disabled}
       type="button"
       onClick={onDownload}

@@ -635,6 +635,10 @@ These are implementation standards, not standalone tasks. Apply them across ever
   - [x] 2.4. Implement required empty states.
   - [x] 2.5. Implement required error states.
   - [x] 2.6. Review accessibility.
+  - [x] 2.7. Modernize the authenticated application layout with professional internal dashboard navigation.
+  - [x] 2.8. Apply consistent table, card, button, form, alert, badge, and dialog styling.
+  - [x] 2.9. Improve dashboard, list, detail, workflow, document, audit, and authentication UI presentation.
+  - [x] 2.10. Keep recruitment document action visibility aligned with Administrator and Manager permissions.
 - [x] 3. Complete Supabase readiness work.
   - [x] 3.1. Document Supabase PostgreSQL configuration.
   - [x] 3.2. Document Supabase Storage configuration.

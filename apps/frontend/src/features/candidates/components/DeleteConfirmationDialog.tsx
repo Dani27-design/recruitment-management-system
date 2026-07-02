@@ -18,8 +18,8 @@ export function DeleteConfirmationDialog({
   }
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-slate-950/40 px-6">
-      <section className="w-full max-w-md rounded border border-slate-200 bg-white p-6 shadow-lg">
+    <div className="fixed inset-0 flex items-center justify-center bg-slate-950/45 px-6 backdrop-blur-sm">
+      <section className="w-full max-w-md rounded-lg border border-slate-200 bg-white p-6 shadow-xl shadow-slate-950/20">
         <h2 className="text-lg font-semibold text-slate-950">Delete candidate</h2>
         <p className="mt-2 text-sm text-slate-600">
           Delete {candidate.full_name}? This action removes the candidate record.
@@ -28,7 +28,7 @@ export function DeleteConfirmationDialog({
           <button
             type="button"
             onClick={onCancel}
-            className="rounded border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700"
+            className="secondary-action"
           >
             Cancel
           </button>
@@ -36,7 +36,7 @@ export function DeleteConfirmationDialog({
             type="button"
             disabled={isDeleting}
             onClick={onConfirm}
-            className="rounded bg-red-700 px-4 py-2 text-sm font-medium text-white hover:bg-red-600 disabled:cursor-not-allowed disabled:bg-red-300"
+            className="danger-action"
           >
             {isDeleting ? 'Deleting' : 'Delete'}
           </button>

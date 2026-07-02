@@ -9,13 +9,13 @@ interface VacancyTableProps {
 
 export function VacancyTable({ vacancies, canManage, onDelete }: VacancyTableProps) {
   if (vacancies.length === 0) {
-    return <p className="rounded border border-slate-200 bg-white p-4 text-slate-600">No vacancies found.</p>;
+    return <p className="empty-state">No vacancies found.</p>;
   }
 
   return (
-    <div className="overflow-x-auto rounded border border-slate-200 bg-white">
-      <table className="min-w-full divide-y divide-slate-200">
-        <thead className="bg-slate-50">
+    <div className="table-shell overflow-x-auto">
+      <table className="data-table">
+        <thead>
           <tr>
             <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">Position</th>
             <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">Department</th>
@@ -29,18 +29,28 @@ export function VacancyTable({ vacancies, canManage, onDelete }: VacancyTablePro
         <tbody className="divide-y divide-slate-200">
           {vacancies.map((vacancy) => (
             <tr key={vacancy.id}>
-              <td className="px-4 py-3 text-sm text-slate-950">{vacancy.position_name}</td>
-              <td className="px-4 py-3 text-sm text-slate-700">{vacancy.department}</td>
-              <td className="px-4 py-3 text-sm text-slate-700">{vacancy.hiring_needed}</td>
-              <td className="px-4 py-3 text-sm text-slate-700">{vacancy.status}</td>
+              <td className="font-semibold text-slate-950">{vacancy.position_name}</td>
+              <td>{vacancy.department}</td>
+              <td>{vacancy.hiring_needed}</td>
+              <td>
+                <span
+                  className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${
+                    vacancy.status === 'ACTIVE'
+                      ? 'bg-emerald-50 text-emerald-700'
+                      : 'bg-slate-100 text-slate-700'
+                  }`}
+                >
+                  {vacancy.status}
+                </span>
+              </td>
               {canManage ? (
-                <td className="space-x-3 px-4 py-3 text-sm">
-                  <Link className="font-medium text-slate-900 underline" to={`/vacancies/${vacancy.id}/edit`}>
+                <td className="space-x-3 whitespace-nowrap">
+                  <Link className="text-action" to={`/vacancies/${vacancy.id}/edit`}>
                     Edit
                   </Link>
                   <button
                     type="button"
-                    className="font-medium text-red-700 underline"
+                    className="danger-text-action"
                     onClick={() => onDelete(vacancy)}
                   >
                     Delete

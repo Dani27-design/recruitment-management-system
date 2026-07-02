@@ -23,7 +23,10 @@ export function RecruitmentTimeline({
 }: RecruitmentTimelineProps) {
   return (
     <section className="mt-6">
-      <h3 className="text-lg font-semibold text-slate-950">Recruitment Timeline</h3>
+      <div className="flex items-center justify-between gap-4">
+        <h3 className="text-lg font-semibold text-slate-950">Recruitment Timeline</h3>
+        <span className="text-sm font-medium text-slate-500">{stages.length} stages</span>
+      </div>
       <div className="mt-3 grid gap-3">
         {stages.map((stage) => (
           <StageCard

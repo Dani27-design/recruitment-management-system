@@ -20,13 +20,13 @@ export function DocumentTable({
   onDownload,
 }: DocumentTableProps) {
   if (documents.length === 0) {
-    return <p className="rounded border border-slate-200 bg-white p-4 text-slate-600">No documents found.</p>;
+    return <p className="empty-state">No documents found.</p>;
   }
 
   return (
-    <div className="mt-3 overflow-x-auto rounded border border-slate-200 bg-white">
-      <table className="min-w-full divide-y divide-slate-200">
-        <thead className="bg-slate-50">
+    <div className="table-shell mt-3 overflow-x-auto">
+      <table className="data-table">
+        <thead>
           <tr>
             <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">Type</th>
             <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">File</th>
@@ -37,12 +37,16 @@ export function DocumentTable({
         <tbody className="divide-y divide-slate-200">
           {documents.map((document) => (
             <tr key={document.id}>
-              <td className="px-4 py-3 text-sm text-slate-950">{document.document_type}</td>
-              <td className="px-4 py-3 text-sm text-slate-700">{document.original_filename}</td>
-              <td className="px-4 py-3 text-sm text-slate-700">
+              <td>
+                <span className="inline-flex rounded-full bg-teal-50 px-2.5 py-1 text-xs font-semibold text-teal-800">
+                  {document.document_type}
+                </span>
+              </td>
+              <td className="font-semibold text-slate-950">{document.original_filename}</td>
+              <td>
                 {document.uploader?.email ?? '-'}
               </td>
-              <td className="space-x-3 px-4 py-3 text-sm">
+              <td className="space-x-3 whitespace-nowrap">
                 <DownloadButton
                   disabled={isDownloading}
                   onDownload={() => onDownload(document.id)}

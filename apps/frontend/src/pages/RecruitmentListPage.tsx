@@ -14,14 +14,14 @@ export function RecruitmentListPage() {
 
   return (
     <AppLayout>
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 className="text-2xl font-semibold text-slate-950">Recruitments</h2>
-          <p className="mt-1 text-sm text-slate-600">Track candidate applications to vacancies.</p>
+          <h2 className="page-title">Recruitments</h2>
+          <p className="page-description">Track candidate applications to vacancies.</p>
         </div>
         {canCreate ? (
           <Link
-            className="rounded bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+            className="primary-action"
             to="/recruitments/new"
           >
             Create Recruitment
@@ -29,17 +29,17 @@ export function RecruitmentListPage() {
         ) : null}
       </div>
 
-      {recruitmentsQuery.isLoading ? <p className="text-slate-600">Loading recruitments...</p> : null}
+      {recruitmentsQuery.isLoading ? <p className="surface-panel p-4 text-sm text-slate-600">Loading recruitments...</p> : null}
       {recruitmentsQuery.isError ? (
-        <p className="text-red-600">Unable to load recruitments.</p>
+        <p className="alert-error">Unable to load recruitments.</p>
       ) : null}
       {recruitmentsQuery.data && recruitmentsQuery.data.length === 0 ? (
-        <p className="rounded border border-slate-200 bg-white p-4 text-slate-600">No recruitments found.</p>
+        <p className="empty-state">No recruitments found.</p>
       ) : null}
       {recruitmentsQuery.data && recruitmentsQuery.data.length > 0 ? (
-        <div className="overflow-x-auto rounded border border-slate-200 bg-white">
-          <table className="min-w-full divide-y divide-slate-200">
-            <thead className="bg-slate-50">
+        <div className="table-shell overflow-x-auto">
+          <table className="data-table">
+            <thead>
               <tr>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">Candidate</th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">Vacancy</th>
@@ -50,23 +50,26 @@ export function RecruitmentListPage() {
             <tbody className="divide-y divide-slate-200">
               {recruitmentsQuery.data.map((recruitment) => (
                 <tr key={recruitment.id}>
-                  <td className="px-4 py-3 text-sm text-slate-950">
+                  <td className="font-semibold text-slate-950">
                     {recruitment.candidate.full_name}
                   </td>
-                  <td className="px-4 py-3 text-sm text-slate-700">
+                  <td>
                     {recruitment.vacancy.position_name}
                   </td>
-                  <td className="px-4 py-3 text-sm text-slate-700">
-                    {recruitment.stages.find((stage) => stage.status === 'PENDING')?.stage ??
-                      recruitment.stages.at(-1)?.stage ??
-                      '-'}{' '}
-                    /{' '}
-                    {recruitment.stages.find((stage) => stage.status === 'PENDING')?.status ??
-                      recruitment.stages.at(-1)?.status ??
-                      '-'}
+                  <td>
+                    <span className="inline-flex rounded-full bg-teal-50 px-2.5 py-1 text-xs font-semibold text-teal-800">
+                      {recruitment.stages.find((stage) => stage.status === 'PENDING')?.stage ??
+                        recruitment.stages.at(-1)?.stage ??
+                        '-'}
+                    </span>
+                    <span className="ml-2 inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700">
+                      {recruitment.stages.find((stage) => stage.status === 'PENDING')?.status ??
+                        recruitment.stages.at(-1)?.status ??
+                        '-'}
+                    </span>
                   </td>
-                  <td className="px-4 py-3 text-sm">
-                    <Link className="font-medium text-slate-900 underline" to={`/recruitments/${recruitment.id}`}>
+                  <td className="whitespace-nowrap">
+                    <Link className="text-action" to={`/recruitments/${recruitment.id}`}>
                       View
                     </Link>
                   </td>

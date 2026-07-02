@@ -36,14 +36,14 @@ export function VacancyForm({
   }, [defaultValues, reset]);
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+    <form className="section-card space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <label className="block text-sm font-medium text-slate-700" htmlFor="position_name">
+        <label className="form-label" htmlFor="position_name">
           Position name
         </label>
         <input
           id="position_name"
-          className="mt-1 w-full rounded border border-slate-300 px-3 py-2"
+          className="form-input"
           {...register('position_name', { required: 'Position name is required' })}
         />
         {errors.position_name ? (
@@ -51,12 +51,12 @@ export function VacancyForm({
         ) : null}
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-700" htmlFor="department">
+        <label className="form-label" htmlFor="department">
           Department
         </label>
         <input
           id="department"
-          className="mt-1 w-full rounded border border-slate-300 px-3 py-2"
+          className="form-input"
           {...register('department', { required: 'Department is required' })}
         />
         {errors.department ? (
@@ -64,14 +64,14 @@ export function VacancyForm({
         ) : null}
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-700" htmlFor="hiring_needed">
+        <label className="form-label" htmlFor="hiring_needed">
           Hiring needed
         </label>
         <input
           id="hiring_needed"
           type="number"
           min={1}
-          className="mt-1 w-full rounded border border-slate-300 px-3 py-2"
+          className="form-input"
           {...register('hiring_needed', {
             required: 'Hiring needed is required',
             valueAsNumber: true,
@@ -83,12 +83,12 @@ export function VacancyForm({
         ) : null}
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-700" htmlFor="status">
+        <label className="form-label" htmlFor="status">
           Status
         </label>
         <select
           id="status"
-          className="mt-1 w-full rounded border border-slate-300 px-3 py-2"
+          className="form-input"
           {...register('status', { required: 'Status is required' })}
         >
           <option value="ACTIVE">ACTIVE</option>
@@ -101,7 +101,7 @@ export function VacancyForm({
       <button
         type="submit"
         disabled={isSubmitting}
-        className="rounded bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-400"
+        className="primary-action"
       >
         {isSubmitting ? 'Saving' : submitLabel}
       </button>

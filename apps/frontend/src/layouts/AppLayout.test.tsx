@@ -30,10 +30,10 @@ describe('AppLayout', () => {
     );
 
     expect(screen.getByText('Recruitment Management System')).toBeInTheDocument();
-    expect(screen.getByText('Candidates')).toBeInTheDocument();
-    expect(screen.getByText('Vacancies')).toBeInTheDocument();
-    expect(screen.getByText('Recruitments')).toBeInTheDocument();
-    expect(screen.getByText('Audit Logs')).toBeInTheDocument();
+    expect(screen.getAllByText('Candidates').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Vacancies').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Recruitments').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Audit Logs').length).toBeGreaterThan(0);
     expect(screen.getByRole('button', { name: 'Logout' })).toBeInTheDocument();
     expect(screen.getByText('Protected content')).toBeInTheDocument();
   });

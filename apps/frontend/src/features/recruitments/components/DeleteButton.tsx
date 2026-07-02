@@ -6,7 +6,7 @@ interface DeleteButtonProps {
 export function DeleteButton({ disabled, onDelete }: DeleteButtonProps) {
   return (
     <button
-      className="font-medium text-red-700 underline disabled:text-slate-400"
+      className="danger-text-action disabled:text-slate-400 disabled:no-underline"
       disabled={disabled}
       type="button"
       onClick={onDelete}

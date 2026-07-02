@@ -9,10 +9,10 @@ interface ManagerSelectorProps {
 
 export function ManagerSelector({ managers, value, disabled, onChange }: ManagerSelectorProps) {
   return (
-    <label className="block text-sm font-medium text-slate-700">
+    <label className="form-label">
       Assigned manager
       <select
-        className="mt-1 w-full rounded border border-slate-300 px-3 py-2 text-sm text-slate-950"
+        className="form-input text-sm"
         disabled={disabled}
         value={value}
         onChange={(event) => onChange(event.target.value)}

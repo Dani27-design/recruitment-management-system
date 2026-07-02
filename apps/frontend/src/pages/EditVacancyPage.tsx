@@ -23,10 +23,10 @@ export function EditVacancyPage() {
   return (
     <AppLayout>
       <section className="max-w-2xl">
-        <h2 className="mb-6 text-2xl font-semibold text-slate-950">Edit Vacancy</h2>
-        {vacancyQuery.isLoading ? <p className="text-slate-600">Loading vacancy...</p> : null}
+        <h2 className="page-title mb-6">Edit Vacancy</h2>
+        {vacancyQuery.isLoading ? <p className="surface-panel p-4 text-sm text-slate-600">Loading vacancy...</p> : null}
         {vacancyQuery.isError || mutation.isError ? (
-          <p className="mb-4 text-red-600">Unable to update vacancy.</p>
+          <p className="alert-error mb-4">Unable to update vacancy.</p>
         ) : null}
         {vacancyQuery.data ? (
           <VacancyForm

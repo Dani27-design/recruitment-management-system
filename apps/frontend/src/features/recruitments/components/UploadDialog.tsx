@@ -23,12 +23,12 @@ export function UploadDialog({ disabled, onUpload }: UploadDialogProps) {
   }
 
   return (
-    <form className="mt-4 grid gap-3 rounded border border-slate-200 bg-white p-4" onSubmit={handleSubmit}>
+    <form className="mt-4 grid gap-4 rounded-lg border border-teal-100 bg-teal-50/40 p-4" onSubmit={handleSubmit}>
       <div className="grid gap-3 sm:grid-cols-2">
-        <label className="text-sm font-medium text-slate-700">
+        <label className="form-label">
           Document type
           <select
-            className="mt-1 w-full rounded border border-slate-300 px-3 py-2 text-sm text-slate-950"
+            className="form-input text-sm"
             disabled={disabled}
             value={documentType}
             onChange={(event) => setDocumentType(event.target.value as RecruitmentDocumentType)}
@@ -37,10 +37,10 @@ export function UploadDialog({ disabled, onUpload }: UploadDialogProps) {
             <option value="PORTFOLIO">Portfolio</option>
           </select>
         </label>
-        <label className="text-sm font-medium text-slate-700">
+        <label className="form-label">
           File
           <input
-            className="mt-1 w-full rounded border border-slate-300 px-3 py-2 text-sm text-slate-950"
+            className="form-input text-sm"
             disabled={disabled}
             type="file"
             onChange={(event) => setFile(event.target.files?.[0] ?? null)}
@@ -48,7 +48,7 @@ export function UploadDialog({ disabled, onUpload }: UploadDialogProps) {
         </label>
       </div>
       <button
-        className="w-fit rounded bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
+        className="primary-action w-fit"
         disabled={disabled || !file}
         type="submit"
       >

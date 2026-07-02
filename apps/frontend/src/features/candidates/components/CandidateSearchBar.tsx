@@ -10,7 +10,7 @@ export function CandidateSearchBar({ initialValue = '', onSearch }: CandidateSea
 
   return (
     <form
-      className="flex gap-2"
+      className="surface-panel flex gap-2 p-3"
       onSubmit={(event) => {
         event.preventDefault();
         onSearch(search.trim());
@@ -24,12 +24,9 @@ export function CandidateSearchBar({ initialValue = '', onSearch }: CandidateSea
         value={search}
         onChange={(event) => setSearch(event.target.value)}
         placeholder="Search candidates"
-        className="w-full rounded border border-slate-300 px-3 py-2"
+        className="form-input mt-0"
       />
-      <button
-        type="submit"
-        className="rounded bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
-      >
+      <button type="submit" className="secondary-action">
         Search
       </button>
     </form>

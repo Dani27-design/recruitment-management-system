@@ -9,14 +9,14 @@ interface VacancySelectorProps {
 export function VacancySelector({ vacancies, value, onChange }: VacancySelectorProps) {
   return (
     <div>
-      <label className="block text-sm font-medium text-slate-700" htmlFor="vacancy_id">
+      <label className="form-label" htmlFor="vacancy_id">
         Vacancy
       </label>
       <select
         id="vacancy_id"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="mt-1 w-full rounded border border-slate-300 px-3 py-2"
+        className="form-input"
       >
         <option value="">Select vacancy</option>
         {vacancies.map((vacancy) => (

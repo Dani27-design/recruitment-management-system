@@ -26,20 +26,20 @@ export function AuditLogPage() {
     <AppLayout>
       <section>
         <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-slate-950">Audit Logs</h2>
-          <p className="mt-1 text-sm text-slate-600">Trace successful system data modifications.</p>
+          <h2 className="page-title">Audit Logs</h2>
+          <p className="page-description">Trace successful system data modifications.</p>
         </div>
 
-        <div className="mb-4 grid gap-3 rounded border border-slate-200 bg-white p-4 sm:grid-cols-2">
+        <div className="surface-panel mb-4 grid gap-3 p-4 sm:grid-cols-2">
           <EntityFilter value={entityType} onChange={setEntityType} />
           <EventFilter value={eventType} onChange={setEventType} />
         </div>
 
         {auditLogsQuery.isLoading ? (
-          <p className="text-slate-600">Loading audit logs...</p>
+          <p className="surface-panel p-4 text-sm text-slate-600">Loading audit logs...</p>
         ) : null}
         {auditLogsQuery.isError ? (
-          <p className="text-red-600">Unable to load audit logs.</p>
+          <p className="alert-error">Unable to load audit logs.</p>
         ) : null}
         {auditLogsQuery.data ? <AuditTable auditLogs={auditLogsQuery.data} /> : null}
       </section>

@@ -130,7 +130,7 @@ describe('RecruitmentDetailPage', () => {
     );
 
     expect(await screen.findByText('Jane Doe')).toBeInTheDocument();
-    expect(screen.getByText('Software Engineer')).toBeInTheDocument();
+    expect(screen.getAllByText('Software Engineer').length).toBeGreaterThan(0);
     expect(await screen.findByText('Recruitment Timeline')).toBeInTheDocument();
     await user.selectOptions(await screen.findByLabelText('Assigned manager'), 'manager-1');
     await user.click(screen.getByRole('button', { name: 'Assign' }));

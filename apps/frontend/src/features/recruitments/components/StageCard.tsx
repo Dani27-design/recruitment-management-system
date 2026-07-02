@@ -33,7 +33,7 @@ export function StageCard({
   const canModifyActiveStage = isActive && canUpdate;
 
   return (
-    <article className="rounded border border-slate-200 bg-white p-4">
+    <article className={`surface-panel p-5 ${isActive ? 'border-teal-200 ring-2 ring-teal-100' : ''}`}>
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h3 className="text-base font-semibold text-slate-950">{stage.stage}</h3>
@@ -48,7 +48,7 @@ export function StageCard({
       </div>
 
       {canAssign ? (
-        <div className="mt-4 grid gap-2 sm:grid-cols-[1fr_auto] sm:items-end">
+        <div className="mt-4 grid gap-2 rounded-lg bg-slate-50 p-3 sm:grid-cols-[1fr_auto] sm:items-end">
           <ManagerSelector
             managers={managers}
             value={selectedManagerId}
@@ -56,7 +56,7 @@ export function StageCard({
             onChange={setSelectedManagerId}
           />
           <button
-            className="rounded bg-slate-900 px-3 py-2 text-sm font-medium text-white disabled:opacity-60"
+            className="primary-action"
             disabled={isAssigning || !selectedManagerId}
             type="button"
             onClick={() => {
@@ -82,7 +82,7 @@ export function StageCard({
       {canModifyActiveStage ? (
         <div className="mt-4 flex flex-wrap gap-2">
           <button
-            className="rounded bg-emerald-700 px-3 py-2 text-sm font-medium text-white disabled:opacity-60"
+            className="primary-action bg-emerald-700 hover:bg-emerald-800"
             disabled={isUpdating}
             type="button"
             onClick={() => onUpdate(stage.id, { status: 'PASSED', notes })}
@@ -90,7 +90,7 @@ export function StageCard({
             Mark passed
           </button>
           <button
-            className="rounded bg-red-700 px-3 py-2 text-sm font-medium text-white disabled:opacity-60"
+            className="danger-action"
             disabled={isUpdating}
             type="button"
             onClick={() => onUpdate(stage.id, { status: 'REJECTED', notes })}

@@ -35,14 +35,14 @@ export function CandidateForm({
   }, [defaultValues, reset]);
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+    <form className="section-card space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <label className="block text-sm font-medium text-slate-700" htmlFor="full_name">
+        <label className="form-label" htmlFor="full_name">
           Full name
         </label>
         <input
           id="full_name"
-          className="mt-1 w-full rounded border border-slate-300 px-3 py-2"
+          className="form-input"
           {...register('full_name', { required: 'Full name is required' })}
         />
         {errors.full_name ? (
@@ -50,24 +50,24 @@ export function CandidateForm({
         ) : null}
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-700" htmlFor="email">
+        <label className="form-label" htmlFor="email">
           Email
         </label>
         <input
           id="email"
           type="email"
-          className="mt-1 w-full rounded border border-slate-300 px-3 py-2"
+          className="form-input"
           {...register('email', { required: 'Email is required' })}
         />
         {errors.email ? <p className="mt-1 text-sm text-red-600">{errors.email.message}</p> : null}
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-700" htmlFor="phone_number">
+        <label className="form-label" htmlFor="phone_number">
           Phone number
         </label>
         <input
           id="phone_number"
-          className="mt-1 w-full rounded border border-slate-300 px-3 py-2"
+          className="form-input"
           {...register('phone_number', { required: 'Phone number is required' })}
         />
         {errors.phone_number ? (
@@ -77,7 +77,7 @@ export function CandidateForm({
       <button
         type="submit"
         disabled={isSubmitting}
-        className="rounded bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-400"
+        className="primary-action"
       >
         {isSubmitting ? 'Saving' : submitLabel}
       </button>
